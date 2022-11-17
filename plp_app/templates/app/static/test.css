@@ -1,0 +1,13 @@
+body {
+  background-color: rgb(9, 117, 219);
+}
+
+h3 {
+  color: white;
+  text-align: center;
+}
+
+p {
+  font-family: monospace;
+  font-size: 30px;
+}

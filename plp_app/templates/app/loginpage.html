@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        background-color: rgb(9, 117, 219);
+      }
+
+      h3 {
+        color: white;
+        text-align: center;
+      }
+
+      p {
+        font-family: monospace;
+        font-size: 30px;
+      }
+
+      label {
+        color: white;
+        text-align: left;
+        font-family: monospace;
+
+    </style>
+  </head>
+  <body>
+    <h3>Login</h3>
+
+    <form action="/loginpage" method="post">
+      {% csrf_token %}
+      <label for="">Username</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Enter your username"
+        required
+      />
+      <br />
+
+      <label for="">Password</label>
+      <input
+        type="password"
+        id="password1"
+        name="password1"
+        placeholder="Enter your password"
+        required
+      />
+
+      <button type="submit">Login</button>
+    </form>
+
+    <script src="" async defer></script>
+  </body>
+</html>
