@@ -5,11 +5,11 @@
 #### Team Name: **Team Eder**
 
 Team Members:
--José Matos - Leader
--Francisco Antunes
--Lourenço Carvalho
--Maria Inês Costa
--Rui Guimarães
+- José Matos - Leader
+- Francisco Antunes
+- Lourenço Carvalho
+- Maria Inês Costa
+- Rui Guimarães
 
 ## How to setup for development:
 
