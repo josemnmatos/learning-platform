@@ -25,7 +25,8 @@ class Private(models.Model):
 class PaymentDetails(models.Model):
     privateId = models.ForeignKey(Private, on_delete=models.CASCADE)
     cardNumber = models.CharField(max_length=16)
-    expirationDate = models.DateField()
+    expirationMonth = models.SmallIntegerField()
+    expirationYear = models.SmallIntegerField()
     cvv = models.SmallIntegerField()
     
 class Category(models.Model):
@@ -33,10 +34,10 @@ class Category(models.Model):
     
 class CategoriesLiked(models.Model):
     privateId = models.ForeignKey(Private, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category)
+    categoryId = models.ForeignKey(Category)
         
 class Course(models.Model):
-    category = models.ForeignKey(Category)
+    categoryId = models.ForeignKey(Category)
     name = models.CharField(max_length=100)
     averageMasterTime = models.SmallIntegerField()
     price = models.DecimalField(decimal_places=2)
