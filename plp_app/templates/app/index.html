@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>App</title>
+    <title>Learning Together</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
@@ -44,7 +44,7 @@
     </div>
     {% endfor %}
 
-    <h3>Welcome to my app!</h3>
+    <h3>Learning Together Platform</h3>
 
     {% if user.is_authenticated %}
     <h3>Hello {{ fname }}</h3>
@@ -53,6 +53,7 @@
 
     {% else %}
     <button type="submit"><a href="/register">Register</a></button>
+    <br>
     <button type="submit"><a href="/loginpage">Log In</a></button>
     {% endif %}
 
