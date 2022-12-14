@@ -6,7 +6,7 @@ class User (models.Model):
     password = models.CharField(max_length=50)
     
     def __str__(self):
-        return self.username
+        return self.username 
     
 class Admin(models.Model):
     userId = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -55,16 +55,16 @@ class Category(models.Model):
     
 class CategoriesLiked(models.Model):
     privateId = models.ForeignKey(Private, on_delete=models.CASCADE)
-    categoryId = models.ForeignKey(Category)
+    categoryId = models.ForeignKey(Category, on_delete=models.PROTECT)
     
     def __str__(self):
         return self.privateId.profileId.userId.username + ' - ' + self.categoryId.category
         
 class Course(models.Model):
-    categoryId = models.ForeignKey(Category)
+    categoryId = models.ForeignKey(Category, on_delete=models.PROTECT)
     name = models.CharField(max_length=100)
     averageMasterTime = models.SmallIntegerField()
-    price = models.DecimalField(decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     
     def __str__(self):
         return self.name
@@ -87,7 +87,7 @@ class Rating(models.Model):
     userId = models.ForeignKey(User, on_delete=models.CASCADE)
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
     comment = models.CharField(max_length=200)
-    rating = models.SmallIntegerField(min_value=0, max_value=5)
+    rating = models.SmallIntegerField()
     
     def __str__(self):
         return self.rating + '/5 ' + self.comment
@@ -152,7 +152,7 @@ class Schedule(models.Model):
     def __str__(self):
         return self.liveChatId.courseId.name + ' - ' + self.date + ' ' + self.time
     
-class Participants(models.Model):
+class Participant(models.Model):
     userId = models.ForeignKey(User, on_delete=models.CASCADE)
     liveChatId = models.ForeignKey(LiveChat, on_delete=models.CASCADE)
     

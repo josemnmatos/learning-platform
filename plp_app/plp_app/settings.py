@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-fheb#5j$lxr+&1$#*=)#=s=0@q%ib+hw(ipsbj=l*051p@dcni
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','localhost','0.0.0.0',]
+ALLOWED_HOSTS = ['*','localhost','0.0.0.0']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'django_s3_sqlite',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
