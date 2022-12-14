@@ -22,5 +22,6 @@ Team Members:
 
 1. Clone *git* folder into local directory
 2. cd into the *plp_app* folder
-3. run the command: docker compose up (make sure Docker Daemon is running)
+3. Run the command: "docker-compose up -d --build" (make sure Docker Daemon is running)
 4. Open your browser on ***https://localhost:8080***
+5. (To "decompose" docker container use command: "docker compose down")
