@@ -1,52 +1,5 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-  <head>
-    <link rel="stylesheet" href="styles/test.css" />
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Learning Together</title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      body {
-        background-color: rgb(9, 117, 219);
-      }
-
-      h3 {
-        color: white;
-        text-align: center;
-      }
-
-      p {
-        font-family: monospace;
-        font-size: 30px;
-      }
-
-      label {
-        color: white;
-        text-align: left;
-        font-family: monospace;
-
-      }
-
-      button {
-        background-color: #ffffff; /* Green */
-        border: none;
-        color: rgb(0, 0, 0);
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-      }
-
-    </style>
-  </head>
-  <body>
+{% extends 'app/base.html' %}
+{% block content %}
     <h3>Register</h3>
 
     <form action="/register" method="post">
@@ -89,7 +42,4 @@
 
       <button type="submit">Register</button>
     </form>
-
-    <script src="" async defer></script>
-  </body>
-</html>
+{% endblock %}

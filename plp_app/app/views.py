@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from . import models
 
 # Create your views here.
 
@@ -54,3 +55,15 @@ def signout(request):
     logout(request)
     messages.success(request, "Logged out sucessfully.")
     return redirect('home')
+
+
+def coursePage(request, id):
+    # Gets the course with the exact id passed in
+    course = models.Course.objects.filter(id__exact=id)
+    # If it finds any
+    if not course:
+        messages.error(request, "Course doesn't exist")
+        return redirect('home')
+    else:
+        return render(request, "app/coursePage.html", {'course': course[0]})
+        

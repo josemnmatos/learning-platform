@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Learning Together</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        background-color: rgb(9, 117, 219);
+      }
+      
+      h3 {
+        color: white;
+        text-align: center;
+      }
+      
+      p {
+        font-family: monospace;
+        font-size: 30px;
+      }
+      
+      label {
+        color: white;
+        text-align: left;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    {% for message in messages %}
+    <div
+      class="alert alert-{{ message.tags }} alert-dismissible fade show"
+      role="alert"
+    >
+      <strong>Message:</strong> {{ message }}
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+
+    {% block content %}
+    <!-- The code will be here -->
+    {% endblock %}
+
+
+    <script src="" async defer></script>
+  </body>
+</html>
