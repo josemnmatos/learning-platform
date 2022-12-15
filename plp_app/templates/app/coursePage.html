@@ -1,9 +1,33 @@
 
 {% extends 'app/base.html' %}
 {% block content %}
-    <h3>Course Page</h3>
-    <h2>{{ course.name }}</h2>
-    <h2>Average Master Time: {{ course.averageMasterTime }} minutes</h2>
-    <h2>Price: {{ course.price }}€</h2>
+<h3>Course Page</h3>
+<div>
+    <h2>Course Info</h2>
+    <h4>{{ course.name }}</h4>
+    <h5>Average Master Time: {{ course.averageMasterTime }} minutes</h5>
+    <h5>Price: {{ course.price }}€</h5>
+</div>
+<div>
+  <h2>Teaching Units</h2>
+  <ol>
+    {% for unit in teachingUnits %}
+    <li>{{ unit.description }}</li>
+    {% endfor %}
+  </ol>
+</div> 
+<div>
+  <h2>Live Chat</h2>
+  <!-- TODO: Adicionar o link para o live chat -->
+  <a href=''>Live Chat</a>
+</div>
+<div>
+  <h2>Ratings</h2>
+  <ul>
+    {% for rating in ratings %}
+      <li>{{ rating }}</li>
+    {% endfor %}
+  </ul>
+</div>
 
 {% endblock %}
