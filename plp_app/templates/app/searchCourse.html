@@ -1,0 +1,10 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+<h3>Search Results</h3>
+<ul>
+{% for course in courses %}
+    <li> <a href="../course/{{ course.id }}">{{ course.name }}</a> </li>
+{% endfor %}
+</ul>
+{% endblock %}

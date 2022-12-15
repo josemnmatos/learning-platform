@@ -69,6 +69,8 @@ def coursePage(request, id):
         teachingUnits = models.TeachingUnit.objects.filter(courseId__exact = course[0])
         #Find the Live Chat
         liveChat = models.LiveChat.objects.filter(courseId__exact = course[0])
+        if not liveChat:
+            liveChat = [None]
         # Find the ratings
         ratings = models.Rating.objects.filter(courseId__exact = course[0])
         return render(request, "app/coursePage.html", {'course': course[0], 
@@ -90,3 +92,25 @@ def viewProfile (request, id):
             return redirect('home')
         else:
             return render(request, "app/viewProfile.html", {'public': public[0]})
+
+def searchCourse(request):
+    if request.method == 'GET':
+        name = request.GET['name'] 
+        courses = models.Course.objects.filter(name__icontains=name)
+        if not courses:
+            messages.error(request, "No Course with that name found")
+            return redirect('home')
+        else:
+            return render(request, "app/searchCourse.html", {'courses': courses})
+    return redirect('home')
+
+def searchUser(request):
+    if request.method == 'GET':
+        name = request.GET['name'] 
+        publics = models.Public.objects.filter(name__icontains=name)
+        if not publics:
+            messages.error(request, "No User with that name found")
+            return redirect('home')
+        else:
+            return render(request, "app/searchUser.html", {'publics': publics})
+    return redirect('home')

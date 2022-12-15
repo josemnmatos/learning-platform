@@ -1,0 +1,10 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+<h3>Search Results</h3>
+<ul>
+{% for public in publics %}
+    <li> <a href="../viewProfile/{{ public.id }}">{{ public.name }} {{ public.surname }}</a> </li>
+{% endfor %}
+</ul>
+{% endblock %}
