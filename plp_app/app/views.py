@@ -99,12 +99,6 @@ def searchUser(request):
         else:
             return render(request, "app/searchUser.html", {'publics': publics})
     return redirect('home')
-    # If it finds any
-    if not course:
-        messages.error(request, "Course doesn't exist")
-        return redirect('home')
-    else:
-        return render(request, "app/coursePage.html", {'course': course[0]})
         
 def viewProfile (request, id):
     # Gets the profile with the exact id passed in

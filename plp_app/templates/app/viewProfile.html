@@ -19,7 +19,7 @@
         <ul>  
         {% for course in coursesMade %}
         <li> 
-            {{course.courseId.name}}
+            <a href="../course/{{ course.id }}">{{course.courseId.name}}</a>
         </li>
 
         {% endfor %}
