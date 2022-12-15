@@ -67,3 +67,17 @@ def coursePage(request, id):
     else:
         return render(request, "app/coursePage.html", {'course': course[0]})
         
+def viewProfile (request, id):
+    # Gets the profile with the exact id passed in
+    profile = models.Profile.objects.filter(userId__exact=id)
+    # If it doesn't find any profile
+    if not profile:
+        messages.error(request, "User doesn't exist")
+        return redirect('home')
+    else:
+        public = models.Public.objects.filter(profileId__exact=profile[0].id)
+        if not public:
+            messages.error(request, "Error finding public profile")
+            return redirect('home')
+        else:
+            return render(request, "app/viewProfile.html", {'public': public[0]})
