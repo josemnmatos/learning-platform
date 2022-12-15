@@ -1,28 +1,111 @@
+
 {% extends 'app/base.html' %}
+
 {% block content %}
-    <h3>Login</h3>
+    <style>
+          
+          *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+          }
 
-    <form action="/loginpage" method="post">
-      {% csrf_token %}
-      <label for="">Username</label>
-      <input
-        type="text"
-        id="username"
-        name="username"
-        placeholder="Enter your username"
-        required
-      />
-      <br />
+          body {
+            width: 100%;
+            height: 100vh;
+            background-color: #005C8A;
+            background-position: center;
+            background-size: cover ;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
 
-      <label for="">Password</label>
-      <input
-        type="password"
-        id="password1"
-        name="password1"
-        placeholder="Enter your password"
-        required
-      />
+          .container {
+            max-width: 1280px;
+            margin: 0 auto;
+          }
 
-      <button type="submit">Login</button>
-    </form>
+          .form_container {
+            background-color: white;
+            max-width: 500px;
+            height: 450px;
+            padding: 100px;
+            border-radius: 20px;
+          }
+
+          form h1{
+            text-align: center;
+            font-size: 30px;
+            color: #005C8A;
+          }
+
+          .input_single{
+            position: relative;
+            margin: 20px 0;
+          }
+
+          .input_single label {
+            position: absolute;
+            left: 0;
+            bottom: 5px;
+            transition: all 0.2s;
+            cursor: text;
+          }
+          .input {
+            width: 100%;
+            border: 0;
+            border-bottom: 2px solid #ccc ;
+            padding: 5px;
+            font-size: 17px;
+            outline: 0;
+
+          }
+
+          form .input_single .input:focus ~ label,
+          form .input_single .input:valid ~ label{
+            transform: translateY(-24px);
+            font-size: 12px;
+            color: gray;
+          }
+
+        .btn{
+          width: 70%;
+          border-radius: 10px;
+          background-color: #005C8A ;
+          
+          text-align: center;
+          padding: 10px 40px;
+          border: 0;
+
+          color: #fff;
+          cursor: pointer;
+        }
+
+    </style>
+
+    <section class= "form_container">
+      <div class = "container"> 
+        <form action="/loginpage" method="post">
+          {% csrf_token %}
+
+          <h1>Login</h1>
+        
+          <div class = "input_single"  >
+            <input class = "input" type="text" id="username" name="username"   required />
+            <label for  = "username" > Username </label>
+          </div>
+          <div class = "input_single">
+            <input class = "input" type="password" id="password1"  name="password1"  required />
+            <label for  = "password1" > Password </label>
+          </div>
+
+          <div style ="text-align:center;"> <button class = "btn" type = "submit">Submit</button> 
+          </div>
+
+        </form>
+      </div>
+    </section>
+
 {% endblock %}

@@ -1,14 +1,29 @@
 {% extends 'app/base.html' %}
 {% block content %}
 
-    <h3>Profile Page</h3>
+    <h1>
+        Profile Page
+    </h1>
 
-    <h2>{{ public.name }} {{ public.surname }}</h2>
+    <h2 style = "text-align: center;" >
+        {{ public.name }} {{ public.surname }}
+    </h2>
+
+    <h2>
+        Avatar ID: {{ public.avatar }}
+     </h2>
     
+    <h2>
+         - Courses created
+    </h2>
+        <ul>  
+        {% for course in coursesMade %}
+        <li> 
+            {{course.courseId.name}}
+        </li>
 
-    <h2>{{ public.avatar }} </h2>
-    <h2>{{public.createdDate}}</h2>
-
+        {% endfor %}
+    </ul>
 
 
 {% endblock %}

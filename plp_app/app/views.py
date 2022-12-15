@@ -80,4 +80,5 @@ def viewProfile (request, id):
             messages.error(request, "Error finding public profile")
             return redirect('home')
         else:
-            return render(request, "app/viewProfile.html", {'public': public[0]})
+            coursesMade = models.CoursesMade.objects.filter(publicId__exact = public[0].id)
+            return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade})
