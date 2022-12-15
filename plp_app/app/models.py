@@ -90,7 +90,7 @@ class Rating(models.Model):
     rating = models.SmallIntegerField()
     
     def __str__(self):
-        return self.rating + '/5 ' + self.comment
+        return str(self.rating) + '/5 - ' + self.comment
     
 class TeachingUnit(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -142,7 +142,7 @@ class LiveChat(models.Model):
     maxParticipants = models.SmallIntegerField()
     
     def __str__(self):
-        return self.courseId.name + ' - ' + self.maxParticipants
+        return self.courseId.name + ' - ' + str(self.maxParticipants)
     
 class Schedule(models.Model):
     liveChatId = models.ForeignKey(LiveChat, on_delete=models.CASCADE)

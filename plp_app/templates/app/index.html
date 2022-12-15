@@ -1,5 +1,7 @@
 {% extends 'app/base.html' %}
 {% block content %}
+
+    {% include 'app/searchBar.html' %}
     <h3>Learning Together Platform</h3>
 
     {% if user.is_authenticated %}
