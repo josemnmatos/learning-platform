@@ -69,6 +69,7 @@ def coursePage(request, id):
         teachingUnits = models.TeachingUnit.objects.filter(courseId__exact = course[0])
         #Find the Live Chat
         liveChat = models.LiveChat.objects.filter(courseId__exact = course[0])
+        # If it doesn't exist yet
         if not liveChat:
             liveChat = [None]
         # Find the ratings
@@ -79,25 +80,38 @@ def coursePage(request, id):
                                                        'ratings': ratings})
 
 def searchCourse(request):
+    # Get the name of the course through the GET request
     if request.method == 'GET':
         name = request.GET['name'] 
+        # Get all the course objects that contain the name in name
         courses = models.Course.objects.filter(name__icontains=name)
+        # If it doesn't have a match return to home page
         if not courses:
             messages.error(request, "No Course with that name found")
             return redirect('home')
+        # If found return the searchUser page with the results
         else:
             return render(request, "app/searchCourse.html", {'courses': courses})
+    # If it isn't a GET request go to home page
     return redirect('home')
 
 def searchUser(request):
+    # Get the name of the user through the GET request
     if request.method == 'GET':
         name = request.GET['name'] 
+        # Get all the public objects that contain the name in name
         publics = models.Public.objects.filter(name__icontains=name)
+        # If it doesn't find anything search for the name in surname
+        if not publics:
+            publics = models.Public.objects.filter(surname__icontains=name)
+        # If it doesn't have a match at all return to home page
         if not publics:
             messages.error(request, "No User with that name found")
             return redirect('home')
+        # If found return the searchUser page with the results
         else:
             return render(request, "app/searchUser.html", {'publics': publics})
+    # If it isn't a GET request go to home page
     return redirect('home')
         
 def viewProfile (request, id):

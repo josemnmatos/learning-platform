@@ -15,13 +15,18 @@
     {% endfor %}
   </ol>
 </div> 
+{% if liveChat is not None %}
 <div>
   <h2>Live Chat</h2>
   <!-- TODO: Adicionar o link para o live chat -->
   <a href=''>Live Chat</a>
 </div>
+{% endif %}
 <div>
   <h2>Ratings</h2>
+  {% if not ratings %}
+    <h4>There are no Ratings yet</h4>
+  {% endif %}
   <ul>
     {% for rating in ratings %}
       <li>{{ rating }}</li>
