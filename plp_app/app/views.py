@@ -20,13 +20,18 @@ def register(request):
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
-        myuser = User.objects.create_user(username, email, password1)
+        if password1 is password2:
+            myuser = User.objects.create_user(username, email, password1)
 
-        myuser.save()
+            myuser.save()
 
-        messages.success(request, "Your account has been sucessfully created.")
+            messages.success(
+                request, "Your account has been sucessfully created.")
 
-        return redirect('loginpage')
+            return redirect('loginpage')
+
+        else:
+            messages.error(request, "Passwords do not match.")
 
     return render(request, "app/register.html")
 
@@ -66,23 +71,25 @@ def coursePage(request, id):
         return redirect('home')
     else:
         # Find the teaching Units
-        teachingUnits = models.TeachingUnit.objects.filter(courseId__exact = course[0])
-        #Find the Live Chat
-        liveChat = models.LiveChat.objects.filter(courseId__exact = course[0])
+        teachingUnits = models.TeachingUnit.objects.filter(
+            courseId__exact=course[0])
+        # Find the Live Chat
+        liveChat = models.LiveChat.objects.filter(courseId__exact=course[0])
         # If it doesn't exist yet
         if not liveChat:
             liveChat = [None]
         # Find the ratings
-        ratings = models.Rating.objects.filter(courseId__exact = course[0])
-        return render(request, "app/coursePage.html", {'course': course[0], 
+        ratings = models.Rating.objects.filter(courseId__exact=course[0])
+        return render(request, "app/coursePage.html", {'course': course[0],
                                                        'teachingUnits': teachingUnits,
                                                        'liveChat': liveChat[0],
                                                        'ratings': ratings})
 
+
 def searchCourse(request):
     # Get the name of the course through the GET request
     if request.method == 'GET':
-        name = request.GET['name'] 
+        name = request.GET['name']
         # Get all the course objects that contain the name in name
         courses = models.Course.objects.filter(name__icontains=name)
         # If it doesn't have a match return to home page
@@ -95,10 +102,11 @@ def searchCourse(request):
     # If it isn't a GET request go to home page
     return redirect('home')
 
+
 def searchUser(request):
     # Get the name of the user through the GET request
     if request.method == 'GET':
-        name = request.GET['name'] 
+        name = request.GET['name']
         # Get all the public objects that contain the name in name
         publics = models.Public.objects.filter(name__icontains=name)
         # If it doesn't find anything search for the name in surname
@@ -113,8 +121,9 @@ def searchUser(request):
             return render(request, "app/searchUser.html", {'publics': publics})
     # If it isn't a GET request go to home page
     return redirect('home')
-        
-def viewProfile (request, id):
+
+
+def viewProfile(request, id):
     # Gets the profile with the exact id passed in
     profile = models.Profile.objects.filter(userId__exact=id)
     # If it doesn't find any profile
@@ -127,5 +136,6 @@ def viewProfile (request, id):
             messages.error(request, "Error finding public profile")
             return redirect('home')
         else:
-            coursesMade = models.CoursesMade.objects.filter(publicId__exact = public[0].id)
+            coursesMade = models.CoursesMade.objects.filter(
+                publicId__exact=public[0].id)
             return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade})
