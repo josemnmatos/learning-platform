@@ -9,7 +9,7 @@ from . import models
 
 
 def home(request):
-    return render(request, "app/index.html")
+    return render(request, "app/landing.html")
 
 
 def register(request):
