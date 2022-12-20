@@ -1,0 +1,53 @@
+body {
+    background-color: lightblue;
+}
+
+img {
+  max-width: 50%;
+  
+}
+
+#text {
+    margin-top: 100px;
+    text-align: center;
+}
+
+#text1 {
+    size: 300px;
+}
+
+#login {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    font-size: 18px;
+    animation: glowing 1300ms infinite;
+    border-radius:5px;
+    
+}
+
+#register{
+    position: absolute;
+    background-color: gray;
+    top: 8px;
+    right: 80px;
+    font-size: 18px;
+    border-radius:5px;
+    
+}
+
+@keyframes glowing {
+    0% {
+      background-color: gray;
+      box-shadow: 0 0 5px black;
+    }
+    50% {
+      background-color: gray;
+      box-shadow: 0 0 20px black;
+    }
+    100% {
+      background-color: gray;
+      box-shadow: 0 0 5px black;
+    }
+}
+
