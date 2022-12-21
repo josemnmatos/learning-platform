@@ -85,6 +85,20 @@ def coursePage(request, id):
                                                        'liveChat': liveChat[0],
                                                        'ratings': ratings})
 
+def teachingUnitPage(request, id):
+    # Gets the unit with the exact id passed in
+    unit = models.TeachingUnit.objects.filter(id__exact=id)
+    # If it doesn't find any
+    if not unit:
+        messages.error(request, "Teaching unit doesn't exist.")
+        return redirect('home')
+    else:
+        # Find the materials
+        materials = models.Material.objects.filter(unitId__exact=unit[0])
+        # return page
+        return render(request, "app/teachingUnit.html", {'unit': unit[0],
+                                                         'materials': materials})
+
 
 def searchCourse(request):
     # Get the name of the course through the GET request

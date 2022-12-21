@@ -1,35 +1,37 @@
-{% extends 'app/base.html' %}
-{% block content %}
+{% extends 'app/base.html' %} {% block content %}
 <h3>Course Page</h3>
 <div>
-    <h2>Course Info</h2>
-    <h4>{{ course.name }}</h4>
-    <h5>Average Master Time: {{ course.averageMasterTime }} minutes</h5>
-    <h5>Price: {{ course.price }}€</h5>
+  <h2>Course Info</h2>
+  <h4>{{ course.name }}</h4>
+  <h5>Average Master Time: {{ course.averageMasterTime }} minutes</h5>
+  <h5>Price: {{ course.price }}€</h5>
 </div>
 <div>
   <h2>Teaching Units</h2>
   <ol>
     {% for unit in teachingUnits %}
-    <li>{{ unit.description }}</li>
+    <li>
+      <a href="../teachingUnit/{{ unit.id }}">{{ unit.description }}</a>
+    </li>
+    <br />
     {% endfor %}
   </ol>
-</div> 
+</div>
 {% if liveChat is not None %}
 <div>
   <h2>Live Chat</h2>
   <!-- TODO: Adicionar o link para o live chat -->
-  <a href=''>Live Chat</a>
+  <a href="">Live Chat</a>
 </div>
 {% endif %}
 <div>
   <h2>Ratings</h2>
   {% if not ratings %}
-    <h4>There are no Ratings yet</h4>
+  <h4>There are no Ratings yet</h4>
   {% endif %}
   <ul>
     {% for rating in ratings %}
-      <li>{{ rating }}</li>
+    <li>{{ rating }}</li>
     {% endfor %}
   </ul>
 </div>
