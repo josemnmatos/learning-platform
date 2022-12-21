@@ -1,11 +1,4 @@
-body {
-    background-color: lightblue;
-}
 
-img {
-  max-width: 50%;
-  
-}
 
 #text {
     margin-top: 100px;
@@ -18,17 +11,17 @@ img {
 
 #login {
     position: absolute;
+    background-color: rgb(255, 255, 255);
     top: 8px;
     right: 16px;
     font-size: 18px;
-    animation: glowing 1300ms infinite;
     border-radius:5px;
     
 }
 
 #register{
     position: absolute;
-    background-color: gray;
+    background-color: rgb(255, 255, 255);
     top: 8px;
     right: 80px;
     font-size: 18px;

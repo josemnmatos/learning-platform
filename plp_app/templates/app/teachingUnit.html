@@ -1,9 +1,23 @@
 {% extends 'app/base.html' %} {% block content %}
 
-<div>
+<!--Display teaching unit name and description, general information -->
+<div class="heading">
   <h3>{{ course.name }}</h3>
   <h4>{{ unit.description}}</h4>
 </div>
 
-<div></div>
+<!--Display all the materials related to the current teaching unit -->
+<div>
+  <h4 class="heading">Materials:</h4>
+  <br />
+  <ul>
+    {% for material in materials %}
+    <li>
+      <!--INSERT HREF FOR MATERIALS OF DIFFERENT KINDS? -->
+      <a href="">{{ material.materialName }}</a>
+    </li>
+    <br />
+    {% endfor %}
+  </ul>
+</div>
 {% endblock %}

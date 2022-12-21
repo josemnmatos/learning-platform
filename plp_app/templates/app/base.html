@@ -1,18 +1,21 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <link rel="stylesheet" href="/static/test.css">
+  <link rel="stylesheet" href="/static/test.css" />
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Learning Together</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-     
-    </style>
+    <style></style>
   </head>
   <body>
+    <!--  Header content -->
+    <div class="header" href="../">
+      <h1>Learning Together</h1>
+      <p>The platform to boost your future.</p>
+    </div>
 
     {% for message in messages %}
     <div
@@ -29,12 +32,9 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    {% endfor %}
-
-    {% block content %}
+    {% endfor %} {% block content %}
     <!-- The code will be here -->
     {% endblock %}
-
 
     <script src="" async defer></script>
   </body>

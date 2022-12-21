@@ -1,6 +1,16 @@
 body {
-  background-color: lightblue;
-  font-family: verdana;
+  background-color: rgb(255, 255, 255);
+  font-family: sans-serif;
+}
+
+.header {
+  padding: 8px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+  font-size: 25px;
+  font-family: sans-serif;
+  height: auto;
 }
 
 /* CSS */
@@ -18,7 +28,7 @@ body {
   color: rgb(0, 0, 0);
   cursor: pointer;
   display: inline-flex;
-  font-family: "Verdana", monospace;
+  font-family: sans-serif;
   height: 24px;
   justify-content: center;
   line-height: 1;
@@ -39,17 +49,17 @@ body {
 }
 
 .button-1:focus {
-  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
-    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+  box-shadow: #1abc9c 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #1abc9c 0 -3px 0 inset;
 }
 
 .button-1:hover {
   box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
-    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #1abc9c 0 -3px 0 inset;
   transform: translateY(-2px);
 }
 
 .button-1:active {
-  box-shadow: #3c4fe0 0 3px 7px inset;
+  box-shadow: #1abc9c 0 3px 7px inset;
   transform: translateY(2px);
 }
