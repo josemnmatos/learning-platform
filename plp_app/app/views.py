@@ -18,7 +18,7 @@ def register(request):
         username = request.POST['username']
         email = request.POST['email']
         password1 = request.POST['password1']
-        password2 = request.POST['password2']
+        password2 = request.POST['password1']
 
         if password1 is password2:
             myuser = User.objects.create_user(username, email, password1)
