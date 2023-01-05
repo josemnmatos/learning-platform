@@ -7,6 +7,11 @@
     {% if user.is_authenticated %}
     <h3>Hello {{ fname }}</h3>
     <h4>You are logged in.</h4>
+    <h3 style="font-size:130%">My courses</h3>
+    
+    <button onclick="document.location='/own_course'">Robotics</button>
+    <br>
+    <br>
     <button type="submit"><a href="/signout">Log Out</a></button>
 
     {% else %}
