@@ -2,7 +2,9 @@
 {% block content %}
 
     {% load static %}
-    
+
+            {% include 'app/header.html' %}
+
             {% include 'app/searchBar.html' %}
 
             {% if user.is_authenticated %}

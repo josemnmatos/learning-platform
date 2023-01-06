@@ -1,0 +1,39 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+{% include 'app/header.html' %}
+
+<h2>Search Results</h2>
+
+
+<h3>Profiles Found</h3>
+
+{% if publicsSize == 0 %}
+
+<p>No profiles found</p>
+
+{% endif %}
+
+<ul>
+{% for public in publics %}
+    <li> <a href="../viewProfile/{{ public.id }}">{{ public.name }} {{ public.surname }}</a> </li>
+    <br>
+{% endfor %}
+</ul>
+
+
+<h3>Courses Found</h3>
+
+{% if coursesSize == 0 %}
+
+<p>No courses found</p>
+
+{% endif %}
+
+<ul>
+{% for course in courses %}
+    <li> <a href="../course/{{ course.id }}">{{ course.name }}</a> </li>
+    <br>
+{% endfor %}
+</ul>
+{% endblock %}
