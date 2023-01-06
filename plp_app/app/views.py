@@ -18,7 +18,7 @@ def register(request):
         username = request.POST['username']
         email = request.POST['email']
         password1 = request.POST['password1']
-        password2 = request.POST['password2']
+        password2 = request.POST['password1']
 
         if password1 == password2:
             myuser = User.objects.create_user(username, email, password1)
@@ -152,3 +152,15 @@ def viewProfile(request, id):
         else:
             coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
             return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade})
+
+def chat_on(request):
+    return render(request,"app/chat.html")
+
+def own_course_page(request):
+    return render(request,"app/own_course.html")
+
+def course_def(request):
+    return render(request,"app/course_def.html")
+
+def def_chat(request):
+    return render(request,"app/live_chat_def.html")
