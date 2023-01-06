@@ -1,13 +1,25 @@
-{% extends 'app/base.html' %} {% block content %}
-<h3>Course Page</h3>
-<div>
-  <h2>Course Info</h2>
-  <h4>{{ course.name }}</h4>
-  <h5>Average Master Time: {{ course.averageMasterTime }} minutes</h5>
-  <h5>Price: {{ course.price }}€</h5>
+{% extends 'app/base.html' %} 
+{% block content %}
+
+{% include 'app/header.html' %}
+
+<!-- Course Info -->
+<div class="course-info">
+  <h2>{{ course.name }}</h2>
+  <h4>About {{ course.averageMasterTime }} mins</h4>
+  {% if course.price == 0%}
+    <h4>Free</h4>
+  {% else %}
+    <h4>Price: {{ course.price }}€</h4>
+  {% endif %}
 </div>
-<div>
+
+<!-- Teaching Units -->
+<div class="teaching-units">
   <h2>Teaching Units</h2>
+  {% if not teachingUnits %}
+  <p>No teaching units for now</p>
+  {% else %}
   <ol>
     {% for unit in teachingUnits %}
     <li>
@@ -16,24 +28,32 @@
     <br />
     {% endfor %}
   </ol>
+  {% endif %}
 </div>
-{% if liveChat is not None %}
-<div>
+
+<!-- Live Chat -->
+<div class="live-chat">
   <h2>Live Chat</h2>
+  {% if liveChat is not None %}
   <!-- TODO: Adicionar o link para o live chat -->
   <button onclick="document.location='/chat'">Chat</button>
+  {% else %}
+    <p>No Live Chat yet. Stay Tuned!</p>
+  {% endif %}
 </div>
-{% endif %}
-<div>
+
+<!-- Ratings -->
+<div class="ratings">
   <h2>Ratings</h2>
   {% if not ratings %}
-  <h4>There are no Ratings yet</h4>
-  {% endif %}
+  <p>Be the first one to rate this course!</p>
+  {% else %}
   <ul>
     {% for rating in ratings %}
     <li>{{ rating }}</li>
     {% endfor %}
   </ul>
+  {% endif %}
 </div>
 
 {% endblock %}
