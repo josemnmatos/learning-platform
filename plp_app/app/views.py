@@ -20,7 +20,7 @@ def register(request):
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
-        if password1 is password2:
+        if password1 == password2:
             myuser = User.objects.create_user(username, email, password1)
 
             myuser.save()
@@ -150,6 +150,5 @@ def viewProfile(request, id):
             messages.error(request, "Error finding public profile")
             return redirect('home')
         else:
-            coursesMade = models.CoursesMade.objects.filter(
-                publicId__exact=public[0].id)
+            coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
             return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade})
