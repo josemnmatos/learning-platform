@@ -1,0 +1,70 @@
+{% load static %}
+<style>
+        .unList{
+            list-style: none;
+        }
+
+        .nave{
+            background-color: rgba(235, 235, 235, 0.851);
+            border-radius: 10%;
+            width: 350px ;
+            height: 73vh;
+            right: -350px;
+            position: absolute;
+            transition: all .5s ;  
+            
+        }
+
+        #check{
+            
+            display: none;
+        }
+        input:checked ~ nav{
+            transform: translateX(-350px);
+        }
+
+        .unList{
+            right: 80px;
+            bottom: 200px;
+            position: absolute;
+            
+        }
+
+        .aMenu{
+            text-decoration: none;
+            font-size: 24px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            display: block; 
+            text-align: center;
+            padding: 15px 5px;  
+            color: #0f8775;
+        }
+        .aMenu:hover{
+            background-color:#4b9f92;
+            border-radius: 40%;
+            color: white;
+            transition: all 0.5s;
+        }
+        
+        label{
+            padding: 15px;
+            position: absolute;
+            z-index: 1;
+        }   
+</style>
+
+
+<input type= "checkbox" id="check" >
+<label for="check">
+    <img src = "{% static 'images/menu2.png' %}" style="width: 60px; position:fixed; right:15px"  >
+</label>
+
+<nav class="nave">
+    <ul class="unList">
+        <li style="font-weight: bold;"> <a class="aMenu" href="viewProfile">Profile</a></li>
+        <li><a class="aMenu" href="">Courses Enrolled</a></li>
+        <li> <a class="aMenu" href="/signout" style="color: rgb(166, 7, 7)" >LogOut</a></li>
+
+    
+    </ul>
+</nav>

@@ -1,14 +1,5 @@
 <style>
 
-  .container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    vertical-align: center;
-    height: 500px;
-
-  }
-
   .input_single{
     position: relative;
     margin: 20px 0;
@@ -24,12 +15,10 @@
   .input {
     width: 100%;
     border: 0;
-    
     padding: 5px;
     font-size: 17px;
     outline: 0;
     
-
   }
 
   form .input_single .input:focus ~ label,
@@ -89,12 +78,10 @@
 {% load static %}
 
 
-<div class = "container">
-  <form action="searchResults" class= "search-bar" method="GET" >
-    
-    <input class= "input" type="text" id="name" name="name" placeholder="Search user/course">
-    <button type="submit"><img src= "{%static 'images/search.png'%}"></button>
+<form action="../searchResults" class= "search-bar" method="GET" >
   
-  </form>
+  <input class= "input" type="text" id="name" name="name" placeholder="Search user/course">
+  <button type="submit"><img src= "{%static 'images/search.png'%}"></button>
 
-</div>
+</form>
+
