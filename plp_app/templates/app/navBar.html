@@ -59,9 +59,12 @@
         {% include 'app/searchBar.html' %}
     </div>
     <ul class="ulist">
-        <li><a href="../viewProfile/{{ user.id }}">Profile</a></li> 
+        <li><a href="../viewProfile/{{ userId }}">Profile</a></li> 
+        {% csrf_token %}
+        {% if thisUser %}
         <li><a href="../payments">Payments</a></li>
-        <li><a href="../courseCreated">Courses Created</a></li> 
+        {% endif %}
+        <li><a href="../courseCreated/{{ userId }}">Courses Created</a></li> 
     </ul>
     {% include 'app/menu.html' %}
 </nav>

@@ -32,21 +32,10 @@
 
     </style>
     
-        {% include 'app/navBar.html' %}
-
-     
-
-
+        {% include 'app/navBar.html' with thisUser=thisUser userId=public.profileId.userId.id %}
 
         <p style="text-align:left; display: table-cell;"><img class="image" src="{% static 'images/' %}{{ public.avatar }}.png"></p>
-        
         <p class = "name"> {{ public.name }} {{ public.surname }}</p>
         <p class="username">Username: {{ public.profileId.userId.username }}</p>
-
-
-    
-
-
-
 
 {% endblock %}

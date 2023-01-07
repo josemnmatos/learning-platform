@@ -54,6 +54,7 @@
 </style>
 
 {% csrf_token %}
+{% if user.is_authenticated %}
 <input type= "checkbox" id="check" >
 <label for="check">
     <img src = "{% static 'images/menu2.png' %}" style="width: 60px; position:fixed; right:15px"  >
@@ -68,3 +69,4 @@
     
     </ul>
 </nav>
+{% endif %}

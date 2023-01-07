@@ -132,8 +132,14 @@ def viewProfile(request, id):
             messages.error(request, "Error finding public profile")
             return redirect('home')
         else:
+            # Check if the current user is the user of the profile
+            thisUser = False
+            if request.user.is_authenticated:
+                userProfile = models.Profile.objects.filter(userId__exact=request.user.id)
+                if int(userProfile[0].id) == int(id):
+                    thisUser = True
             coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
-            return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade})
+            return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser})
 
 def chat_on(request):
     return render(request,"app/chat.html")
@@ -147,8 +153,20 @@ def course_def(request):
 def def_chat(request):
     return render(request,"app/live_chat_def.html")
 
-def courseCreated(request):
-    return render (request, "app/courseCreated.html")
+def courseCreated(request, id):
+    profile = models.Profile.objects.filter(userId__exact=id)
+    public = models.Public.objects.filter(profileId__exact=profile[0].id)
+    coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
+    thisUser = False
+    if request.user.is_authenticated:
+        userProfile = models.Profile.objects.filter(userId__exact=request.user.id)
+        if int(userProfile[0].id) == int(id):
+            thisUser = True
+        
+        
+    return render (request, "app/courseCreated.html", {'coursesMade': coursesMade, 'thisUser': thisUser, 'userId': id})
+
+
 def payments(request):
     if request.user.is_authenticated:
         profile = models.Profile.objects.filter(userId__exact=request.user.id)
@@ -160,6 +178,6 @@ def payments(request):
         for course in enrolledCourses:
             total += course.courseId.price
         
-        return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails, 'total': total})
+        return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails, 'total': total, 'thisUser': True, 'userId': request.user.id})
     return redirect('home')
         
