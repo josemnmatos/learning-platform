@@ -1,8 +1,12 @@
 <style>
 
-  .container {
-      max-width: 500px;
-      margin: 0 auto;
+  .container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: center;
+    height: 500px;
+
   }
 
   .input_single{
@@ -20,10 +24,11 @@
   .input {
     width: 100%;
     border: 0;
-    border-bottom: 2px solid #ccc ;
+    
     padding: 5px;
     font-size: 17px;
     outline: 0;
+    
 
   }
 
@@ -34,13 +39,63 @@
     color: gray;
   }
 
+  img{
+    width: 13px;
+  }
+
+  .search-bar{
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    opacity: 0.98;
+    border-bottom: 2px solid #0f8775;
+    display: flex;
+    
+    align-items: center;
+    border-radius: 60px;
+    padding: 10px 20px;
+
+  }
+
+  .search-bar input{
+    background: white;
+    opacity: 0.98;
+    flex: 1;
+    border: 0;
+    outline: none;
+    padding: 24px 20px;
+    font-size: 20px;
+    color: black;  
+  }
+
+  ::placeholder{
+    color:rgba(0, 0, 0, 0.514); 
+  }
+
+  .search-bar button img{
+    width: 17px;
+  }
+
+  .search-bar button{
+    border:0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background: #f1f1f1;
+
+    cursor: pointer;
+  }
 </style>
 
+{% load static %}
+
+
 <div class = "container">
-  <form action="searchResults" method="GET">
-    <div class="input_single"> 
-    <input class= "input" type="text" id="name" name="name" placeholder="Search" />
-    </div>
-    <button class="button-1" type="submit">Search</button>
+  <form action="searchResults" class= "search-bar" method="GET" >
+    
+    <input class= "input" type="text" id="name" name="name" placeholder="Search user/course">
+    <button type="submit"><img src= "{%static 'images/search.png'%}"></button>
+  
   </form>
+
 </div>
