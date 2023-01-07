@@ -148,3 +148,6 @@ def course_def(request):
 
 def def_chat(request):
     return render(request,"app/live_chat_def.html")
+
+def courseCreated(request):
+    return render (request, "app/courseCreated.html")
