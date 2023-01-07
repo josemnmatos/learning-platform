@@ -1,0 +1,18 @@
+
+<style>
+    h2{
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+    }
+</style>
+
+{% include 'app/navBar.html' %}
+<h2> - Courses created</h2>
+
+<ul>  
+{% for course in coursesMade %}
+<li> 
+   <a href="../course/{{ course.id }}">{{course.courseId.name}}</a>
+</li>
+
+{% endfor %}
+</ul>

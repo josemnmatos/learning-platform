@@ -14,6 +14,8 @@ urlpatterns = [
     path('own_course',views.own_course_page,name="course"),
     path('course_def',views.course_def,name="Definitions"),
     path('live_chat_def',views.def_chat,name="Chat definitions"),
+    path('courseCreated',views.courseCreated,name="courseCreated"),
+
     path('payments',views.payments,name="payments"),
     
 ]

@@ -1,0 +1,67 @@
+
+<style>
+
+        .navbar{
+            display: flex;
+            width: 100%;
+            background-color: #96dae7;
+            position: relative;
+            justify-content: space-between;
+            text-align: center;
+            padding: 15px 30px;
+
+        }
+
+        .navbar .title{
+            font-size: 35px;
+            font-weight: 800;
+            color: rgb(13, 64, 105);
+            cursor: pointer;
+            margin-top: 2%;
+            font-family: sans-serif;
+            
+        }
+        .navbar .ulist{
+            display: flex;
+            list-style: none;
+            margin: auto 0;
+            margin-right: 10%;
+            font-family: sans-serif;
+        }
+
+        .navbar .ulist li{
+            margin: 0 20px;
+        }
+
+        .navbar .ulist li a {
+            color: #fff;
+            font-size: 20px;
+            text-decoration: none;
+            text-transform: capitalize;
+            padding: 5px 10px;
+        }
+
+        .navbar .ulist li:hover a {
+            background-color: #fff;
+            color: #0f8775;
+            transition: all 0.7s;
+            border-radius: 30%;
+            padding: 10px;
+            font-size: 25px;
+        }
+
+</style>
+
+
+<nav class="navbar">
+    <div class="title"><a style="text-decoration: none; color:rgb(13, 64, 105);" href="../">Learning Together</a></div>
+    <div class="container">
+        {% include 'app/searchBar.html' %}
+    </div>
+    <ul class="ulist">
+        <li><a href="../viewProfile/{{ user.id }}">Profile</a></li> 
+        <li><a href="../payments">Payments</a></li>
+        <li><a href="../courseCreated">Courses Created</a></li> 
+    </ul>
+    {% include 'app/menu.html' %}
+</nav>
