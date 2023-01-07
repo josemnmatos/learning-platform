@@ -26,20 +26,22 @@
     }
 
     .container {
-        display:flex;
+        display: flex;
         justify-content: space-evenly;
         align-items: flex-start;
-    }
-
-    div {
     }
 
     .payment-methods{
         padding: 20px;
         background-color: #0f8775;
         color:white;
-        margin: 20px;
-        min-width: 20vw;    
+        min-width: 20vw;
+    
+    }
+
+    p {
+        border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+        padding: 5px;
     }
 
 </style>
@@ -79,17 +81,17 @@
     {% endif %}
 </div>
 
-    <div class="payment-methods">
-    <h2>Payment Methods</h2>
+<div>
+<h2>Payment Methods</h2>
+<div class="payment-methods">
     {% if not paymentDetails %}
         <p>No Payment Methods</p>
     {% else %}
-    <ul>
         {% for card in paymentDetails %}
-        <li>...{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</li>
+        <p>{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</p>
         {% endfor %}
-    </ul>
     {% endif %}
+</div>
 </div>
 </div>
 {% endblock %}
