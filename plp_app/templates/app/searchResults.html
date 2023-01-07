@@ -1,39 +1,83 @@
 {% extends 'app/base.html' %}
 {% block content %}
 
+{% load static %}
+
 {% include 'app/header.html' %}
 
-<h2>Search Results</h2>
+<style>
+    body {
+        color: #1abc9c;
+    }
 
+    h1 {
+        text-align: center;
+    }
 
-<h3>Profiles Found</h3>
+    img {
+        width: 7%;
+    }
 
-{% if publicsSize == 0 %}
+    a {
+        margin: 3%;
+    }
+    
+    .container {
+        display: flex;
+    }
+    
+    .result {
+        vertical-align: middle;
+    }
 
-<p>No profiles found</p>
+    .results {
+        width: 45%;
+        float: left;
+        padding: 20px;
+        margin: 5px;
+        border: 3px solid #1abc9c;
+        border-radius: 10px;
+    }
+</style>
 
-{% endif %}
+<h1>Search Results</h1>
+<div class="container">
 
-<ul>
-{% for public in publics %}
-    <li> <a href="../viewProfile/{{ public.id }}">{{ public.name }} {{ public.surname }}</a> </li>
-    <br>
-{% endfor %}
-</ul>
+    <!-- Profiles -->
+    <div class="results" style="flex: 1;">
+    {% if not publics %}
+        <h3>No profiles found</h3>
 
+    {% else %}
+        <h3>Profiles Found</h3>
 
-<h3>Courses Found</h3>
+        <ul>
+        {% for public in publics %}
+            <div class="result">
+                <li><img src="{% static 'images/' %}{{ public.avatar }}.png"><a href="../viewProfile/{{ public.id }}">{{ public.name }} {{ public.surname }}</a> </li>  
+            </div>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
 
-{% if coursesSize == 0 %}
+    <!-- Courses -->
+    <div class="results" style="margin-right: 20px;">
+    {% if not courses %}
+        <h3>No courses found</h3>
 
-<p>No courses found</p>
+    {% else %}
+        <h3>Courses Found</h3>
 
-{% endif %}
-
-<ul>
-{% for course in courses %}
-    <li> <a href="../course/{{ course.id }}">{{ course.name }}</a> </li>
-    <br>
-{% endfor %}
-</ul>
+        <ul>
+        {% for course in courses %}
+            <div class="result">
+                <li> <a href="../course/{{ course.id }}">{{ course.name }} - {{ course.price }}€</a> </li>
+            </div>
+            <br>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
+</div>
 {% endblock %}

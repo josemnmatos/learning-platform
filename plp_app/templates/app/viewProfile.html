@@ -1,12 +1,14 @@
 {% extends 'app/base.html' %}
-{% load static %}
 {% block content %}
+{% load static %}
     <style>
         .image {
             width: 5%;
         }
     </style>
     
+    {% include 'app/header.html' %}
+
     <section>
         
     <h1>
@@ -16,6 +18,8 @@
     <img class="image" src="{% static 'images/' %}{{ public.avatar }}.png">
     
     <h2> {{ public.name }} {{ public.surname }}</h2>
+
+
 
     <h2>
          - Courses created

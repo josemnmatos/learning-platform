@@ -1,3 +1,4 @@
+from itertools import chain
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -106,22 +107,16 @@ def searchResults(request):
         name = request.GET['name']
         
         # Get all the public objects that contain the name in name
-        publics = models.Public.objects.filter(name__icontains=name)
-        # If it doesn't find anything search for the name in surname
-        if not publics:
-            publics = models.Public.objects.filter(surname__icontains=name)
-        # If it doesn't have a match at all
-        if not publics:
-            publics = []
-        
+        names = models.Public.objects.filter(name__icontains=name)
+        # Get all the public objects that contain the name in surname
+        surnames = models.Public.objects.filter(surname__icontains=name)
+        # Join them and sort by name
+        publics = sorted(names.union(surnames), key=lambda profile: profile.name)
         
         # Get all the course objects that contain the name in name
-        courses = models.Course.objects.filter(name__icontains=name)
-        # If it doesn't have a match return to home page
-        if not courses:
-            courses = []
+        courses = models.Course.objects.filter(name__icontains=name).order_by('name')
         
-        return render(request, "app/searchResults.html", {'courses': courses, 'coursesSize': len(courses), 'publics': publics, 'publicsSize': len(publics)})
+        return render(request, "app/searchResults.html", {'courses': courses, 'publics': publics})
     # If it isn't a GET request go to home page
     return redirect('home')
 
