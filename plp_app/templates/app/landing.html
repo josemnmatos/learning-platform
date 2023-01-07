@@ -34,8 +34,9 @@
                     cursor: pointer;
                     font-size: 15px;
                     position: relative;
-                    left: 1100px;
-                    top: -180px;
+                    left: 1200px;
+                    top: -160px;
+                    text-decoration: none;
                     }
                 
 
@@ -64,14 +65,11 @@
      
             {%else%}
 
-            <a href = "loginpage">
-                <button align-items: center class="button-1" style= "background-color: white; color:black;" type="button", id = 'login'> Login </button>
-            </a>
-            <a href = "register">
-                <button class="button-1" type="button", id = 'register'> Register </button>
-            
+            <a href = "loginpage" class="button-1" style= "background-color: white; color:black;" type="button", id = 'login'>Login</a>
+            <a href = "register" class="button-1" type="button", id = 'register'>Register</a>
             {%endif%}
             {% include 'app/searchBar.html' %}
+
         </div>
           
 
