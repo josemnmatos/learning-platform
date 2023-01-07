@@ -20,18 +20,16 @@
 
     a {
         margin: 3%;
+        text-decoration: none;
+        color: #1abc9c;
     }
     
     .container {
         display: flex;
     }
-    
-    .result {
-        vertical-align: middle;
-    }
 
     .results {
-        width: 45%;
+        width: 50%;
         float: left;
         padding: 20px;
         margin: 5px;
@@ -44,7 +42,7 @@
 <div class="container">
 
     <!-- Profiles -->
-    <div class="results" style="flex: 1;">
+    <div class="results" >
     {% if not publics %}
         <h3>No profiles found</h3>
 
@@ -54,7 +52,10 @@
         <ul>
         {% for public in publics %}
             <div class="result">
-                <li><img src="{% static 'images/' %}{{ public.avatar }}.png"><a href="../viewProfile/{{ public.id }}">{{ public.name }} {{ public.surname }}</a> </li>  
+                <li>
+                    
+                    <a href="../viewProfile/{{ public.id }}"><img src="{% static 'images/' %}{{ public.avatar }}.png"> {{ public.name }} {{ public.surname }}</a> 
+                </li>  
             </div>
         {% endfor %}
         </ul>
@@ -62,7 +63,7 @@
     </div>
 
     <!-- Courses -->
-    <div class="results" style="margin-right: 20px;">
+    <div class="results">
     {% if not courses %}
         <h3>No courses found</h3>
 
