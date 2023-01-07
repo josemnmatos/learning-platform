@@ -44,12 +44,13 @@
 
 </style>
 
-
+    
+{% include 'app/navBar.html' %}
 <div class="container">
     <div>
-    <h2>Enrolled Courses</h2>
+    <h2>History of Payments</h2>
     {% if not enrolledCourses %}
-        <p>No Courses Enrolled</p>
+        <p>You need to apply in a course to have an history of payments!</p>
     {% else %}
     <table class="table">
         <thead>
