@@ -1,6 +1,4 @@
-from itertools import chain
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -155,10 +153,11 @@ def payments(request):
         private = models.Private.objects.filter(profileId__exact=profile[0].id)
         enrolledCourses = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id)
         paymentDetails = models.PaymentDetails.objects.filter(privateId__exact=private[0].id)
-        if paymentDetails:
-            for detail in paymentDetails:
-                detail.cardNumber = detail.cardNumber[-4:]
+        # Get the total amount spent
+        total = 0
+        for course in enrolledCourses:
+            total += course.courseId.price
         
-        return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails})
+        return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails, 'total': total})
     return redirect('home')
         
