@@ -10,7 +10,7 @@
         min-width: 70vw;
     }
 
-    .table thead tr{
+    .table thead tr, .table tfoot tr{
         background-color: #0f8775;
         text-align: left;
         color: white;
@@ -69,6 +69,12 @@
             </tr>
         </tbody>
         {% endfor %}
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td>{{ total }}</td>
+            </tr>
+        </tfoot>
     </table>
     {% endif %}
 </div>
