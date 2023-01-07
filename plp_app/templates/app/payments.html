@@ -1,0 +1,88 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+<style>
+
+    .table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 1.2em;
+        min-width: 70vw;
+    }
+
+    .table thead tr{
+        background-color: #0f8775;
+        text-align: left;
+        color: white;
+        font-weight: bold;
+    }
+
+    .table th, .table td {
+        padding: 12px;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #0f8775;
+    }
+
+    .container {
+        display:flex;
+        justify-content: space-evenly;
+        align-items: flex-start;
+    }
+
+    div {
+    }
+
+    .payment-methods{
+        padding: 20px;
+        background-color: #0f8775;
+        color:white;
+        margin: 20px;
+        min-width: 20vw;    
+    }
+
+</style>
+
+
+<div class="container">
+    <div>
+    <h2>Enrolled Courses</h2>
+    {% if not enrolledCourses %}
+        <p>No Courses Enrolled</p>
+    {% else %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course Name</th>
+                <th>Course Price</th>
+                <th>Card Used</th>
+            </tr>
+        </thead>
+        {% for enrolledCourse in enrolledCourses %}
+        <tbody>
+            <tr>
+                <td>{{ enrolledCourse.courseId.name }}</td>
+                <td>{{ enrolledCourse.courseId.price }}</td>
+                <td>{{ enrolledCourse.paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1'}}</td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>
+
+    <div class="payment-methods">
+    <h2>Payment Methods</h2>
+    {% if not paymentDetails %}
+        <p>No Payment Methods</p>
+    {% else %}
+    <ul>
+        {% for card in paymentDetails %}
+        <li>...{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+</div>
+{% endblock %}

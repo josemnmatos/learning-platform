@@ -83,6 +83,7 @@ class CoursesMade(models.Model):
 class CoursesEnrolled(models.Model):
     privateId = models.ForeignKey(Private, on_delete=models.CASCADE)
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
+    paymentMethod = models.ForeignKey(PaymentDetails, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.privateId.profileId.userId.username + ' -> ' + self.courseId.name

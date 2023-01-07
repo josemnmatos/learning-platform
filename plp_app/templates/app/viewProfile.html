@@ -33,6 +33,20 @@
     </style>
     
         {% include 'app/navBar.html' %}
+        <nav class="navbar">
+            <div class="title"><a style="text-decoration: none; color:rgb(13, 64, 105);" href="../">Learning Together</a></div>
+            <div class="container">
+                {% include 'app/searchBar.html' %}
+            </div>
+            <ul class="ulist">
+                <li><a href="../viewProfile/{{ user.id }}">Profile</a></li> 
+                <li><a href="../payments">Payments</a></li>
+                <li><a href="../own_course">Courses Created</a></li> 
+            </ul>
+            {% include 'app/menu.html' %}
+        </nav>
+     
+
 
 
         <p style="text-align:left; display: table-cell;"><img class="image" src="{% static 'images/' %}{{ public.avatar }}.png"></p>
