@@ -1,54 +1,26 @@
 {% extends 'app/base.html' %}
 {% block content %}
+{% load static %}
     <style>
-          
-        *{
-        margin: 10;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: sans-serif;
+        .image {
+            width: 5%;
         }
-
-        body {
-        width: 100%;
-        height: 100vh;
-        background-color: #005C8A;
-        }
-
-    h1{
-        text-align: center;
-        font-size: 30px;
-        color: white;
-        }
-
-    h2{
-        color: white;
-    }
-
-    li{
-        color: white;
-        transform: translateX(50px);
-    }
-
-    a {
-        color: white;
-        font-size: 20px;
-    }
     </style>
+    
+    {% include 'app/header.html' %}
+
     <section>
         
     <h1>
         Profile Page
     </h1>
 
-    <h2>
-        {{ public.name }} {{ public.surname }}
-    </h2>
-
-    <h2>
-        Avatar ID: {{ public.avatar }}
-     </h2>
+    <img class="image" src="{% static 'images/' %}{{ public.avatar }}.png">
     
+    <h2> {{ public.name }} {{ public.surname }}</h2>
+
+
+
     <h2>
          - Courses created
     </h2>

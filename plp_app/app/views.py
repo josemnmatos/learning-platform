@@ -1,3 +1,4 @@
+from itertools import chain
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -18,9 +19,9 @@ def register(request):
         username = request.POST['username']
         email = request.POST['email']
         password1 = request.POST['password1']
-        password2 = request.POST['password2']
+        password2 = request.POST['password1']
 
-        if password1 is password2:
+        if password1 == password2:
             myuser = User.objects.create_user(username, email, password1)
 
             myuser.save()
@@ -100,39 +101,22 @@ def teachingUnitPage(request, id):
                                                          'materials': materials})
 
 
-def searchCourse(request):
+def searchResults(request):
     # Get the name of the course through the GET request
     if request.method == 'GET':
         name = request.GET['name']
-        # Get all the course objects that contain the name in name
-        courses = models.Course.objects.filter(name__icontains=name)
-        # If it doesn't have a match return to home page
-        if not courses:
-            messages.error(request, "No Course with that name found")
-            return redirect('home')
-        # If found return the searchUser page with the results
-        else:
-            return render(request, "app/searchCourse.html", {'courses': courses})
-    # If it isn't a GET request go to home page
-    return redirect('home')
-
-
-def searchUser(request):
-    # Get the name of the user through the GET request
-    if request.method == 'GET':
-        name = request.GET['name']
+        
         # Get all the public objects that contain the name in name
-        publics = models.Public.objects.filter(name__icontains=name)
-        # If it doesn't find anything search for the name in surname
-        if not publics:
-            publics = models.Public.objects.filter(surname__icontains=name)
-        # If it doesn't have a match at all return to home page
-        if not publics:
-            messages.error(request, "No User with that name found")
-            return redirect('home')
-        # If found return the searchUser page with the results
-        else:
-            return render(request, "app/searchUser.html", {'publics': publics})
+        names = models.Public.objects.filter(name__icontains=name)
+        # Get all the public objects that contain the name in surname
+        surnames = models.Public.objects.filter(surname__icontains=name)
+        # Join them and sort by name
+        publics = sorted(names.union(surnames), key=lambda profile: profile.name)
+        
+        # Get all the course objects that contain the name in name
+        courses = models.Course.objects.filter(name__icontains=name).order_by('name')
+        
+        return render(request, "app/searchResults.html", {'courses': courses, 'publics': publics})
     # If it isn't a GET request go to home page
     return redirect('home')
 
@@ -150,6 +134,17 @@ def viewProfile(request, id):
             messages.error(request, "Error finding public profile")
             return redirect('home')
         else:
-            coursesMade = models.CoursesMade.objects.filter(
-                publicId__exact=public[0].id)
+            coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
             return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade})
+
+def chat_on(request):
+    return render(request,"app/chat.html")
+
+def own_course_page(request):
+    return render(request,"app/own_course.html")
+
+def course_def(request):
+    return render(request,"app/course_def.html")
+
+def def_chat(request):
+    return render(request,"app/live_chat_def.html")

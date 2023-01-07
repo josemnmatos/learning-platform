@@ -1,39 +1,168 @@
-{% extends 'app/base.html' %} {% block content %}
-<h3>Course Page</h3>
-<div>
-  <h2>Course Info</h2>
-  <h4>{{ course.name }}</h4>
-  <h5>Average Master Time: {{ course.averageMasterTime }} minutes</h5>
-  <h5>Price: {{ course.price }}€</h5>
+{% extends 'app/base.html' %} 
+{% block content %}
+
+
+<style>
+
+  .course-header {
+    background-color: rgb(13, 64, 105);
+    color: white;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 20vh;
+  }
+
+  .live-chat{
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 15px;
+    background-color: white;
+    color: rgb(13, 64, 105);
+    text-align: center;
+  }
+
+  .course-body {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #96dae7;
+    align-items: flex-start;
+    height: 72vh;
+  }
+
+  .teaching-units{
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
+    width: 70%;
+    margin-right: 10px;
+    border: 1px solid black;
+    border-radius: 15px;
+  }
+
+  .ratings{
+    padding: 20px;
+    padding-top: 0px;
+    background-color: white;
+    width: 30%;
+    border: 1px solid black;
+    border-radius: 15px;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .rating{
+    background-color: #0f8775;
+    opacity: 80%;
+    color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding-left: 10px;
+    margin: 2px;
+  }
+
+  .ratings-header {
+    display: flex;  
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  button {
+    width: fit-content;
+    border-radius: 10px;
+    background-color: #0f8775;
+    padding: 5px;
+
+    text-align: center;
+    border: 0;
+
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+    
+    text-decoration: none;
+    }
+
+
+
+    button:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+        rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(13, 64, 105) 0 -3px 0 inset;
+    transform: translateY(-2px);
+    }
+
+    button:active {
+    box-shadow: rgb(13, 64, 105)0 3px 7px inset;
+    transform: translateY(2px);
+    }
+
+
+</style>
+
+<div class="course-header">
+<!-- Course Info -->
+  <div class="info">
+    <h2>{{ course.name }}</h2>
+    <h4>Course Time: ~{{ course.averageMasterTime }} mins</h4>
+    {% if course.price == 0%}
+      <h4>Cost: Free</h4>
+    {% else %}
+      <h4>Cost: {{ course.price }}€</h4>
+    {% endif %}
+  </div>
+  <!-- Live Chat -->
+  <div class="live-chat">
+    <h2>Live Chat</h2>
+    {% if liveChat is not None %}
+      <!-- TODO: Adicionar o link para o live chat -->
+      <button onclick="document.location='/chat'">Chat</button>
+    {% else %}
+      <p>No Live Chat yet. Stay Tuned!</p>
+    {% endif %}
+  </div>
 </div>
-<div>
-  <h2>Teaching Units</h2>
-  <ol>
-    {% for unit in teachingUnits %}
-    <li>
-      <a href="../teachingUnit/{{ unit.id }}">{{ unit.description }}</a>
-    </li>
-    <br />
-    {% endfor %}
-  </ol>
-</div>
-{% if liveChat is not None %}
-<div>
-  <h2>Live Chat</h2>
-  <!-- TODO: Adicionar o link para o live chat -->
-  <a href="">Live Chat</a>
-</div>
-{% endif %}
-<div>
-  <h2>Ratings</h2>
-  {% if not ratings %}
-  <h4>There are no Ratings yet</h4>
-  {% endif %}
-  <ul>
-    {% for rating in ratings %}
-    <li>{{ rating }}</li>
-    {% endfor %}
-  </ul>
+
+<div class="course-body">
+  <!-- Teaching Units -->
+  <div class="teaching-units">
+    <h2>Teaching Units</h2>
+    {% if not teachingUnits %}
+    <p>No teaching units for now</p>
+    {% else %}
+    <ol>
+      {% for unit in teachingUnits %}
+        <a href="../teachingUnit/{{ unit.id }}"><li>{{ unit.description }}</li></a>
+      <br />
+      {% endfor %}
+    </ol>
+    {% endif %}
+  </div>
+
+  <!-- Ratings -->
+  <div class="ratings">
+    <div class="ratings-header">
+      <h2>Ratings</h2>
+      <button >Rate this course</button>
+    </div>
+    {% if not ratings %}
+    <p>Be the first one to rate this course!</p>
+    {% else %}
+      {% for rating in ratings %}
+      <div class="rating">
+        <p>{{ rating.userId.username }} - {{ rating.rating }}/5<br>{{ rating.comment }}</p>
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div>
 </div>
 
 {% endblock %}

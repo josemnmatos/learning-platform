@@ -2,28 +2,75 @@
 {% block content %}
 
     {% load static %}
-    
-            {% include 'app/searchBar.html' %}
 
-            {% if user.is_authenticated %}
+            {% include 'app/header.html' %}
+
+
+            <style>
+                .background{
+                    width: 100% ;
+                    min-height: 100vh;
+                    padding: 5‰;
+                    background-image:  url('{% static 'images/background_2.png' %}');
+                    background-repeat : no-repeat;
+                    background-position: center;
+                    background-size: cover;
+                    
+                }
+
+                
+
+                .button-1 {
+
+                    width: 10%;
+                    border-radius: 10px;
+                    background-color: rgb(13, 64, 105) ;
+          
+                    text-align: center;
+                    padding: 10px 40px;
+                    border: 0;
+
+                    color: white;
+                    cursor: pointer;
+                    font-size: 15px;
+                    position: relative;
+                    left: 1200px;
+                    top: -160px;
+                    text-decoration: none;
+                    }
+                
+
+
+                    .button-1:hover {
+                    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+                        rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(13, 64, 105) 0 -3px 0 inset;
+                    transform: translateY(-2px);
+                    }
+
+                    .button-1:active {
+                    box-shadow: rgb(13, 64, 105)0 3px 7px inset;
+                    transform: translateY(2px);
+                    }
+
+            </style>
+        
+
+        <div class = "background">
+            
+            {%if user.is_authenticated%}
 
             <h3>Hello {{ fname }}</h3>
             <h4>You are logged in.</h4>
             <button class="button-1" type="submit"><a href="/signout">Log Out</a></button>
-            
+     
             {%else%}
 
-            <a href = "loginpage">
-                <button align-items: center class="button-1" type="button", id = 'login'> Login </button>
-            </a>
-            <a href = "register">
-                <button class="button-1" type="button", id = 'register'> Register </button>
-            </a>
-                <h1 id = 'text'> Welcome to Learning Together</h1>
-            <p id = 'text1'>Pick the course thats suits you.</p>
-            <a href="#" class="rainbow-button" alt="Button"></a>
-            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80">
+            <a href = "loginpage" class="button-1" style= "background-color: white; color:black;" type="button", id = 'login'>Login</a>
+            <a href = "register" class="button-1" type="button", id = 'register'>Register</a>
+            {%endif%}
+            {% include 'app/searchBar.html' %}
 
-            {% endif %}
+        </div>
+          
 
 {% endblock %}
