@@ -13,5 +13,7 @@ urlpatterns = [
     path('chat',views.chat_on,name="chat online"),
     path('own_course',views.own_course_page,name="course"),
     path('course_def',views.course_def,name="Definitions"),
-    path('live_chat_def',views.def_chat,name="Chat definitions")
+    path('live_chat_def',views.def_chat,name="Chat definitions"),
+    path('payments',views.payments,name="payments"),
+    
 ]

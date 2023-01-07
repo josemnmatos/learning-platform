@@ -148,3 +148,17 @@ def course_def(request):
 
 def def_chat(request):
     return render(request,"app/live_chat_def.html")
+
+def payments(request):
+    if request.user.is_authenticated:
+        profile = models.Profile.objects.filter(userId__exact=request.user.id)
+        private = models.Private.objects.filter(profileId__exact=profile[0].id)
+        enrolledCourses = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id)
+        paymentDetails = models.PaymentDetails.objects.filter(privateId__exact=private[0].id)
+        if paymentDetails:
+            for detail in paymentDetails:
+                detail.cardNumber = detail.cardNumber[-4:]
+        
+        return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails})
+    return redirect('home')
+        
