@@ -48,7 +48,7 @@ def loginpage(request):
         if user is not None:
             login(request, user)
             fname = user.username
-            return render(request, "app/index.html", {'fname': fname})
+            return render(request, "app/landing.html", {'fname': fname})
 
         else:
             messages.error(request, "Wrong credentials.")
