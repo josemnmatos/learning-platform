@@ -10,7 +10,7 @@
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId %}
 <h2> - Courses created</h2>
 {% if not coursesMade %}
-    <h3>you need to create a course</h3>
+    <h3>0 courses created</h3>
 {% else %}
     <ul>  
     {% for course in coursesMade %}
