@@ -1,6 +1,7 @@
 {% extends 'app/base.html' %} 
 {% block content %}
 
+{% load static %}
 
 <style>
 
@@ -33,7 +34,7 @@
     padding-right: 20px;
     background-color: #96dae7;
     align-items: flex-start;
-    height: 72vh;
+    height:fit-content;
   }
 
   .teaching-units{
@@ -63,10 +64,11 @@
     background-color: #0f8775;
     opacity: 80%;
     color: white;
-    border: 1px solid black;
+    padding:3px;
     border-radius: 5px;
     padding-left: 10px;
     margin: 2px;
+    
   }
 
   .ratings-header {
@@ -78,7 +80,7 @@
   button {
     width: fit-content;
     border-radius: 10px;
-    background-color: #0f8775;
+    background-color: #4ebcd2;
     padding: 5px;
 
     text-align: center;
@@ -89,13 +91,11 @@
     font-size: 15px;
     
     text-decoration: none;
-    }
-
-
+  }
 
     button:hover {
     box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
-        rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(13, 64, 105) 0 -3px 0 inset;
+        rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #16788c 0 -3px 0 inset;
     transform: translateY(-2px);
     }
 
@@ -104,6 +104,18 @@
     transform: translateY(2px);
     }
 
+    .container{
+
+      background-color: #5eaa9f89;
+      max-width: 500px;
+      
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    .star{
+      width: 20px;
+    }
 
 </style>
 
@@ -137,7 +149,7 @@
     <h2>Live Chat</h2>
     {% if liveChat is not None %}
       <!-- TODO: Adicionar o link para o live chat -->
-      <button onclick="document.location='/chat'">Chat</button>
+      <button onclick="document.location='/chat'"><img src="{% static 'images/' %}chat.png"></button>
     {% else %}
       <p>No Live Chat yet. Stay Tuned!</p>
     {% endif %}
@@ -164,14 +176,16 @@
   <div class="ratings">
     <div class="ratings-header">
       <h2>Ratings</h2>
-      <button><a style="text-decoration: none;" href="../rateCourse/{{ course.id }}">Rate this course</a></button>
+    </div>
+    <div class="container">
+      {%include 'app/rateCourse.html'%}
     </div>
     {% if not ratings %}
     <p>Be the first one to rate this course!</p>
     {% else %}
       {% for rating in ratings %}
       <div class="rating">
-        <p>{{ rating.userId.username }} - {{ rating.rating }}/5<br>{{ rating.comment }}</p>
+        <p><b><a href="">@{{ rating.userId.username }}</a> <img class= "star" src="{% static 'images/' %}star.png"> {{rating.rating }}</b><br><br>{{ rating.comment }}</p>
       </div>
       {% endfor %}
     {% endif %}
