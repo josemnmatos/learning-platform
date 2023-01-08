@@ -4,38 +4,75 @@
     <style>
 
 
+
         .image{
             position: fixed;
-            top: 30%;
+            top: 200px;
             width: 20%;
         }
 
         
 
         .name{
-            position: absolute; 
-            top:26%; 
+            position:absolute; 
+            top:200px; 
             font-size:xx-large;
             font-weight: bold;
             font-family:Verdana, Geneva, Tahoma, sans-serif;
-            left: 25%;
+            left: 360px;
         }
 
         .username{
-            position: absolute; 
-            top:35%; 
+            position:absolute; 
+            top:280px; 
             font-size:large;
+            color:rgba(0, 0, 0, 0.547);
             font-display:inherit;
             font-family:Verdana, Geneva, Tahoma, sans-serif;
-            left: 25%;
+            left: 360px;
         }
+
+        .nStudents{
+            position:absolute; 
+            top:320px; 
+            font-size:large;
+            color:rgba(0, 0, 0, 0.547);
+            font-display:inherit;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            left: 360px;
+        }
+
+        .rating{
+            position:absolute; 
+            top:360px; 
+            font-size:medium;
+            font-weight: bold;
+            color:rgba(0, 0, 0, 0.547);
+            font-display:inherit;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            left: 390px;
+        }
+
+
+
+        .star{
+            position:absolute; 
+            top:375px; 
+            width: 20px;
+            font-display:inherit;
+            left: 360px;
+        }
+
 
     </style>
     
         {% include 'app/navBar.html' with thisUser=thisUser userId=public.profileId.userId.id %}
 
-        <p style="text-align:left; display: table-cell;"><img class="image" src="{% static 'images/' %}{{ public.avatar }}.png"></p>
-        <p class = "name"> {{ public.name }} {{ public.surname }}</p>
-        <p class="username">Username: {{ public.profileId.userId.username }}</p>
-
+            <p style="text-align:left; display: table-cell;"><img class="image" src="{% static 'images/' %}{{ public.avatar }}.png"></p>
+            <p class = "name"> {{ public.name }} {{ public.surname }}</p>
+            <p class="username">@{{ public.profileId.userId.username }}</p>
+            <p class="nStudents">number of Students</p>
+            <p><img class="star" src="{% static 'images/' %}star.png"></p>
+            <p class="rating">rating average <b style="font-size:small;font-weight: 500;">(number of ratings)</b></p>
+        
 {% endblock %}
