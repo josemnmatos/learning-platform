@@ -141,8 +141,27 @@ def viewProfile(request, id):
                 userProfile = models.Profile.objects.filter(userId__exact=request.user.id)
                 if int(userProfile[0].id) == int(id):
                     thisUser = True
+                    
             coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
-            return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser})
+            # Get the number of students
+            students = 0
+            for courseMade in coursesMade:
+                students += models.CoursesEnrolled.objects.filter(courseId__exact=courseMade.courseId).count()
+            # Get the average rating   
+            ratings = models.Rating.objects.none()         
+            for courseMade in coursesMade:
+                ratings = ratings | models.Rating.objects.filter(courseId__exact=courseMade.courseId)
+                
+            numRatings = 0
+            totalRatings = 0
+            for rating in ratings:
+                numRatings += 1
+                totalRatings += rating.rating
+            avgRating = 0
+            if numRatings > 0:
+                avgRating = totalRatings/numRatings
+            return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser, 
+                                                            'students': students, 'numRatings': numRatings, 'avgRating': avgRating})
 
 def chat_on(request):
     return render(request,"app/chat.html")

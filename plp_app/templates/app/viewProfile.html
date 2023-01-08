@@ -71,8 +71,8 @@
             <p style="text-align:left; display: table-cell;"><img class="image" src="{% static 'images/' %}{{ public.avatar }}.png"></p>
             <p class = "name"> {{ public.name }} {{ public.surname }}</p>
             <p class="username">@{{ public.profileId.userId.username }}</p>
-            <p class="nStudents">number of Students</p>
+            <p class="nStudents">number of Students: {{ students }}</p>
             <p><img class="star" src="{% static 'images/' %}star.png"></p>
-            <p class="rating">rating average <b style="font-size:small;font-weight: 500;">(number of ratings)</b></p>
+            <p class="rating">{{ avgRating }} <b style="font-size:small;font-weight: 500;">({{ numRatings }} ratings)</b></p>
         
 {% endblock %}

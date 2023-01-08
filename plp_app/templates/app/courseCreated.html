@@ -15,7 +15,7 @@
     <ul>  
     {% for course in coursesMade %}
         <li> 
-        <a href="../course/{{ course.id }}">{{course.courseId.name}}</a>
+        <a href="../course/{{ course.courseId.id }}">{{course.courseId.name}}</a>
         </li>
     {% endfor %}
 {% endif %}
