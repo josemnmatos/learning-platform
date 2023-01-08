@@ -18,6 +18,8 @@ urlpatterns = [
     path('createNewCourse',views.createNewCourse,name="createNewCourse"),
     path('saveNewCourse',views.saveNewCourse,name="saveNewCourse"),
     path('coursesEnrolled',views.coursesEnrolled,name="coursesEnrolled"),
+    path('editCourse/<id>',views.editCourse,name="editCourse"),
+    path('saveCourseChanges',views.saveCourseChanges,name="saveCourseChanges"),
 
     path('rateCourse/<id>',views.rateCourse,name="rateCourse"),
     path('saveRating',views.saveRating,name="saveRating"),

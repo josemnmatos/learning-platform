@@ -1,0 +1,43 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+<style>
+
+    select, input, label {
+        margin: 10px;
+    }
+
+</style>
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId %}
+
+{% if thisUser %}
+
+<form method="POST" action="../saveCourseChanges">
+    {% csrf_token %}
+
+    <input type="hidden" name="courseId" value="{{ course.id }}">
+    Name:<input type="text" name="name" value="{{ course.name }}"><br>
+    
+    Average Master Time:<input type="number" name="averageMasterTime" value="{{ course.averageMasterTime }}" min="1"><br>
+
+    Price:<input type="number" name="price" value="{{ course.price }}" step=".01" min="0"><br>
+
+    Category: <select name="category">
+        <option value="{{ category.id }}">{{ course.categoryId.category }}</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.category }}</option>
+        {% endfor %}
+    </select><br>
+
+    <input type="submit" name="submit" value="Submit">
+    <input type="reset" value="Reset">
+</form>
+
+{% else %}
+
+<h2>You don't have permission to edit this course!</h2>
+
+{% endif %}
+
+{% endblock %}

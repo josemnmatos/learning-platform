@@ -133,6 +133,14 @@
     {% endif %}
   </div>
 
+{% if thisUser %}
+
+  <div>
+    <a href="../editCourse/{{ course.id }}">Edit Course</a>
+  </div>
+
+  {% endif %}
+
   <!-- Course Owner -->
   <div>
     <h2>Course Creator:</h2>

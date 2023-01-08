@@ -71,6 +71,12 @@ def coursePage(request, id):
     else:
         # Find the creator
         courseMade = models.CoursesMade.objects.filter(courseId__exact=id)
+         # Check if the current user is the user of the profile
+        thisUser = False
+        if request.user.is_authenticated:
+            if courseMade[0].publicId.profileId.userId.id == request.user.id:
+                thisUser = True
+        print(thisUser)
         # Find the teaching Units
         teachingUnits = models.TeachingUnit.objects.filter(
             courseId__exact=course[0])
@@ -85,7 +91,8 @@ def coursePage(request, id):
                                                        'creator': courseMade[0].publicId,
                                                        'teachingUnits': teachingUnits,
                                                        'liveChat': liveChat[0],
-                                                       'ratings': ratings})
+                                                       'ratings': ratings,
+                                                       'thisUser': thisUser})
 
 def teachingUnitPage(request, id):
     # Gets the unit with the exact id passed in
@@ -270,4 +277,50 @@ def coursesEnrolled(request):
         
         
         return render(request, "app/coursesEnrolled.html", {'coursesEnrolled': coursesEnrolled, 'thisUser': True, 'userId': request.user.id})
+    return redirect('home')
+
+
+def editCourse(request, id):
+    if request.user.is_authenticated:
+        # Check the course
+        course = models.Course.objects.filter(id__exact=id)
+        # If course doesn't exist
+        if not course:
+            messages.error(request, "Course doesn't exist.")
+            return redirect('home')
+        # Check if the user was the one who made it
+        profile = models.Profile.objects.filter(userId__exact=request.user.id)
+        public = models.Public.objects.filter(profileId__exact=profile[0].id)
+        courseMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id, courseId__exact=id)
+        print(courseMade)
+        # If it's not theirs
+        if not courseMade:
+            messages.error(request, "You can't edit this course")
+            return redirect('home')
+        # Get all the categories except the one the course has
+        categories = models.Category.objects.all().exclude(id=course[0].categoryId.id)
+        # If all okay load the page to edit it
+        return render(request, "app/editCourse.html", {'course': course[0], 'categories':categories, 'thisUser': True, 'userId': request.user.id})
+        
+    return redirect('home')
+
+
+def saveCourseChanges(request):
+    if request.method == "POST":
+            name = request.POST['name']
+            averageMasterTime = request.POST['averageMasterTime']
+            price = request.POST['price']
+            category = request.POST['category']
+            courseId = request.POST['courseId']
+            # Get the category
+            categoryId = models.Category.objects.filter(id__exact=category)
+            # Get the course
+            course = models.Course.objects.get(id=courseId)
+            course.name = name
+            course.averageMasterTime = averageMasterTime
+            course.price = price
+            course.categoryId = categoryId[0]
+            course.save()
+            return redirect('coursePage', courseId)
+    
     return redirect('home')
