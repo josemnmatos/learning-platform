@@ -167,11 +167,11 @@
       <button><a style="text-decoration: none;" href="../rateCourse/{{ course.id }}">Rate this course</a></button>
     </div>
     {% if not ratings %}
-    <p>Be the first one to rate this course!</p>
+      <p>Be the first one to rate this course!</p>
     {% else %}
       {% for rating in ratings %}
       <div class="rating">
-        <p>{{ rating.userId.username }} - {{ rating.rating }}/5<br>{{ rating.comment }}</p>
+        <p>@{{ rating.userId.username }} - {{ rating.rating }}/5<br>{{ rating.comment }}</p>
       </div>
       {% endfor %}
     {% endif %}

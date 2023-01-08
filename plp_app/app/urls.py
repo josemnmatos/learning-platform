@@ -15,6 +15,8 @@ urlpatterns = [
     path('course_def',views.course_def,name="Definitions"),
     path('live_chat_def',views.def_chat,name="Chat definitions"),
     path('courseCreated/<id>',views.courseCreated,name="courseCreated"),
+    path('createNewCourse',views.createNewCourse,name="createNewCourse"),
+    path('saveNewCourse',views.saveNewCourse,name="saveNewCourse"),
 
     path('rateCourse/<id>',views.rateCourse,name="rateCourse"),
     path('saveRating',views.saveRating,name="saveRating"),

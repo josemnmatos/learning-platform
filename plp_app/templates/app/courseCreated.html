@@ -20,64 +20,79 @@
         cursor: pointer;
     }
 
-    .item{
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        border-bottom: 2px solid #489589c1;
-        font-size: large;
-    }
-
-    .course{
+    
+    .pretty{
         font-weight: bolder;
-        color: #96dae7;
-        
+        color: rgb(13, 64, 105);  
     }
 
-    .itemTitle{
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        border-bottom: 2px solid #489589c1;
-        font-weight: bolder;
-        color:rgb(13, 64, 105);
-        font-size: large;
-
+    .table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 1.2em;
+        min-width: 99vw;
     }
 
+    .table thead tr, .table tfoot tr{
+        background-color: #0f8775;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+    }
 
+    .table th, .table td {
+        padding: 12px;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #0f8775;
+    }
 
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId %}
 
-<button type="submit" class="button"><img class="plusImg" src="{% static 'images/' %}plus.png"></button>
+<!-- Add new Course button -->
+{% if thisUser %}
+    <a href="../createNewCourse" class="button"><img class="plusImg" src="{% static 'images/' %}plus.png"></a>
+    <br><br>
+    {% if not coursesMade %}
+        <h3>To create a new Course click the plus sign!</h3>
+    {% endif %}
+{% endif %}
+
+<!-- No Courses Made -->
 {% if not coursesMade %}
     <h3>0 courses created</h3>
 {% else %}
-    <br><br><br>
-    <div class="itemTitle">
-        <p>Course</p>
-        <p>Category</p>
-        <p>Number of Students</p>
-        <p>Live Chat scheduler</p>
-        <p>Money Earned</p>
-    </div>
-    {% for course in coursesMade %}
+<!-- Table with courses made -->
+    <table class="table">
+        <thead>
+            <th>Course</th>
+            <th>Category</th>
+            <th>Enrolled Students</th>
+            <th>Live Chat</th>
+            {% if thisUser %}
+                <th>Money Earned</th>
+            {% endif %}
+        </thead>
+        {% for courseMade, numStudents, liveChat, moneyEarned in data %}
+            <tbody>
+                <th><a class="pretty" href="../course/{{ courseMade.courseId.id }}">{{courseMade.courseId.name}}</a></th>
+                <th><b>{{ courseMade.courseId.categoryId.category }}</b></th>
+                <th>{{ numStudents }}</th>
+                {% if not liveChat %}
+                <th>X</th>
+                {% else %}
+                <th><a class="pretty" href="../chat">Live Chat</a></th>
+                {% endif %}
 
-
-       
-        <div class="item">
-            <p><a class="course" href="../course/{{ course.courseId.id }}">{{course.courseId.name}}</a></p>
-            <p><b>Category</b></p>
-            <p>Number of Students</p>
-            <p>Live Chat scheduler</p>
-            <p>Money Earned</p>
-        </div>
-
-        
-        
-    {% endfor %}
+                {% if thisUser %}
+                <th>{{ moneyEarned }}€</th>
+                {% endif %}
+            </tbody>
+        {% endfor %}
+    </table>
 {% endif %}
 
 {% endblock %}

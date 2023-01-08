@@ -181,8 +181,21 @@ def courseCreated(request, id):
         if profile[0].userId.id == request.user.id:
             thisUser = True
         
+    students = []
+    liveChats = []
+    moneyEarned = []
+    for courseMade in coursesMade:   
+        # Students 
+        numStudents = models.CoursesEnrolled.objects.filter(courseId__exact=courseMade.courseId).count()
+        students.append(numStudents)
+        # Live chats
+        liveChat = models.LiveChat.objects.filter(courseId__exact=courseMade.courseId)
+        liveChats.append(liveChat)
+        # Money Earned
+        moneyEarned.append(numStudents * courseMade.courseId.price)
         
-    return render (request, "app/courseCreated.html", {'coursesMade': coursesMade, 'thisUser': thisUser, 'userId': id})
+    data = zip(coursesMade, students, liveChats, moneyEarned)
+    return render (request, "app/courseCreated.html", {'coursesMade': coursesMade, 'data': data, 'thisUser': thisUser, 'userId': id})
 
 
 def payments(request):
@@ -222,3 +235,28 @@ def saveRating(request):
         newRating.save()
         
     return redirect('coursePage', courseId)
+
+
+def createNewCourse(request):
+    categories = models.Category.objects.all()
+    return render(request, "app/createNewCourse.html", {'categories': categories})
+    
+def saveNewCourse(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            name = request.POST['name']
+            averageMasterTime = request.POST['averageMasterTime']
+            price = request.POST['price']
+            category = request.POST['category']
+            # Get the category
+            categoryId = models.Category.objects.filter(id__exact=category)
+            # Create the new Course               
+            newCourse = models.Course(name=name, averageMasterTime=averageMasterTime, price=price, categoryId=categoryId[0])
+            newCourse.save()
+            # Add it to the courses made
+            profileId = models.Profile.objects.filter(userId__exact=request.user.id)
+            publicId = models.Public.objects.filter(profileId__exact=profileId[0])
+            newCourseMade = models.CoursesMade(publicId=publicId[0], courseId=newCourse)
+            newCourseMade.save()
+            return redirect('coursePage', newCourse.id)
+    return redirect('home')
