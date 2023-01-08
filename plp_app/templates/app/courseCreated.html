@@ -1,24 +1,83 @@
 {% extends 'app/base.html' %}
 {% block content %}
-
+{% load static %}
 <style>
     h2{
         font-family:Verdana, Geneva, Tahoma, sans-serif;
     }
+
+    .plusImg{
+        width: 30px;
+
+    }
+
+    .button{
+        position: fixed;
+        top: 150px;
+        left: 20px;
+        border:0;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    .item{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        border-bottom: 2px solid #489589c1;
+        font-size: large;
+    }
+
+    .course{
+        font-weight: bolder;
+        color: #96dae7;
+        
+    }
+
+    .itemTitle{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        border-bottom: 2px solid #489589c1;
+        font-weight: bolder;
+        color:rgb(13, 64, 105);
+        font-size: large;
+
+    }
+
+
+
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId %}
-<h2> - Courses created</h2>
+
+<button type="submit" class="button"><img class="plusImg" src="{% static 'images/' %}plus.png"></button>
 {% if not coursesMade %}
     <h3>0 courses created</h3>
 {% else %}
-    <ul>  
+    <br><br><br>
+    <div class="itemTitle">
+        <p>Course</p>
+        <p>Category</p>
+        <p>Number of Students</p>
+        <p>Live Chat scheduler</p>
+        <p>Money Earned</p>
+    </div>
     {% for course in coursesMade %}
-        <li> 
-        <a href="../course/{{ course.id }}">{{course.courseId.name}}</a>
-        </li>
+
+
+       
+        <div class="item">
+            <p><a class="course" href="../course/{{ course.id }}">{{course.courseId.name}}</a></p>
+            <p><b>Category</b></p>
+            <p>Number of Students</p>
+            <p>Live Chat scheduler</p>
+            <p>Money Earned</p>
+        </div>
+
+        
+        
     {% endfor %}
 {% endif %}
-</ul>
 
 {% endblock %}
