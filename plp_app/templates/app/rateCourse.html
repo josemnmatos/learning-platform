@@ -1,24 +1,78 @@
 {% extends 'app/base.html' %} 
 {% block content %}
+{% load static %}
 
 <style>
+    img{
+        width:25px;
+        
+    }
 
+    .inputStar{
+        border:0px;
+        height: 30px;
+        width: 30px;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.651);
+    }
+
+    .inputComment{
+        border:0px;
+        width: 350px;
+        height: 100px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.651);
+        font-size: medium;
+        word-break: break-word;
+        max-lines: 3;
+    }
+
+    .button{
+        width: fit-content;
+        border-radius: 10px;
+        background-color: #0f8775;
+        padding: 7px;
+
+        text-align: center;
+        border: 0;
+
+        color: white;
+        cursor: pointer;
+        font-size: 17px;
+        
+        text-decoration: none;
+    }
+
+    .button:hover {
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+        rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #085a4e 0 -3px 0 inset;
+        transform: translateY(-2px);
+    }
+
+    .button:active {
+        box-shadow: rgb(13, 64, 105)0 3px 7px inset;
+        transform: translateY(2px);
+    }
 </style>
 
 
 {% if user.is_authenticated %}
 
-<h2>Please rate the course: {{ course.name }}</h2>
+
 
 <form method="POST" action="../saveRating">
     {% csrf_token %}
     <input type="hidden" name="userId" value="{{ user.id }}">
     <input type="hidden" name="courseId" value="{{ course.id }}">
-    <label for="rating">Rating:</label>
-    <input type="number" name="rating" min="1" max="5"><br>
-    <label for="comment">Comment:</label>
-    <input type="text" name="comment"><br>
-    <input type="submit" value="Submit">
+
+    <label for="rating"><img src="{% static 'images/' %}star.png"></label>
+    <input class="inputStar" type="number" name="rating" min="1" max="5"><br><br>
+
+    <label for="comment"></label>
+    <textarea rows="4" cols="25" class="inputComment" name="comment" placeholder="Comment (/200 letters)"></textarea>
+    <br>
+    <input class="button" type="submit" value="Submit">
 
 </form>
 {% else %}
