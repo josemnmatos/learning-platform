@@ -69,6 +69,8 @@ def coursePage(request, id):
         messages.error(request, "Course doesn't exist")
         return redirect('home')
     else:
+        # Find the creator
+        courseMade = models.CoursesMade.objects.filter(courseId__exact=id)
         # Find the teaching Units
         teachingUnits = models.TeachingUnit.objects.filter(
             courseId__exact=course[0])
@@ -80,6 +82,7 @@ def coursePage(request, id):
         # Find the ratings
         ratings = models.Rating.objects.filter(courseId__exact=course[0])
         return render(request, "app/coursePage.html", {'course': course[0],
+                                                       'creator': courseMade[0].publicId,
                                                        'teachingUnits': teachingUnits,
                                                        'liveChat': liveChat[0],
                                                        'ratings': ratings})
@@ -180,4 +183,27 @@ def payments(request):
         
         return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails, 'total': total, 'thisUser': True, 'userId': request.user.id})
     return redirect('home')
+
+def rateCourse(request, id):
+    course = models.Course.objects.filter(id__exact=id)
+    if not course:
+        messages.error(request, "Course doesn't exist.")
+        return redirect('home')
+    
+    return render(request, "app/rateCourse.html", {'course': course[0]})
         
+
+def saveRating(request):
+    if request.method == "POST":
+        userId = request.POST['userId']
+        courseId = request.POST['courseId']
+        rating = request.POST['rating']
+        comment = request.POST['comment']
+        
+        user = models.User.objects.filter(id__exact=userId)
+        course = models.Course.objects.filter(id__exact=courseId)
+        
+        newRating = models.Rating(userId=user[0], courseId=course[0], comment=comment, rating=rating)
+        newRating.save()
+        
+    return redirect('coursePage', courseId)
