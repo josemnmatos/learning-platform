@@ -17,6 +17,7 @@ urlpatterns = [
     path('courseCreated/<id>',views.courseCreated,name="courseCreated"),
     path('createNewCourse',views.createNewCourse,name="createNewCourse"),
     path('saveNewCourse',views.saveNewCourse,name="saveNewCourse"),
+    path('coursesEnrolled',views.coursesEnrolled,name="coursesEnrolled"),
 
     path('rateCourse/<id>',views.rateCourse,name="rateCourse"),
     path('saveRating',views.saveRating,name="saveRating"),

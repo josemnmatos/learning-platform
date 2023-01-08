@@ -1,0 +1,60 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+<style>
+   
+    .pretty{
+        font-weight: bolder;
+        color: rgb(13, 64, 105);  
+    }
+
+    .table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 1.2em;
+        min-width: 99vw;
+    }
+
+    .table thead tr, .table tfoot tr{
+        background-color: #0f8775;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+    }
+
+    .table th, .table th {
+        padding: 12px;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #0f8775;
+    }
+
+</style>
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId %}
+
+{% if not coursesEnrolled %}
+    <h2>You are not enrolled in any course!</h2>
+{% else %}
+
+    <table class="table">
+        <thead>
+            <th>Course Name</th>
+            <th>Category</th>
+            <th>Course Time</th>
+            <th>Course Price</th>
+        </thead>
+        {% for courseEnrolled in coursesEnrolled %}
+        <tbody>
+            <th><a class="pretty" href="../course/{{ courseEnrolled.courseId.id }}">{{ courseEnrolled.courseId.name }}</a></th>
+            <th>{{ courseEnrolled.courseId.categoryId.category }}</th>
+            <th>{{ courseEnrolled.courseId.averageMasterTime }} min</th>
+            <th>{{ courseEnrolled.courseId.price }}€</th>
+        </tbody>
+        {% endfor %}
+    </table>
+
+{% endif %}
+
+{% endblock %}

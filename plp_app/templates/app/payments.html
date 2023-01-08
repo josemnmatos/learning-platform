@@ -3,6 +3,11 @@
 
 <style>
 
+    .pretty{
+        font-weight: bolder;
+        color: rgb(13, 64, 105);  
+    }
+
     .table {
         border-collapse: collapse;
         margin: 25px 0;
@@ -65,15 +70,15 @@
         {% for enrolledCourse in enrolledCourses %}
         <tbody>
             <tr>
-                <td>{{ enrolledCourse.courseId.name }}</td>
-                <td>{{ enrolledCourse.courseId.price }}</td>
+                <td><a class="pretty" href="../course/{{ courseEnrolled.courseId.id }}">{{ enrolledCourse.courseId.name }}</a></td>
+                <td>{{ enrolledCourse.courseId.price }}€</td>
                 <td>{{ enrolledCourse.paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1'}}</td>
             </tr>
         </tbody>
         {% endfor %}
         <tfoot>
             <tr>
-                <td>Total</td>
+                <td >Total</td>
                 <td>{{ total }}</td>
             </tr>
         </tfoot>

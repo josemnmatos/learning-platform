@@ -260,3 +260,14 @@ def saveNewCourse(request):
             newCourseMade.save()
             return redirect('coursePage', newCourse.id)
     return redirect('home')
+
+
+def coursesEnrolled(request):
+    if request.user.is_authenticated:
+        profile = models.Profile.objects.filter(userId__exact=request.user.id)
+        private = models.Private.objects.filter(profileId__exact=profile[0].id)
+        coursesEnrolled = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id)
+        
+        
+        return render(request, "app/coursesEnrolled.html", {'coursesEnrolled': coursesEnrolled, 'thisUser': True, 'userId': request.user.id})
+    return redirect('home')
