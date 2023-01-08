@@ -54,7 +54,7 @@
             <div class="result">
                 <li>
                     
-                    <a href="../viewProfile/{{ public.id }}"><img src="{% static 'images/' %}{{ public.avatar }}.png"> {{ public.name }} {{ public.surname }}</a> 
+                    <a href="../viewProfile/{{ public.profileId.userId.id }}"><img src="{% static 'images/' %}{{ public.avatar }}.png"> {{ public.name }} {{ public.surname }}</a> 
                 </li>  
             </div>
         {% endfor %}
