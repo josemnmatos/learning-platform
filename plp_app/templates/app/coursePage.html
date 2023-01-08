@@ -56,8 +56,7 @@
   }
 
   a {
-    text-decoration: none;
-    color: black;
+    color: white;
   }
 
   .rating{
@@ -108,7 +107,9 @@
 
 </style>
 
+
 <div class="course-header">
+
 <!-- Course Info -->
   <div class="info">
     <h2>{{ course.name }}</h2>
@@ -119,9 +120,18 @@
       <h4>Cost: {{ course.price }}€</h4>
     {% endif %}
   </div>
+
+  <!-- Course Owner -->
   <div>
-    <h3>Category: {{ course.categoryId.category }}</h3>
+    <h2>Course Creator:</h2>
+    <h4><a href="../viewProfile/{{ creator.id }}"> {{ creator.name}} {{ creator.surname }}</a></h4>
   </div>
+  <!-- Category -->
+  <div>
+    <h2>Category:</h2>
+    <h4>{{ course.categoryId.category }}</h4>
+  </div>
+
   <!-- Live Chat -->
   <div class="live-chat">
     <h2>Live Chat</h2>
@@ -154,7 +164,7 @@
   <div class="ratings">
     <div class="ratings-header">
       <h2>Ratings</h2>
-      <button >Rate this course</button>
+      <button><a style="text-decoration: none;" href="../rateCourse/{{ course.id }}">Rate this course</a></button>
     </div>
     {% if not ratings %}
     <p>Be the first one to rate this course!</p>

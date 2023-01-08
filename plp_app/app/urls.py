@@ -16,6 +16,8 @@ urlpatterns = [
     path('live_chat_def',views.def_chat,name="Chat definitions"),
     path('courseCreated/<id>',views.courseCreated,name="courseCreated"),
 
+    path('rateCourse/<id>',views.rateCourse,name="rateCourse"),
+    path('saveRating',views.saveRating,name="saveRating"),
     path('payments',views.payments,name="payments"),
     
 ]

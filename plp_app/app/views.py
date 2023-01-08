@@ -69,6 +69,8 @@ def coursePage(request, id):
         messages.error(request, "Course doesn't exist")
         return redirect('home')
     else:
+        # Find the creator
+        courseMade = models.CoursesMade.objects.filter(courseId__exact=id)
         # Find the teaching Units
         teachingUnits = models.TeachingUnit.objects.filter(
             courseId__exact=course[0])
@@ -80,6 +82,7 @@ def coursePage(request, id):
         # Find the ratings
         ratings = models.Rating.objects.filter(courseId__exact=course[0])
         return render(request, "app/coursePage.html", {'course': course[0],
+                                                       'creator': courseMade[0].publicId,
                                                        'teachingUnits': teachingUnits,
                                                        'liveChat': liveChat[0],
                                                        'ratings': ratings})
@@ -128,18 +131,32 @@ def viewProfile(request, id):
         return redirect('home')
     else:
         public = models.Public.objects.filter(profileId__exact=profile[0].id)
-        if not public:
-            messages.error(request, "Error finding public profile")
-            return redirect('home')
-        else:
-            # Check if the current user is the user of the profile
-            thisUser = False
-            if request.user.is_authenticated:
-                userProfile = models.Profile.objects.filter(userId__exact=request.user.id)
-                if int(userProfile[0].id) == int(id):
-                    thisUser = True
-            coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
-            return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser})
+        # Check if the current user is the user of the profile
+        thisUser = False
+        if request.user.is_authenticated:
+            if profile[0].userId.id == request.user.id:
+                thisUser = True
+                
+        coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
+        # Get the number of students
+        students = 0
+        for courseMade in coursesMade:
+            students += models.CoursesEnrolled.objects.filter(courseId__exact=courseMade.courseId).count()
+        # Get the average rating   
+        ratings = models.Rating.objects.none()         
+        for courseMade in coursesMade:
+            ratings = ratings | models.Rating.objects.filter(courseId__exact=courseMade.courseId)
+            
+        numRatings = 0
+        totalRatings = 0
+        for rating in ratings:
+            numRatings += 1
+            totalRatings += rating.rating
+        avgRating = 0
+        if numRatings > 0:
+            avgRating = totalRatings/numRatings
+        return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser, 
+                                                        'students': students, 'numRatings': numRatings, 'avgRating': avgRating})
 
 def chat_on(request):
     return render(request,"app/chat.html")
@@ -157,10 +174,11 @@ def courseCreated(request, id):
     profile = models.Profile.objects.filter(userId__exact=id)
     public = models.Public.objects.filter(profileId__exact=profile[0].id)
     coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
+
+    # Check if the current user is the user of the profile
     thisUser = False
     if request.user.is_authenticated:
-        userProfile = models.Profile.objects.filter(userId__exact=request.user.id)
-        if int(userProfile[0].id) == int(id):
+        if profile[0].userId.id == request.user.id:
             thisUser = True
         
         
@@ -180,4 +198,27 @@ def payments(request):
         
         return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails, 'total': total, 'thisUser': True, 'userId': request.user.id})
     return redirect('home')
+
+def rateCourse(request, id):
+    course = models.Course.objects.filter(id__exact=id)
+    if not course:
+        messages.error(request, "Course doesn't exist.")
+        return redirect('home')
+    
+    return render(request, "app/rateCourse.html", {'course': course[0]})
         
+
+def saveRating(request):
+    if request.method == "POST":
+        userId = request.POST['userId']
+        courseId = request.POST['courseId']
+        rating = request.POST['rating']
+        comment = request.POST['comment']
+        
+        user = models.User.objects.filter(id__exact=userId)
+        course = models.Course.objects.filter(id__exact=courseId)
+        
+        newRating = models.Rating(userId=user[0], courseId=course[0], comment=comment, rating=rating)
+        newRating.save()
+        
+    return redirect('coursePage', courseId)
