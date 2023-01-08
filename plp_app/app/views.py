@@ -131,37 +131,32 @@ def viewProfile(request, id):
         return redirect('home')
     else:
         public = models.Public.objects.filter(profileId__exact=profile[0].id)
-        if not public:
-            messages.error(request, "Error finding public profile")
-            return redirect('home')
-        else:
-            # Check if the current user is the user of the profile
-            thisUser = False
-            if request.user.is_authenticated:
-                userProfile = models.Profile.objects.filter(userId__exact=request.user.id)
-                if int(userProfile[0].id) == int(id):
-                    thisUser = True
-                    
-            coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
-            # Get the number of students
-            students = 0
-            for courseMade in coursesMade:
-                students += models.CoursesEnrolled.objects.filter(courseId__exact=courseMade.courseId).count()
-            # Get the average rating   
-            ratings = models.Rating.objects.none()         
-            for courseMade in coursesMade:
-                ratings = ratings | models.Rating.objects.filter(courseId__exact=courseMade.courseId)
+        # Check if the current user is the user of the profile
+        thisUser = False
+        if request.user.is_authenticated:
+            if profile[0].userId.id == request.user.id:
+                thisUser = True
                 
-            numRatings = 0
-            totalRatings = 0
-            for rating in ratings:
-                numRatings += 1
-                totalRatings += rating.rating
-            avgRating = 0
-            if numRatings > 0:
-                avgRating = totalRatings/numRatings
-            return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser, 
-                                                            'students': students, 'numRatings': numRatings, 'avgRating': avgRating})
+        coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
+        # Get the number of students
+        students = 0
+        for courseMade in coursesMade:
+            students += models.CoursesEnrolled.objects.filter(courseId__exact=courseMade.courseId).count()
+        # Get the average rating   
+        ratings = models.Rating.objects.none()         
+        for courseMade in coursesMade:
+            ratings = ratings | models.Rating.objects.filter(courseId__exact=courseMade.courseId)
+            
+        numRatings = 0
+        totalRatings = 0
+        for rating in ratings:
+            numRatings += 1
+            totalRatings += rating.rating
+        avgRating = 0
+        if numRatings > 0:
+            avgRating = totalRatings/numRatings
+        return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser, 
+                                                        'students': students, 'numRatings': numRatings, 'avgRating': avgRating})
 
 def chat_on(request):
     return render(request,"app/chat.html")
@@ -179,10 +174,11 @@ def courseCreated(request, id):
     profile = models.Profile.objects.filter(userId__exact=id)
     public = models.Public.objects.filter(profileId__exact=profile[0].id)
     coursesMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id)
+
+    # Check if the current user is the user of the profile
     thisUser = False
     if request.user.is_authenticated:
-        userProfile = models.Profile.objects.filter(userId__exact=request.user.id)
-        if int(userProfile[0].id) == int(id):
+        if profile[0].userId.id == request.user.id:
             thisUser = True
         
         
