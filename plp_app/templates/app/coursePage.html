@@ -141,19 +141,12 @@
     {% endif %}
   </div>
 
+  <!-- Edit Course -->
 {% if thisUser %}
-
   <div>
     <a href="../editCourse/{{ course.id }}">Edit Course</a>
   </div>
-
   {% endif %}
-
-  <!-- Course Owner -->
-  <div>
-    <h2>Course Creator:</h2>
-    <h4><a href="../viewProfile/{{ creator.profileId.userId.id }}"> {{ creator.name}} {{ creator.surname }}</a></h4>
-  </div>
 
   <!-- Enroll Course -->
   {% if not enrolled %}
@@ -161,6 +154,13 @@
     <a href="../enrollCourse/{{ course.id }}">Enroll this course</a>
   </div>
   {% endif %}
+  
+  <!-- Course Owner -->
+  <div>
+    <h2>Course Creator:</h2>
+    <h4><a href="../viewProfile/{{ creator.profileId.userId.id }}"> {{ creator.name}} {{ creator.surname }}</a></h4>
+  </div>
+
   <!-- Category -->
   <div>
     <h2>Category:</h2>

@@ -103,13 +103,14 @@ def coursePage(request, id):
             liveChat = [None]
         # Check if it's enrolled
         enrolled = thisUser
-        if not thisUser:
+        if not thisUser and request.user.is_authenticated:
             profile = models.Profile.objects.filter(userId__exact=request.user.id)
             private = models.Private.objects.filter(profileId__exact=profile[0].id)
             courseEnrolled = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id, courseId__exact=id)
             if courseEnrolled:
                 enrolled = True
-            
+        elif not request.user.is_authenticated:
+            enrolled = True
         # Find the ratings
         ratings = models.Rating.objects.filter(courseId__exact=course[0])
         return render(request, "app/coursePage.html", {'course': course[0],
