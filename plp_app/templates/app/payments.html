@@ -81,7 +81,7 @@
         {% for enrolledCourse in enrolledCourses %}
         <tbody>
             <tr>
-                <td><a class="pretty" href="../course/{{ courseEnrolled.courseId.id }}">{{ enrolledCourse.courseId.name }}</a></td>
+                <td><a class="pretty" href="../course/{{ enrolledCourse.courseId.id }}">{{ enrolledCourse.courseId.name }}</a></td>
                 <td>{{ enrolledCourse.courseId.price }}€</td>
                 <td>{{ enrolledCourse.paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1'}}</td>
             </tr>
