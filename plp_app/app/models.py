@@ -98,7 +98,7 @@ class Rating(models.Model):
     def __str__(self):
         return str(self.rating) + '/5 - ' + self.comment
 
-
+ 
 class TeachingUnit(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
     description = models.CharField(max_length=500)

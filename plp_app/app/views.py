@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from . import models
+import sweetify as s
 
 # Create your views here.
 
@@ -22,27 +23,22 @@ def register(request):
         password2 = request.POST['password1']
 
         if password1 == password2:
-            try:
-                myuser = User.objects.create_user(
-                    first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
-                myuser.save()
-                #create public and private profile views for the user
-                newprofile=models.Profile(userId=myuser)
-                newprofile.save()
-            
-                newpublic=models.Public(profileId=newprofile,name=first_name,surname=last_name,avatar=1)
-                newprivate=models.Private(profileId=newprofile,email=email)
-                newpublic.save()
-                newprivate.save()
-               
 
+            myuser = User.objects.create_user(
+                first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
+            myuser.save()
+            # create public and private profile views for the user
+            newprofile = models.Profile(userId=myuser)
+            newprofile.save()
 
-            except:
-                messages.error(
-                    request, "Something went wrong when creating your account")
+            newpublic = models.Public(
+                profileId=newprofile, name=first_name, surname=last_name, avatar=1)
+            newprivate = models.Private(profileId=newprofile, email=email)
+            newpublic.save()
+            newprivate.save()
 
             messages.success(
-                request, "Your account has been sucessfully created.")
+                request, "Your account has been sucessfully created!")
 
             return redirect('loginpage')
 
@@ -63,10 +59,14 @@ def loginpage(request):
         if user is not None:
             login(request, user)
             fname = user.username
+            s.success(request, 'Logged in successfully!',
+                      button="OK", timer=2000)
+            print("get sweetified")
             return render(request, "app/landing.html", {'fname': fname})
 
         else:
-            messages.error(request, "Wrong credentials.")
+            s.error(request, 'Wrong credentials.',
+                      button="OK", timer=2000)
             return redirect('home')
 
     return render(request, "app/loginpage.html")
@@ -74,7 +74,8 @@ def loginpage(request):
 
 def signout(request):
     logout(request)
-    messages.success(request, "Logged out sucessfully.")
+    s.info(request, 'Logged out.',
+                      button="OK", timer=2000)
     return redirect('home')
 
 
@@ -104,9 +105,12 @@ def coursePage(request, id):
         # Check if it's enrolled
         enrolled = thisUser
         if not thisUser and request.user.is_authenticated:
-            profile = models.Profile.objects.filter(userId__exact=request.user.id)
-            private = models.Private.objects.filter(profileId__exact=profile[0].id)
-            courseEnrolled = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id, courseId__exact=id)
+            profile = models.Profile.objects.filter(
+                userId__exact=request.user.id)
+            private = models.Private.objects.filter(
+                profileId__exact=profile[0].id)
+            courseEnrolled = models.CoursesEnrolled.objects.filter(
+                privateId__exact=private[0].id, courseId__exact=id)
             if courseEnrolled:
                 enrolled = True
         elif not request.user.is_authenticated:
@@ -128,7 +132,8 @@ def teachingUnitPage(request, id):
     unit = models.TeachingUnit.objects.filter(id__exact=id)
     # If it doesn't find any
     if not unit:
-        messages.error(request, "Teaching unit doesn't exist.")
+        s.error(request, 'Teaching unit does not exist.',
+                      button="OK", timer=2000)
         return redirect('home')
     else:
         # Find the materials
@@ -169,7 +174,8 @@ def viewProfile(request, id):
     profile = models.Profile.objects.filter(userId__exact=id)
     # If it doesn't find any profile
     if not profile:
-        messages.error(request, "User doesn't exist")
+        s.error(request, "User doesn't exist.",
+                      button="OK", timer=2000)
         return redirect('home')
     else:
         public = models.Public.objects.filter(profileId__exact=profile[0].id)
@@ -200,7 +206,7 @@ def viewProfile(request, id):
         avgRating = 0
         if numRatings > 0:
             avgRating = totalRatings/numRatings
-        return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser, 
+        return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser,
                                                         'students': students, 'numRatings': numRatings, 'avgRating': avgRating, 'showOptions': True})
 
 
@@ -248,7 +254,7 @@ def courseCreated(request, id):
         moneyEarned.append(numStudents * courseMade.courseId.price)
 
     data = zip(coursesMade, students, liveChats, moneyEarned)
-    return render (request, "app/courseCreated.html", {'coursesMade': coursesMade, 'data': data, 'thisUser': thisUser, 'userId': id, 'showOptions': True})
+    return render(request, "app/courseCreated.html", {'coursesMade': coursesMade, 'data': data, 'thisUser': thisUser, 'userId': id, 'showOptions': True})
 
 
 def payments(request):
@@ -263,8 +269,8 @@ def payments(request):
         total = 0
         for course in enrolledCourses:
             total += course.courseId.price
-        
-        return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails, 
+
+        return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails,
                                                      'total': total, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
     return redirect('home')
 
@@ -272,7 +278,8 @@ def payments(request):
 def rateCourse(request, id):
     course = models.Course.objects.filter(id__exact=id)
     if not course:
-        messages.error(request, "Course doesn't exist.")
+        s.error(request, "Course doesn't exist.",
+                      button="OK", timer=2000)
         return redirect('home')
 
     return render(request, "app/rateCourse.html", {'course': course[0]})
@@ -300,7 +307,8 @@ def createNewCourse(request):
         categories = models.Category.objects.all()
         return render(request, "app/createNewCourse.html", {'categories': categories, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
     return redirect('home')
-    
+
+
 def saveNewCourse(request):
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -330,9 +338,9 @@ def coursesEnrolled(request):
     if request.user.is_authenticated:
         profile = models.Profile.objects.filter(userId__exact=request.user.id)
         private = models.Private.objects.filter(profileId__exact=profile[0].id)
-        coursesEnrolled = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id)
-        
-        
+        coursesEnrolled = models.CoursesEnrolled.objects.filter(
+            privateId__exact=private[0].id)
+
         return render(request, "app/coursesEnrolled.html", {'coursesEnrolled': coursesEnrolled, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
     return redirect('home')
 
@@ -343,7 +351,8 @@ def editCourse(request, id):
         course = models.Course.objects.filter(id__exact=id)
         # If course doesn't exist
         if not course:
-            messages.error(request, "Course doesn't exist.")
+            s.error(request, "Course doesn't exist.",
+                      button="OK", timer=2000)
             return redirect('home')
         # Check if the user was the one who made it
         profile = models.Profile.objects.filter(userId__exact=request.user.id)
@@ -352,14 +361,15 @@ def editCourse(request, id):
             publicId__exact=public[0].id, courseId__exact=id)
         # If it's not theirs
         if not courseMade:
-            messages.error(request, "You can't edit this course")
+            s.error(request, "You don't have permission to edit this course.",
+                      button="OK", timer=2000)
             return redirect('home')
         # Get all the categories except the one the course has
         categories = models.Category.objects.all().exclude(
             id=course[0].categoryId.id)
         # If all okay load the page to edit it
-        return render(request, "app/editCourse.html", {'course': course[0], 'categories':categories, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
-        
+        return render(request, "app/editCourse.html", {'course': course[0], 'categories': categories, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
+
     return redirect('home')
 
 
@@ -383,22 +393,27 @@ def saveCourseChanges(request):
 
     return redirect('home')
 
+
 def enrollCourse(request, id):
     if request.user.is_authenticated:
         course = models.Course.objects.filter(id__exact=id)
         # Check if the user isn't the owner and isn't already enrolled
         profile = models.Profile.objects.filter(userId__exact=request.user.id)
         public = models.Public.objects.filter(profileId__exact=profile[0].id)
-        courseMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id, courseId__exact=id)
+        courseMade = models.CoursesMade.objects.filter(
+            publicId__exact=public[0].id, courseId__exact=id)
         # If the user is the creator of the course
         if courseMade:
-            messages.error(request, "You can't enroll your own course")
+            s.error(request, "You can't enroll your own course.",
+                      button="OK", timer=2000)
             return redirect('coursePage', id)
         private = models.Private.objects.filter(profileId__exact=profile[0].id)
-        courseEnrolled = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id, courseId__exact=id)
+        courseEnrolled = models.CoursesEnrolled.objects.filter(
+            privateId__exact=private[0].id, courseId__exact=id)
         # If the user is already enrolled
         if courseEnrolled:
-            messages.error(request, "You are already enrolled in this course")
+            s.info(request, "You are already enrolled in this course.",
+                      button="OK", timer=2000)
             return redirect('coursePage', id)
         # If all passes then redirect
         return render(request, "app/enrollCourse.html", {"course": course})
@@ -420,7 +435,7 @@ def addTeachingUnit(request,id):
             new=models.Written(materialId=newunit,title=title,content=content)
             new.save()
             return redirect('coursePage',id)
-    return render(request,'app/addTeachingUnit.html', {'course': id})
+    return render(request,'app/addTeachingUnit.html', {'course': id})  
     
             
         
