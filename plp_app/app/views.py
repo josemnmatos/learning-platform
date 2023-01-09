@@ -107,6 +107,7 @@ def teachingUnitPage(request, id):
         # return page
         return render(request, "app/teachingUnit.html", {'unit': unit[0],
                                                          'materials': materials})
+        
 
 
 def searchResults(request):
