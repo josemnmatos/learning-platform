@@ -211,7 +211,7 @@ def viewProfile(request, id):
             totalRatings += rating.rating
         avgRating = 0
         if numRatings > 0:
-            avgRating = totalRatings/numRatings
+            avgRating = round(totalRatings/numRatings, 2)
         return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser,
                                                         'students': students, 'numRatings': numRatings, 'avgRating': avgRating, 'showOptions': True})
 
@@ -422,9 +422,11 @@ def enrollCourse(request, id):
                       button="OK", timer=2000)
             return redirect('coursePage', id)
         # If all passes then redirect
-        return render(request, "app/enrollCourse.html", {"course": course})
-
+        paymentMethods = models.PaymentDetails.objects.filter(privateId__exact=private[0].id)
+        return render(request, "app/enrollCourse.html", {"course": course[0], 'paymentMethods': paymentMethods})
     return redirect('home')
+
+  
 
 def addTeachingUnit(request,id):
     
@@ -444,6 +446,23 @@ def addTeachingUnit(request,id):
     return render(request,'app/addTeachingUnit.html', {'course': id})  
     
             
-def addPaymentMethod(request):
+def saveEnrollment(request):
     if request.user.is_authenticated:
-        return render(request, "app/addPaymentMethod.html", {'thisUser': True, 'userId': request.user.id, 'showOptions': True})
+        if request.method == 'POST':
+            courseId = request.POST['courseId']
+            
+            course = models.Course.objects.filter(id__exact=courseId)[0]
+            profile = models.Profile.objects.filter(userId__exact=request.user.id)
+            private = models.Private.objects.filter(profileId__exact=profile[0].id)
+            
+            courseEnrolled = models.CoursesEnrolled(privateId=private[0], courseId=course)
+            if course.price > 0:
+                paymentMethod = request.POST['paymentMethod']
+                
+                courseEnrolled.paymentMethod = models.PaymentDetails.objects.filter(id__exact=paymentMethod)[0]
+            courseEnrolled.save()
+            
+        return redirect('coursePage', course.id)
+    
+    return redirect('home')
+    

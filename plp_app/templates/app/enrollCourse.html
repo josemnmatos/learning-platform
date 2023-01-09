@@ -3,11 +3,27 @@
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
 
+<form method="POST" action="../saveEnrollment">
+    {% csrf_token %}
 
-<p>hello</p>
-<p>I need to pick a card if the course.price != 0</p>
-<p>If i dont have cards i can add them</p>
-<p>In the end it needs to be created a CoursesEnrolled with the request.user.id, course.id and the paymentDetail.id</p>
+    <input type="hidden" name="courseId" value="{{ course.id }}">
+
+    {% if course.price > 0 %}
+        {% if not paymentMethods %}
+            <a href="../payments">Add a payment method</a>
+        {% else %}
+        <label for="paymentMethod">Choose card: </label>
+        <select name="paymentMethod">
+            {% for paymentMethod in paymentMethods %}
+                <option value="{{ paymentMethod.id }}">{{ paymentMethod.cardNumber }}</option>
+            {% endfor %}
+        </select><br>
+        {% endif %}
+    {% endif %}
+
+    <input type="submit" name="enroll" value="Enroll Course">
+    
+</form>
 
 
 {% endblock %}

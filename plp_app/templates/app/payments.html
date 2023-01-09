@@ -81,7 +81,7 @@
         {% for enrolledCourse in enrolledCourses %}
         <tbody>
             <tr>
-                <td><a class="pretty" href="../course/{{ courseEnrolled.courseId.id }}">{{ enrolledCourse.courseId.name }}</a></td>
+                <td><a class="pretty" href="../course/{{ enrolledCourse.courseId.id }}">{{ enrolledCourse.courseId.name }}</a></td>
                 <td>{{ enrolledCourse.courseId.price }}€</td>
                 <td>{{ enrolledCourse.paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1'}}</td>
             </tr>
@@ -100,7 +100,6 @@
 <div>
 <h2>Payment Methods</h2>
 <div class="payment-methods">
-    <a href="../addPaymentMethod" class="add"><img class="plusImg" src="{% static 'images/' %}plus.png"></a>
     {% if not paymentDetails %}
         <p>No Payment Methods</p>
     {% else %}
