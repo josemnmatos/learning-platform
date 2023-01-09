@@ -64,7 +64,7 @@
 
     </style>
     
-        {% include 'app/navBar.html' with thisUser=thisUser userId=public.profileId.userId.id %}
+        {% include 'app/navBar.html' with thisUser=thisUser userId=public.profileId.userId.id showOptions=showOptions %}
 
             <p style="text-align:left; display: table-cell;"><img class="image" src="{% static 'images/' %}{{ public.avatar }}.png"></p>
             <p class = "name"> {{ public.name }} {{ public.surname }}</p>

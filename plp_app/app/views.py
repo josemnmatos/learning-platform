@@ -92,7 +92,8 @@ def coursePage(request, id):
                                                        'teachingUnits': teachingUnits,
                                                        'liveChat': liveChat[0],
                                                        'ratings': ratings,
-                                                       'thisUser': thisUser})
+                                                       'thisUser': thisUser,
+                                                       'showOptions': True})
 
 def teachingUnitPage(request, id):
     # Gets the unit with the exact id passed in
@@ -168,7 +169,7 @@ def viewProfile(request, id):
         if numRatings > 0:
             avgRating = totalRatings/numRatings
         return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser, 
-                                                        'students': students, 'numRatings': numRatings, 'avgRating': avgRating})
+                                                        'students': students, 'numRatings': numRatings, 'avgRating': avgRating, 'showOptions': True})
 
 def chat_on(request):
     return render(request,"app/chat.html")
@@ -207,7 +208,7 @@ def courseCreated(request, id):
         moneyEarned.append(numStudents * courseMade.courseId.price)
         
     data = zip(coursesMade, students, liveChats, moneyEarned)
-    return render (request, "app/courseCreated.html", {'coursesMade': coursesMade, 'data': data, 'thisUser': thisUser, 'userId': id})
+    return render (request, "app/courseCreated.html", {'coursesMade': coursesMade, 'data': data, 'thisUser': thisUser, 'userId': id, 'showOptions': True})
 
 
 def payments(request):
@@ -221,7 +222,8 @@ def payments(request):
         for course in enrolledCourses:
             total += course.courseId.price
         
-        return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails, 'total': total, 'thisUser': True, 'userId': request.user.id})
+        return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails, 
+                                                     'total': total, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
     return redirect('home')
 
 def rateCourse(request, id):
@@ -250,8 +252,10 @@ def saveRating(request):
 
 
 def createNewCourse(request):
-    categories = models.Category.objects.all()
-    return render(request, "app/createNewCourse.html", {'categories': categories})
+    if request.user.is_authenticated:
+        categories = models.Category.objects.all()
+        return render(request, "app/createNewCourse.html", {'categories': categories, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
+    return redirect('home')
     
 def saveNewCourse(request):
     if request.user.is_authenticated:
@@ -281,7 +285,7 @@ def coursesEnrolled(request):
         coursesEnrolled = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id)
         
         
-        return render(request, "app/coursesEnrolled.html", {'coursesEnrolled': coursesEnrolled, 'thisUser': True, 'userId': request.user.id})
+        return render(request, "app/coursesEnrolled.html", {'coursesEnrolled': coursesEnrolled, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
     return redirect('home')
 
 
@@ -305,7 +309,7 @@ def editCourse(request, id):
         # Get all the categories except the one the course has
         categories = models.Category.objects.all().exclude(id=course[0].categoryId.id)
         # If all okay load the page to edit it
-        return render(request, "app/editCourse.html", {'course': course[0], 'categories':categories, 'thisUser': True, 'userId': request.user.id})
+        return render(request, "app/editCourse.html", {'course': course[0], 'categories':categories, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
         
     return redirect('home')
 
