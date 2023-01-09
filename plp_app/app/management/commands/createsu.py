@@ -6,9 +6,10 @@ class Command(BaseCommand):
     help = 'Creates a superuser.'
 
     def handle(self, *args, **options):
-        user_search= User.objects.get(username="admin")
+        try:
+            user_search= User.objects.get(username="admin")
         
-        if user_search == None:
+        except:
             user = User(
                 username="admin",
                 email="admin@admin.com",
