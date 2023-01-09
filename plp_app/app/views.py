@@ -104,9 +104,13 @@ def teachingUnitPage(request, id):
     else:
         # Find the materials
         materials = models.Material.objects.filter(unitId__exact=unit[0])
+        written = models.Written.objects.filter(materialId__exact=materials[0])
+        video = models.Video.objects.filter(materialId__exact=materials[0])
         # return page
         return render(request, "app/teachingUnit.html", {'unit': unit[0],
-                                                         'materials': materials})
+                                                         'materials': materials,
+                                                         'written': written,
+                                                         'video': video })
         
 
 
