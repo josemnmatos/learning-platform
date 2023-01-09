@@ -181,8 +181,17 @@
 
 <div class="course-body">
   <!-- Teaching Units -->
+  
   <div class="teaching-units">
     <h2>Teaching Units</h2>
+    {% if thisUser %}
+    
+      <div>
+        <a class="button" href="../addTeachingUnit/{{course.id}}" align="right">Add teaching Unit</a>
+      </div>
+    
+    {% endif %}
+    
     {% if not teachingUnits %}
     <p>No teaching units for now</p>
     {% else %}

@@ -404,3 +404,23 @@ def enrollCourse(request, id):
         return render(request, "app/enrollCourse.html", {"course": course})
 
     return redirect('home')
+
+def addTeachingUnit(request,id):
+    
+    if request.user.is_authenticated:
+        
+        if request.method == 'POST':
+            title = request.POST['title']
+            content = request.POST['content']
+            unit = models.Course.objects.filter(id__exact=id)
+            unit1 = models.TeachingUnit(courseId=unit[0],description="Teaching Unit")
+            unit1.save()
+            newunit=models.Material(unitId=unit1, materialName=title)
+            newunit.save()
+            new=models.Written(materialId=newunit,title=title,content=content)
+            new.save()
+            return redirect('coursePage',id)
+    return render(request,'app/addTeachingUnit.html', {'course': id})
+    
+            
+        

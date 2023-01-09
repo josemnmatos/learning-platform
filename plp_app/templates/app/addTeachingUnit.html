@@ -1,0 +1,21 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+{%load static%}
+
+<head>
+    <link rel="stylesheet" href="static/addtu.css">
+</head>
+
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        Title: <input type="text" name="title"/><br/>
+        Content: <br/>
+        <textarea cols="35" rows="8" name="content">
+        </textarea><br/>
+        <input type="submit" value="Post" href="course/{{ course.id }}"/>
+    </form>
+</body>
+{% endblock %}

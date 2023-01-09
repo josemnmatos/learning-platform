@@ -17,6 +17,10 @@
       {% for videos in video %}
       <a href="{{ videos.content }}">{{ material.materialName }}</a>
       {% endfor %}
+      {% for writte in written %}
+      <h1> {{material.materialName}} </h4>
+      <p> {{writte.content}} </p>
+      {% endfor %}
     </li>
     <br />
     {% endfor %}
