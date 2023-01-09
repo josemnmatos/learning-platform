@@ -28,7 +28,7 @@
   .form_container {
     background-color: white;
     max-width: 500px;
-    height: 450px;
+    height: 600px;
     padding: 100px;
     border-radius: 20px;
   }
@@ -87,6 +87,16 @@
         <form action="/register" method="post">
           {% csrf_token %}
           <h1>Register</h1>
+          <div class = "input_single"> 
+            <input class = "input" type="text" id="first_name" name="first_name" required />
+            <label for = "first_name">First Name</label>
+          </div>
+
+          <div class = "input_single"> 
+            <input class = "input" type="text" id="last_name" name="last_name" required />
+            <label for = "last_name">Last Name</label>
+          </div>
+
           <div class = "input_single"> 
             <input class = "input" type="text" id="username" name="username" required />
             <label for = "username">Username</label>

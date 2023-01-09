@@ -32,7 +32,7 @@
 
 </style>
 
-{% include 'app/navBar.html' with thisUser=thisUser userId=userId %}
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
 
 {% if not coursesEnrolled %}
     <h2>You are not enrolled in any course!</h2>

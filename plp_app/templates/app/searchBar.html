@@ -61,11 +61,11 @@
     color:rgba(0, 0, 0, 0.514); 
   }
 
-  .search-bar button img{
+  .search-bar .searchButton img{
     width: 17px;
   }
 
-  .search-bar button{
+  .search-bar .searchButton{
     border:0;
     border-radius: 50%;
     width: 40px;
@@ -80,7 +80,7 @@
 <form action="../searchResults" class= "search-bar" method="GET" >
   
   <input class= "input" type="text" id="name" name="name" placeholder="Search user/course">
-  <button type="submit"><img src= "{%static 'images/search.png'%}"></button>
+  <button class="searchButton" type="submit"><img src= "{%static 'images/search.png'%}"></button>
 
 </form>
 
