@@ -6,15 +6,19 @@ class Command(BaseCommand):
     help = 'Creates a superuser.'
 
     def handle(self, *args, **options):
-        user = User(
-            username="admin",
-            email="admin@admin.com",
-            first_name="main",
-            last_name="admin",
-        )
-        user.set_password("admin")
-        user.is_superuser = True
-        user.is_staff = True
-        user.save()
+        user_search= User.objects.get(username="admin")
+        
+        if user_search == None:
+            user = User(
+                username="admin",
+                email="admin@admin.com",
+                first_name="main",
+                last_name="admin",
+            )
+            user.set_password("admin")
+            user.is_superuser = True
+            user.is_staff = True
+            user.save()
+            print("Superuser created.")
 
-        return user
+        
