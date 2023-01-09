@@ -8,26 +8,11 @@
     <title>Learning Together</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style></style>
   </head>
   <body>
-    <div>
-      {% if messages %} {% for message in messages %}
-      <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
-        {{ message }}
-      </div>
-      {% endfor %} {% endif %}
-    </div>
-
-    {% block content %}{% endblock content %}
+    {% block content %} {% endblock content %}
     <!-- The code will be here -->
-
-    <script>
-      setTimeout(function () {
-        if ($("#msg").length > 0) {
-          $("#msg").remove();
-        }
-      }, 2000);
-    </script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% load sweetify %} {% sweetify %}
   </body>
 </html>
