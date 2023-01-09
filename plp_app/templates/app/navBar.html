@@ -55,16 +55,18 @@
 
 <nav class="navbar">
     <div class="title"><a style="text-decoration: none; color:rgb(13, 64, 105);" href="../">Learning Together</a></div>
-    <div class="container">
+    <div >
         {% include 'app/searchBar.html' %}
     </div>
     <ul class="ulist">
+        {% if showOptions %}
         <li><a href="../viewProfile/{{ userId }}">Profile</a></li> 
         {% csrf_token %}
         {% if thisUser %}
         <li><a href="../payments">Payments</a></li>
         {% endif %}
         <li><a href="../courseCreated/{{ userId }}">Courses Created</a></li> 
+        {% endif %}
     </ul>
     {% include 'app/menu.html' %}
 </nav>

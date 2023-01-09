@@ -18,7 +18,7 @@
         width: 7%;
     }
 
-    a {
+    .link {
         margin: 3%;
         text-decoration: none;
         color: #1abc9c;
@@ -36,6 +36,7 @@
         border: 3px solid #1abc9c;
         border-radius: 10px;
     }
+
 </style>
 
 <h1>Search Results</h1>
@@ -54,7 +55,7 @@
             <div class="result">
                 <li>
                     
-                    <a href="../viewProfile/{{ public.profileId.userId.id }}"><img src="{% static 'images/' %}{{ public.avatar }}.png"> {{ public.name }} {{ public.surname }}</a> 
+                    <a class="link" href="../viewProfile/{{ public.profileId.userId.id }}"><img src="{% static 'images/' %}{{ public.avatar }}.png"> {{ public.name }} {{ public.surname }}</a> 
                 </li>  
             </div>
         {% endfor %}
@@ -73,7 +74,7 @@
         <ul>
         {% for course in courses %}
             <div class="result">
-                <li> <a href="../course/{{ course.id }}">{{ course.name }} - {{ course.price }}€</a> </li>
+                <li> <a class="link" href="../course/{{ course.id }}">{{ course.name }} - {{ course.price }}€</a> </li>
             </div>
             <br>
         {% endfor %}

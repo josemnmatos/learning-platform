@@ -14,7 +14,9 @@
     {% for material in materials %}
     <li>
       <!--INSERT HREF FOR MATERIALS OF DIFFERENT KINDS? -->
-      <a href="">{{ material.materialName }}</a>
+      {% for videos in video %}
+      <a href="{{ videos.content }}">{{ material.materialName }}</a>
+      {% endfor %}
     </li>
     <br />
     {% endfor %}

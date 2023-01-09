@@ -3,35 +3,35 @@
 
 <style>
 
-    select, input, label {
+    .formElement {
         margin: 10px;
     }
 
 </style>
 
-{% include 'app/navBar.html' with thisUser=thisUser userId=userId %}
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
 
 {% if thisUser %}
 
 <form method="POST" action="../saveCourseChanges">
     {% csrf_token %}
 
-    <input type="hidden" name="courseId" value="{{ course.id }}">
-    Name:<input type="text" name="name" value="{{ course.name }}"><br>
+    <input class="formElement" type="hidden" name="courseId" value="{{ course.id }}">
+    Name:<input class="formElement" type="text" name="name" value="{{ course.name }}"><br>
     
-    Average Master Time:<input type="number" name="averageMasterTime" value="{{ course.averageMasterTime }}" min="1"><br>
+    Average Master Time:<input class="formElement" type="number" name="averageMasterTime" value="{{ course.averageMasterTime }}" min="1"><br>
 
-    Price:<input type="number" name="price" value="{{ course.price }}" step=".01" min="0"><br>
+    Price:<input class="formElement" type="number" name="price" value="{{ course.price }}" step=".01" min="0"><br>
 
-    Category: <select name="category">
-        <option value="{{ category.id }}">{{ course.categoryId.category }}</option>
+    Category: <select class="formElement" name="category">
+        <option class="formElement" value="{{ category.id }}">{{ course.categoryId.category }}</option>
         {% for category in categories %}
-            <option value="{{ category.id }}">{{ category.category }}</option>
+            <option class="formElement" value="{{ category.id }}">{{ category.category }}</option>
         {% endfor %}
     </select><br>
 
-    <input type="submit" name="submit" value="Submit">
-    <input type="reset" value="Reset">
+    <input class="formElement" type="submit" name="submit" value="Submit">
+    <input class="formElement" type="reset" value="Reset">
 </form>
 
 {% else %}
