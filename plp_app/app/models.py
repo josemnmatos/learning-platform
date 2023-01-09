@@ -98,7 +98,7 @@ class Rating(models.Model):
     def __str__(self):
         return str(self.rating) + '/5 - ' + self.comment
 
-
+ 
 class TeachingUnit(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
     description = models.CharField(max_length=500)
@@ -118,7 +118,7 @@ class Material(models.Model):
 class Written(models.Model):
     materialId = models.ForeignKey(Material, on_delete=models.CASCADE)
     content = models.TextField()
-    length = models.IntegerField()
+    title = models.TextField()
 
     def __str__(self):
         return self.content

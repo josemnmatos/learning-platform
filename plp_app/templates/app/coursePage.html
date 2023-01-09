@@ -16,7 +16,7 @@
     align-items: center;
     height: 20vh;
   }
-
+ 
   .live-chat{
     padding: 10px;
     border: 1px solid black;
@@ -61,7 +61,7 @@
   }
 
   a {
-    color: white;
+    color: black;
   }
 
 
@@ -189,11 +189,20 @@
 
 <div class="course-body">
   <!-- Teaching Units -->
+  
   <div class="teaching-units">
     {% if thisUser %}
       <a href="../addTeachingUnit/{{ course.id }}" class="add"><img class="plusImg" src="{% static 'images/' %}plus.png"></a>
     {% endif %}
     <h2>Teaching Units</h2>
+    {% if thisUser %}
+    
+      <div>
+        <a class="button" href="../addTeachingUnit/{{course.id}}" align="right">Add teaching Unit</a>
+      </div>
+    
+    {% endif %}
+    
     {% if not teachingUnits %}
       <p>No teaching units for now</p>
     {% else %}
