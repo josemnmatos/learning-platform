@@ -110,7 +110,7 @@ class TeachingUnit(models.Model):
 class Material(models.Model):
     unitId = models.ForeignKey(TeachingUnit, on_delete=models.CASCADE)
     materialName = models.CharField(max_length=100)
-
+    
     def __str__(self):
         return self.unitId.courseId.name + ' - ' + self.unitId.description
 
@@ -144,11 +144,10 @@ class Audio(models.Model):
 
 class Video(models.Model):
     materialId = models.ForeignKey(Material, on_delete=models.CASCADE)
-    resolution = models.CharField(max_length=20)
+    content = models.CharField(max_length=10000)
     time = models.IntegerField()
 
-    def __str__(self):
-        return self.resolution + ' - ' + self.time
+    
 
 
 class LiveChat(models.Model):
