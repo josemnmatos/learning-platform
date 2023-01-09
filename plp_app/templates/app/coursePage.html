@@ -123,6 +123,14 @@
       width: 20px;
     }
 
+    .add{
+      float: right;
+      margin: 20px;
+      border:0;
+      background-color: transparent;
+      cursor: pointer;
+  }
+
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=creator.profileId.userId.id showOptions=showOptions %}
@@ -154,7 +162,7 @@
     <a href="../enrollCourse/{{ course.id }}">Enroll this course</a>
   </div>
   {% endif %}
-  
+
   <!-- Course Owner -->
   <div>
     <h2>Course Creator:</h2>
@@ -182,9 +190,12 @@
 <div class="course-body">
   <!-- Teaching Units -->
   <div class="teaching-units">
+    {% if thisUser %}
+      <a href="../addTeachingUnit/{{ course.id }}" class="add"><img class="plusImg" src="{% static 'images/' %}plus.png"></a>
+    {% endif %}
     <h2>Teaching Units</h2>
     {% if not teachingUnits %}
-    <p>No teaching units for now</p>
+      <p>No teaching units for now</p>
     {% else %}
     <ol>
       {% for unit in teachingUnits %}
@@ -200,11 +211,22 @@
     <div class="ratings-header">
       <h2>Ratings</h2>
     </div>
+
+    {% if enrolled and not thisUser%}
     <div class="container">
       {%include 'app/rateCourse.html'%}
     </div>
+    {% endif %}
+
     {% if not ratings %}
+      {% if not user.is_authenticated %}
+      {% elif not enrolled %}
+      <p>To rate this course you need to be enrolled!</p>
+      {% elif thisUser %}
+      <p>No ratings yet!</p>
+      {% else %}
       <p>Be the first one to rate this course!</p>
+      {% endif %}
     {% else %}
       {% for rating in ratings %}
       <div class="rating">

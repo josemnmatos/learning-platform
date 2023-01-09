@@ -1,6 +1,9 @@
 {% extends 'app/base.html' %}
 {% block content %}
 
+{% load static %}
+
+
 <style>
 
     .pretty{
@@ -49,10 +52,18 @@
         padding: 5px;
     }
 
+    .add{
+        float: right;
+        border:0;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
 </style>
 
     
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+
 <div class="container">
     <div>
     <h2>History of Payments</h2>
@@ -89,6 +100,7 @@
 <div>
 <h2>Payment Methods</h2>
 <div class="payment-methods">
+    <a href="../addPaymentMethod" class="add"><img class="plusImg" src="{% static 'images/' %}plus.png"></a>
     {% if not paymentDetails %}
         <p>No Payment Methods</p>
     {% else %}

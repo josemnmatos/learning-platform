@@ -51,11 +51,11 @@
         <h3>Profiles Found</h3>
 
         <ul>
-        {% for public in publics %}
+        {% for public, courseMade in data %}
             <div class="result">
                 <li>
                     
-                    <a class="link" href="../viewProfile/{{ public.profileId.userId.id }}"><img src="{% static 'images/' %}{{ public.avatar }}.png"> {{ public.name }} {{ public.surname }}</a> 
+                    <a class="link" href="../viewProfile/{{ public.profileId.userId.id }}"><img src="{% static 'images/' %}{{ public.avatar }}.png"> {{ public.name }} {{ public.surname }} - {{ courseMade }} courses</a> 
                 </li>  
             </div>
         {% endfor %}
@@ -74,7 +74,7 @@
         <ul>
         {% for course in courses %}
             <div class="result">
-                <li> <a class="link" href="../course/{{ course.id }}">{{ course.name }} - {{ course.price }}€</a> </li>
+                <li> <a class="link" href="../course/{{ course.id }}">{{ course.name }} - ({{ course.categoryId.category }}) {{ course.price }}€</a> </li>
             </div>
             <br>
         {% endfor %}

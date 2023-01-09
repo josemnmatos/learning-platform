@@ -119,7 +119,7 @@ def coursePage(request, id):
                                                        'liveChat': liveChat[0],
                                                        'ratings': ratings,
                                                        'thisUser': thisUser,
-                                                       'showOptions': True,
+                                                       'showOptions': False,
                                                        'enrolled': enrolled})
 
 
@@ -158,8 +158,14 @@ def searchResults(request):
         # Get all the course objects that contain the name in name
         courses = models.Course.objects.filter(
             name__icontains=name).order_by('name')
+        # Get the number of courses made
+        coursesMade = []
+        for public in publics:
+            coursesMade.append(models.CoursesMade.objects.filter(publicId__exact=public.id).count())
 
-        return render(request, "app/searchResults.html", {'courses': courses, 'publics': publics})
+        data = zip(publics, coursesMade)
+
+        return render(request, "app/searchResults.html", {'courses': courses, 'publics': publics, 'data': data})
     # If it isn't a GET request go to home page
     return redirect('home')
 
@@ -333,7 +339,7 @@ def coursesEnrolled(request):
         coursesEnrolled = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id)
         
         
-        return render(request, "app/coursesEnrolled.html", {'coursesEnrolled': coursesEnrolled, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
+        return render(request, "app/coursesEnrolled.html", {'coursesEnrolled': coursesEnrolled, 'thisUser': True, 'userId': request.user.id, 'showOptions': False})
     return redirect('home')
 
 
@@ -404,3 +410,25 @@ def enrollCourse(request, id):
         return render(request, "app/enrollCourse.html", {"course": course})
 
     return redirect('home')
+
+
+def addTeachingUnit(request, id):
+    if request.user.is_authenticated:
+        course = models.Course.objects.filter(id__exact=id)
+        # Check if the user was the one to create it
+        profile = models.Profile.objects.filter(userId__exact=request.user.id)
+        public = models.Public.objects.filter(profileId__exact=profile[0].id)
+        courseMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id, courseId__exact=id)
+        # If it's not theirs
+        if not courseMade:
+            messages.error(request, "You can't add teaching units to this course")
+            return redirect('coursePage', id)
+        
+        return render(request, "app/addTeachingUnit.html", {"course": course, 'thisUser': True, 'userId': request.user.id, 'showOptions': False})
+    
+    return redirect('home')
+
+
+def addPaymentMethod(request):
+    if request.user.is_authenticated:
+        return render(request, "app/addPaymentMethod.html", {'thisUser': True, 'userId': request.user.id, 'showOptions': True})
