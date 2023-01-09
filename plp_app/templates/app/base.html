@@ -11,24 +11,23 @@
     <style></style>
   </head>
   <body>
-
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
-    role="alert">
-      <strong>Message:</strong> {{ message }}
-      <button
-        type="button"
-        class="button-29"
-        data-dismiss="alert"
-        aria-label="Close"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
+    <div>
+      {% if messages %} {% for message in messages %}
+      <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
+        {{ message }}
+      </div>
+      {% endfor %} {% endif %}
     </div>
-    {% endfor %} {% block content %}
-    <!-- The code will be here -->
-    {% endblock %}
 
-    <script src="" async defer></script>
+    {% block content %}{% endblock content %}
+    <!-- The code will be here -->
+
+    <script>
+      setTimeout(function () {
+        if ($("#msg").length > 0) {
+          $("#msg").remove();
+        }
+      }, 2000);
+    </script>
   </body>
 </html>

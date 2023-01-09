@@ -22,24 +22,19 @@ def register(request):
         password2 = request.POST['password1']
 
         if password1 == password2:
-            try:
-                myuser = User.objects.create_user(
-                    first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
-                myuser.save()
-                #create public and private profile views for the user
-                newprofile=models.Profile(userId=myuser)
-                newprofile.save()
-            
-                newpublic=models.Public(profileId=newprofile,name=first_name,surname=last_name,avatar=1)
-                newprivate=models.Private(profileId=newprofile,email=email)
-                newpublic.save()
-                newprivate.save()
-               
 
+            myuser = User.objects.create_user(
+                first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
+            myuser.save()
+            # create public and private profile views for the user
+            newprofile = models.Profile(userId=myuser)
+            newprofile.save()
 
-            except:
-                messages.error(
-                    request, "Something went wrong when creating your account")
+            newpublic = models.Public(
+                profileId=newprofile, name=first_name, surname=last_name, avatar=1)
+            newprivate = models.Private(profileId=newprofile, email=email)
+            newpublic.save()
+            newprivate.save()
 
             messages.success(
                 request, "Your account has been sucessfully created.")
