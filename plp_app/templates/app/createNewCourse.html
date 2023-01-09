@@ -3,30 +3,30 @@
 
 <style>
 
-    select, input, label {
+    .formElement {
         margin: 10px;
     }
 
 </style>
 
-
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
 
 <form method="POST" action="../saveNewCourse">
     {% csrf_token %}
     
-    Name:<input type="text" name="name"><br>
+    Name:<input class="formElement" type="text" name="name"><br>
     
-    Average Master Time:<input type="number" name="averageMasterTime" min="1"><br>
+    Average Master Time:<input class="formElement" type="number" name="averageMasterTime" min="1"><br>
 
-    Price:<input type="number" name="price" step=".01" min="0"><br>
+    Price:<input class="formElement" type="number" name="price" step=".01" min="0"><br>
 
-    Category: <select name="category">
+    Category: <select class="formElement" name="category">
         {% for category in categories %}
-            <option value="{{ category.id }}">{{ category.category }}</option>
+            <option class="formElement" value="{{ category.id }}">{{ category.category }}</option>
         {% endfor %}
     </select><br>
 
-    <input type="submit" name="submit" value="Submit">
+    <input class="formElement" type="submit" name="submit" value="Submit">
 </form>
 
 {% endblock %}
