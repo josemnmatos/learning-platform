@@ -154,6 +154,13 @@
     <h2>Course Creator:</h2>
     <h4><a href="../viewProfile/{{ creator.profileId.userId.id }}"> {{ creator.name}} {{ creator.surname }}</a></h4>
   </div>
+
+  <!-- Enroll Course -->
+  {% if not enrolled %}
+  <div>
+    <a href="../enrollCourse/{{ course.id }}">Enroll this course</a>
+  </div>
+  {% endif %}
   <!-- Category -->
   <div>
     <h2>Category:</h2>

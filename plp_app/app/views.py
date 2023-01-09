@@ -93,7 +93,6 @@ def coursePage(request, id):
         if request.user.is_authenticated:
             if courseMade[0].publicId.profileId.userId.id == request.user.id:
                 thisUser = True
-        print(thisUser)
         # Find the teaching Units
         teachingUnits = models.TeachingUnit.objects.filter(
             courseId__exact=course[0])
@@ -102,6 +101,15 @@ def coursePage(request, id):
         # If it doesn't exist yet
         if not liveChat:
             liveChat = [None]
+        # Check if it's enrolled
+        enrolled = thisUser
+        if not thisUser:
+            profile = models.Profile.objects.filter(userId__exact=request.user.id)
+            private = models.Private.objects.filter(profileId__exact=profile[0].id)
+            courseEnrolled = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id, courseId__exact=id)
+            if courseEnrolled:
+                enrolled = True
+            
         # Find the ratings
         ratings = models.Rating.objects.filter(courseId__exact=course[0])
         return render(request, "app/coursePage.html", {'course': course[0],
@@ -110,7 +118,8 @@ def coursePage(request, id):
                                                        'liveChat': liveChat[0],
                                                        'ratings': ratings,
                                                        'thisUser': thisUser,
-                                                       'showOptions': True})
+                                                       'showOptions': True,
+                                                       'enrolled': enrolled})
 
 
 def teachingUnitPage(request, id):
@@ -190,13 +199,8 @@ def viewProfile(request, id):
         avgRating = 0
         if numRatings > 0:
             avgRating = totalRatings/numRatings
-<<<<<<< HEAD
         return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser, 
                                                         'students': students, 'numRatings': numRatings, 'avgRating': avgRating, 'showOptions': True})
-=======
-        return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser,
-                                                        'students': students, 'numRatings': numRatings, 'avgRating': avgRating})
->>>>>>> cebe77c1ab974cf1d45ddf76d49e02e064689e06
 
 
 def chat_on(request):
@@ -243,11 +247,7 @@ def courseCreated(request, id):
         moneyEarned.append(numStudents * courseMade.courseId.price)
 
     data = zip(coursesMade, students, liveChats, moneyEarned)
-<<<<<<< HEAD
     return render (request, "app/courseCreated.html", {'coursesMade': coursesMade, 'data': data, 'thisUser': thisUser, 'userId': id, 'showOptions': True})
-=======
-    return render(request, "app/courseCreated.html", {'coursesMade': coursesMade, 'data': data, 'thisUser': thisUser, 'userId': id})
->>>>>>> cebe77c1ab974cf1d45ddf76d49e02e064689e06
 
 
 def payments(request):
@@ -262,14 +262,9 @@ def payments(request):
         total = 0
         for course in enrolledCourses:
             total += course.courseId.price
-<<<<<<< HEAD
         
         return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails, 
                                                      'total': total, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
-=======
-
-        return render(request, "app/payments.html", {'enrolledCourses': enrolledCourses, 'paymentDetails': paymentDetails, 'total': total, 'thisUser': True, 'userId': request.user.id})
->>>>>>> cebe77c1ab974cf1d45ddf76d49e02e064689e06
     return redirect('home')
 
 
@@ -300,18 +295,11 @@ def saveRating(request):
 
 
 def createNewCourse(request):
-<<<<<<< HEAD
     if request.user.is_authenticated:
         categories = models.Category.objects.all()
         return render(request, "app/createNewCourse.html", {'categories': categories, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
     return redirect('home')
     
-=======
-    categories = models.Category.objects.all()
-    return render(request, "app/createNewCourse.html", {'categories': categories})
-
-
->>>>>>> cebe77c1ab974cf1d45ddf76d49e02e064689e06
 def saveNewCourse(request):
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -341,17 +329,10 @@ def coursesEnrolled(request):
     if request.user.is_authenticated:
         profile = models.Profile.objects.filter(userId__exact=request.user.id)
         private = models.Private.objects.filter(profileId__exact=profile[0].id)
-<<<<<<< HEAD
         coursesEnrolled = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id)
         
         
         return render(request, "app/coursesEnrolled.html", {'coursesEnrolled': coursesEnrolled, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
-=======
-        coursesEnrolled = models.CoursesEnrolled.objects.filter(
-            privateId__exact=private[0].id)
-
-        return render(request, "app/coursesEnrolled.html", {'coursesEnrolled': coursesEnrolled, 'thisUser': True, 'userId': request.user.id})
->>>>>>> cebe77c1ab974cf1d45ddf76d49e02e064689e06
     return redirect('home')
 
 
@@ -368,7 +349,6 @@ def editCourse(request, id):
         public = models.Public.objects.filter(profileId__exact=profile[0].id)
         courseMade = models.CoursesMade.objects.filter(
             publicId__exact=public[0].id, courseId__exact=id)
-        print(courseMade)
         # If it's not theirs
         if not courseMade:
             messages.error(request, "You can't edit this course")
@@ -377,13 +357,8 @@ def editCourse(request, id):
         categories = models.Category.objects.all().exclude(
             id=course[0].categoryId.id)
         # If all okay load the page to edit it
-<<<<<<< HEAD
         return render(request, "app/editCourse.html", {'course': course[0], 'categories':categories, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
         
-=======
-        return render(request, "app/editCourse.html", {'course': course[0], 'categories': categories, 'thisUser': True, 'userId': request.user.id})
-
->>>>>>> cebe77c1ab974cf1d45ddf76d49e02e064689e06
     return redirect('home')
 
 
@@ -404,5 +379,27 @@ def saveCourseChanges(request):
         course.categoryId = categoryId[0]
         course.save()
         return redirect('coursePage', courseId)
+
+    return redirect('home')
+
+def enrollCourse(request, id):
+    if request.user.is_authenticated:
+        course = models.Course.objects.filter(id__exact=id)
+        # Check if the user isn't the owner and isn't already enrolled
+        profile = models.Profile.objects.filter(userId__exact=request.user.id)
+        public = models.Public.objects.filter(profileId__exact=profile[0].id)
+        courseMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id, courseId__exact=id)
+        # If the user is the creator of the course
+        if courseMade:
+            messages.error(request, "You can't enroll your own course")
+            return redirect('coursePage', id)
+        private = models.Private.objects.filter(profileId__exact=profile[0].id)
+        courseEnrolled = models.CoursesEnrolled.objects.filter(privateId__exact=private[0].id, courseId__exact=id)
+        # If the user is already enrolled
+        if courseEnrolled:
+            messages.error(request, "You are already enrolled in this course")
+            return redirect('coursePage', id)
+        # If all passes then redirect
+        return render(request, "app/enrollCourse.html", {"course": course})
 
     return redirect('home')
