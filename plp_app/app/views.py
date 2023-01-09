@@ -26,22 +26,15 @@ def register(request):
                 myuser = User.objects.create_user(
                     first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
                 myuser.save()
-                print("1")
-                newUserId=myuser.id
-                print("1")
                 #create public and private profile views for the user
                 newprofile=models.Profile(userId=myuser)
-                print("2")
                 newprofile.save()
-                print("2")
+            
                 newpublic=models.Public(profileId=newprofile,name=first_name,surname=last_name,avatar=1)
-                print("3")
                 newprivate=models.Private(profileId=newprofile,email=email)
-                print("3")
                 newpublic.save()
-                print("3")
                 newprivate.save()
-                print("4")
+               
 
 
             except:
