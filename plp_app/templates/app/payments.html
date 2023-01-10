@@ -41,7 +41,7 @@
 
     .payment-methods{
         padding: 20px;
-        background-color: #0f8775;
+        background-color: #96dae7;
         color:white;
         min-width: 20vw;
     
@@ -50,6 +50,7 @@
     p {
         border-bottom: 2px solid rgba(255, 255, 255, 0.6);
         padding: 5px;
+
     }
 
     .add{
@@ -57,6 +58,18 @@
         border:0;
         background-color: transparent;
         cursor: pointer;
+    }
+
+    .card{
+        width: 30px;
+       margin-right: 10px;
+        
+    }
+
+    .edit{
+        width:27px;
+        position: absolute;
+        right: 60px;
     }
 
 </style>
@@ -98,13 +111,18 @@
 </div>
 
 <div>
-<h2>Payment Methods</h2>
+<h2>Payment Details</h2>
 <div class="payment-methods">
+    <a href="../managePaymentDetails"><img class="edit" src="{% static 'images/' %}edit.png"></a>
     {% if not paymentDetails %}
-        <p>No Payment Methods</p>
+        <p>No Payment Details</p>
     {% else %}
         {% for card in paymentDetails %}
-        <p>{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</p>
+        <div>
+            
+            <p><img class="card" src="{% static 'images/' %}card.png"> {{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</p>
+        </div>
+        
         {% endfor %}
     {% endif %}
 </div>

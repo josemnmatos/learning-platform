@@ -131,6 +131,28 @@
       cursor: pointer;
   }
 
+
+  .btn{
+          width: 30%;
+          border-radius: 10px;
+          background-color: white ;
+          font-size:20px;
+          text-align: center;
+          padding: 10px 40px;
+          border: 0;
+          text-decoration: none;
+          color: #129f8a;
+          cursor: pointer;
+        }
+
+    .btn:hover{
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0c7969 0 -3px 0 inset;
+            transform: translateY(-2px);
+            
+            color:#2fb39d
+
+    }
+
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=creator.profileId.userId.id showOptions=showOptions %}
@@ -154,14 +176,14 @@
   <!-- Edit Course -->
 {% if thisUser %}
   <div>
-    <a href="../editCourse/{{ course.id }}">Edit Course</a>
+    <a class="btn" href="../editCourse/{{ course.id }}">Edit</a>
   </div>
   {% endif %}
 
   <!-- Enroll Course -->
   {% if not enrolled %}
   <div>
-    <a href="../enrollCourse/{{ course.id }}">Enroll this course</a>
+    <a  class="btn" href="../enrollCourse/{{ course.id }}">Enroll</a>
   </div>
   {% endif %}
 

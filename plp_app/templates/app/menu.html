@@ -10,7 +10,7 @@
             width: 350px ;
             height: 73vh;
             right: -350px;
-            position: absolute;
+            position: fixed;
             transition: all .5s ;  
             
         }
@@ -27,6 +27,7 @@
             right: 80px;
             bottom: 200px;
             position: absolute;
+            justify-content: center;
             
         }
 
@@ -55,6 +56,7 @@
 
 {% csrf_token %}
 {% if user.is_authenticated %}
+<div style="z-index: 99;">
 <input type= "checkbox" id="check" >
 <label class="label" for="check">
     <img src = "{% static 'images/menu2.png' %}" style="width: 60px; position:fixed; right:15px"  >
@@ -69,4 +71,5 @@
     
     </ul>
 </nav>
+</div>
 {% endif %}

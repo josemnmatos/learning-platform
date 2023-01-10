@@ -3,36 +3,147 @@
 
 <style>
 
-    .formElement {
-        margin: 10px;
+.container{
+    margin:20px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    color:white;
+
     }
+
+    .formContainer {
+        background-color:#129f8a;
+        max-width: 500px;
+        height: fit-content;
+        padding: 100px;
+        border-radius: 20px;
+
+    }
+
+    form h1{
+            text-align: center;
+            font-size: 30px;
+            color: white;
+          }
+
+    .inputText{
+        border: 0;
+        border-bottom: 1px solid #07554aa3;
+        transition: all 0.2s;
+        outline: 0;
+        color:white;
+        padding: 10px;
+        text-align: center;
+        font-size: 15px;
+        background-color: transparent;
+    }
+
+    .inputNumber{
+
+        border: 0;
+        color:white;
+        border-bottom: 1px solid #07554aa3;
+        padding: 10px;
+        font-size: 15px;
+        outline: 0;
+        text-align: center;
+        background-color: transparent;
+
+    }
+
+    .category{
+        background-color: transparent;
+        outline: 0;
+        color:white;
+        border:0px;
+        font-size:15px;
+    }
+
+    .b{
+        text-align: center;
+    }
+
+
+    .btn{
+          width: 30%;
+          border-radius: 10px;
+          background-color: white ;
+          font-size:20px;
+          text-align: center;
+          padding: 10px;
+          border: 0;
+
+          color: #129f8a;
+          cursor: pointer;
+        }
+
+    .btn:hover{
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0c7969 0 -3px 0 inset;
+            transform: translateY(-2px);
+            
+            color:#2fb39d
+
+    }
+
+    .btnR{
+          width: 30%;
+          border-radius: 10px;
+          background-color: white ;
+          font-size:20px;
+          text-align: center;
+          padding: 10px;
+          border: 0;
+          justify-content: center;
+          color: rgb(185, 6, 6);
+          cursor: pointer;
+        }
+
+    .btnR:hover{
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(132, 4, 4) 0 -3px 0 inset;
+            transform: translateY(-2px);
+            
+            color:rgb(221, 9, 9)
+
+    }
+
+    option {
+        color: black;
+    }
+
 
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
 
 {% if thisUser %}
+<div class="container">
+    <section class="formContainer">
+        <form method="POST" action="../saveCourseChanges">
+            {% csrf_token %}
+            <h1>Edit Course</h1>
+            <input class="formElement" type="hidden" name="courseId" value="{{ course.id }}">
+            Name:<input required class="inputText" type="text" name="name" value="{{ course.name }}"><br><br>
+            
+            Average Master Time:<input required class="inputNumber" type="number" name="averageMasterTime" value="{{ course.averageMasterTime }}" min="1"> min<br><br>
 
-<form method="POST" action="../saveCourseChanges">
-    {% csrf_token %}
+            Price:<input required class="inputNumber" type="number" name="price" value="{{ course.price }}" step=".01" min="0"> €<br><br>
 
-    <input class="formElement" type="hidden" name="courseId" value="{{ course.id }}">
-    Name:<input class="formElement" type="text" name="name" value="{{ course.name }}"><br>
-    
-    Average Master Time:<input class="formElement" type="number" name="averageMasterTime" value="{{ course.averageMasterTime }}" min="1"><br>
+            Category: <select required class="category" name="category"><br>
+                <option class="formElement" value="{{ course.categoryId.id }}">{{ course.categoryId.category }}</option>
+                {% for category in categories %}
+                    <option class="formElement" value="{{ category.id }}">{{ category.category }}</option>
+                {% endfor %}
+            </select><br><br>
 
-    Price:<input class="formElement" type="number" name="price" value="{{ course.price }}" step=".01" min="0"><br>
+            <center>
+                <input class="btn" type="submit" name="submit" value="Submit">
+                <input class="btnR" type="reset" value="Reset">
+            </center>
 
-    Category: <select class="formElement" name="category">
-        <option class="formElement" value="{{ category.id }}">{{ course.categoryId.category }}</option>
-        {% for category in categories %}
-            <option class="formElement" value="{{ category.id }}">{{ category.category }}</option>
-        {% endfor %}
-    </select><br>
-
-    <input class="formElement" type="submit" name="submit" value="Submit">
-    <input class="formElement" type="reset" value="Reset">
-</form>
+        </form>
+    </section>
+</div>
 
 {% else %}
 
