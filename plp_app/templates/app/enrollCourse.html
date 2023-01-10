@@ -12,10 +12,11 @@
         {% if not paymentMethods %}
             <a href="../payments">Add a payment method</a>
         {% else %}
+        <h3>Price: {{ course.price }}€</h3>
         <label for="paymentMethod">Choose card: </label>
         <select name="paymentMethod">
             {% for paymentMethod in paymentMethods %}
-                <option value="{{ paymentMethod.id }}">{{ paymentMethod.cardNumber }}</option>
+                <option value="{{ paymentMethod.id }}">{{ paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</option>
             {% endfor %}
         </select><br>
         {% endif %}

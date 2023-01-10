@@ -521,6 +521,21 @@ def saveProfileChanges(request):
                 c = models.Category.objects.filter(id__exact=category)
                 categoryLiked = models.CategoriesLiked(privateId=private, categoryId=c[0])
                 categoryLiked.save()
+                
+            # Check for password change
+            password1 = request.POST['password1']
+            password2 = request.POST['password2']
+            if password1:
+                if password1 == password2:
+                    user = models.User.objects.get(id=request.user.id)
+                    user.set_password(password1)
+                    user.save()
+                    return redirect('loginpage')
+                else:
+                    s.error(request, "The passwords need to match",
+                      button="OK", timer=2000)
+                    return redirect('viewProfile', request.user.id)
+                    
             
             return redirect('viewProfile', request.user.id)
     
@@ -541,22 +556,19 @@ def managePaymentDetails(request):
     
     
 def saveNewPaymentDetail(request):
-    return redirect('home')
-    print("Hello")
     if request.user.is_authenticated:
         if request.method == "POST":
-            print("Im here")
             cardNumber = request.POST['cardNumber']
             expirationMonth = request.POST['expirationMonth']
             expirationYear = request.POST['expirationYear']
             cvv = request.POST['cvv']
-            
+            # Add new payment detail
             profile = models.Profile.objects.filter(userId__exact=request.user.id)
             private = models.Private.objects.filter(profileId__exact=profile[0].id)
             newPaymentDetail = models.PaymentDetails(privateId=private[0], cardNumber=cardNumber, expirationMonth=expirationMonth, expirationYear=expirationYear, cvv=cvv)
-            
             newPaymentDetail.save()
-            print(newPaymentDetail)
+            s.info(request, "The new payment detail was added",
+                      button="OK", timer=2000)
             return redirect('managePaymentDetails')
 
 
