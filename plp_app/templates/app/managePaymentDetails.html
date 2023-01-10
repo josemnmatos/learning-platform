@@ -1,26 +1,138 @@
 {% extends 'app/base.html' %}
 {% block content %}
+{% load static %}
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+<style>
+        .container{
+                    margin: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    
+
+    }
+
+    .formContainer {
+                background-color:rgb(13, 64, 105);
+                width: 350px;
+                max-width: 700px;
+                height: 170px;
+                padding: 40px;
+                border-radius: 20px;
+                 
+                
+
+    }
+
+    .card{
+        width: 30px;
+       margin-right: 10px;
+        
+    }
+
+    .details{
+        margin-left: 20px;
+    }
+
+    .inp{
+        background-color: transparent;
+        outline: 0;
+        width: 300px;
+        border: 1px solid rgba(225, 224, 224, 0.492);
+        font-size: 20px;
+        padding:5px;  
+        border-radius: 10px;
+    }
+    .date{
+        background-color: transparent;
+        outline: 0;
+        border: 1px solid rgba(225, 224, 224, 0.492);
+        font-size: 20px;
+        padding:10px;  
+        border-radius: 10px;
+        
+        
+    }
+
+    .cvv{
+        background-color: transparent;
+        color:white;
+        outline: 0;
+        border: 1px solid rgba(225, 224, 224, 0.492);
+        font-size: 20px;
+        padding:10px;  
+        border-radius: 10px;
+        text-align: center;
+        width: 40px;
+        margin-left: 90px;
+    
+    }
+
+    .edit{
+        width: 50px;
+        margin-left: 320px;
+    }
+
+    .btn{
+        background-color: #96dae7;
+
+        border-radius: 10px;
+        position: relative;
+        left: 340px;
+        top: -20px;
+        
+    }
+
+    .btn:hover{
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(13, 64, 105) 0 -3px 0 inset;
+            transform: translateY(-2px);
+    }
+
+    .plus{
+        width: 15px;
+        margin: 3px;
+    }
+
+
+</style>
+
 
 <h2>Add a new Payment Detail</h2>
-<form method="POST" action="../saveNewPaymentDetail">
-    {% csrf_token %}
-    Card Number: <input required type="text" pattern="[0-9]{16}" name="cardNumber"><br>
-    Expiration Month: <input required type="number" min="1" max="12" name="expirationMonth"><br>
-    Expiration Year: <input required type="number"  min="1" max="99" name="expirationYear"><br>
-    CVV: <input required type="password" max-length="3" name="cvv"><br>
 
-    <input type="submit" name="submit" value="Add new Card">
-</form>
+<div class="container">
+    <section class="formContainer">
+        
+        <form method="POST" action="../saveNewPaymentDetail">
+            {% csrf_token %}
+            <button class="btn" type="submit" ><img class="plus" src="{% static 'images/' %}Whiteplus.png"></button>
+            <input class="inp" required type="text" maxlength="16" pattern="[0-9]{16}" name="cardNumber" placeholder="Card Number"><br><br>
+            <img class="edit" src="{% static 'images/' %}chipCard.png">
+            <br><br>
+            <input class="date" required type="number" min="1" max="12" name="expirationMonth" placeholder="MM">/
+            <input class="date" required type="number"  min="1" max="99" name="expirationYear" placeholder="YY ">
+            <input class="cvv" required type="password" maxlength="3" name="cvv" placeholder="CVV"><br>
+            
+            
+            
+        </form>
+
+    </section>
+
+</div>
 
 <h2>Payment Details</h2>
+<div class="details">
+    
 {% if not paymentDetails %}
     <p>No Payment Details</p>
 {% else %}
     {% for card in paymentDetails %}
-    <p>{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</p>
+    
+    <p><img class="card" src="{% static 'images/' %}card.png">{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }} - {{card.expirationMonth}} / {{card.expirationYear}}</p>
     {% endfor %}
 {% endif %}
+</div>
+
 
 {% endblock %}
