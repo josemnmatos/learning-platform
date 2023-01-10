@@ -4,8 +4,48 @@
 
 <style>
 
+    .container{
+                    margin: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center; 
+
+    }
+
+    .formContainer {
+                background-color:#96dae7;
+                max-width: 600px;
+                height: fit-content;
+                padding: 40px;
+                border-radius: 20px;
+
+    }
+
+    h2{
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: rgb(13, 64, 105);
+        
+    }
     .formElement {
         margin: 10px;
+        font-size: 20px;
+        background-color: transparent;
+        border: 0;
+        outline: 0;
+        border-bottom: 1px solid #07554aa3;
+        transition: all 0.2s;
+    }
+
+    .name{
+        margin: 10px;
+        font-size: 20px;
+        background-color: transparent;
+        border: 0;
+        outline: 0;
+        border-bottom: 1px solid #07554aa3;
+        transition: all 0.2s;
+        float:left
+
     }
 
     .imgDiv {
@@ -26,12 +66,6 @@
         width: 33%;
     }
 
-    .paymentDetail {
-        border-bottom: 1px solid #0f8775;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
 
     .pretty{
         font-weight: bolder;
@@ -42,59 +76,108 @@
         width: 15%;
     }
 
+    .btn{
+          width: 30%;
+          border-radius: 10px;
+          background-color: white ;
+          font-size:20px;
+          text-align: center;
+          padding: 10px 40px;
+          border: 0;
+
+          color: #129f8a;
+          cursor: pointer;
+        }
+
+    .btn:hover{
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0c7969 0 -3px 0 inset;
+            transform: translateY(-2px);
+            
+            color:#2fb39d
+
+    }
+
+    .btnR{
+          width: 30%;
+          border-radius: 10px;
+          background-color: white ;
+          font-size:20px;
+          text-align: center;
+          padding: 10px 40px;
+          border: 0;
+
+          color: rgb(185, 6, 6);
+          cursor: pointer;
+        }
+
+    .btnR:hover{
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(132, 4, 4) 0 -3px 0 inset;
+            transform: translateY(-2px);
+            
+            color:rgb(221, 9, 9)
+
+    }
+
+    
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
 
-<form class="formElement" method="POST" action="../saveProfileChanges">
-    {% csrf_token %}
+<div class="container">
+    <section class="formContainer">
 
-<div class="formDiv">
-    <!-- Public Section-->
-    <div class="innerDiv">
-        <!-- Avatar -->
-        <h2>Avatar</h2>
-        <div class="imgDiv">
-            {% if public.avatar == 1 %}
-            <input class="formElement" type="radio" checked name="avatar" value="1"> <img class="avatars" src="{% static 'images/1.png' %}">
-            <input class="formElement" type="radio" name="avatar" value="2"> <img class="avatars" src="{% static 'images/2.png' %}">
-            {% else %}
-            <input class="formElement" type="radio" checked name="avatar" value="1"> <img class="avatars" src="{% static 'images/1.png' %}">
-            <input class="formElement" type="radio" checked name="avatar" value="2"> <img class="avatars" src="{% static 'images/2.png' %}">
-            {% endif %}
-        </div>
-        <!-- Name and surname -->
-        <h2>Name and Surname</h2>
-        Name:<input required class="formElement" type="text" name="name" value="{{ public.name }}"><br>
-        Surname:<input required class="formElement" type="text" name="surname" value="{{ public.surname }}">
-    </div>
+        <form method="POST" action="../saveProfileChanges">
+            {% csrf_token %}
+        
+        
+            <!-- Public Section-->
+            
+                <!-- Avatar -->
+                <h2>Avatar</h2>
+                
+                    {% if public.avatar == 1 %}
+                    <input class="formElement" type="radio" checked name="avatar" value="1"> <img class="avatars" src="{% static 'images/1.png' %}">
+                    <input class="formElement" type="radio" name="avatar" value="2"> <img class="avatars" src="{% static 'images/2.png' %}">
+                    {% else %}
+                    <input class="formElement" type="radio" checked name="avatar" value="1"> <img class="avatars" src="{% static 'images/1.png' %}">
+                    <input class="formElement" type="radio" checked name="avatar" value="2"> <img class="avatars" src="{% static 'images/2.png' %}">
+                    {% endif %}
+                
+                <!-- Name and surname -->
+                <h2>Name and Surname</h2>
+                <div>
+                    <input required class="name" type="text" name="name" value="{{ public.name }}" placeholder="Name">
+                    <input required class="name" type="text" name="surname" value="{{ public.surname }}" placeholder="Surname"><br><br>
 
-    <!-- Private Section -->
-    <div class="innerDiv">
-        <!-- Email -->
-        <h2>Email</h2>
-        Email:<input required class="formElement" type="email" name="email" value="{{ private.email }}">
-        <!-- Categories Liked -->
-        <h2>Categories Liked</h2>
-        <div>
-            {% for category, categoryLiked in categoriesData %}
-            {% if categoryLiked %}
-            <input type="checkbox" checked name="categoriesLiked" value="{{ category.id }}">{{ category.category }}
-            {% else %}
-            <input type="checkbox" name="categoriesLiked" value="{{ category.id }}">{{ category.category }}
-            {% endif %}
-            <br>
-            {% endfor %}
-        </div>
-    </div>
-
-
+                </div>
+                
+            
+        
+            <!-- Private Section -->
+            
+                <!-- Email -->
+                <h2>Email</h2>
+                <input required class="formElement" type="email" name="email" value="{{ private.email }}" placeholder="Email">
+                <!-- Categories Liked -->
+                <h2>Categories Liked</h2>
+               
+                    {% for category, categoryLiked in categoriesData %}
+                    {% if categoryLiked %}
+                    <input type="checkbox" checked name="categoriesLiked" value="{{ category.id }}">{{ category.category }}
+                    {% else %}
+                    <input type="checkbox" name="categoriesLiked" value="{{ category.id }}">{{ category.category }}
+                    {% endif %}
+                    <br>
+                    {% endfor %}
+                
+        <br><br>
+        <center>
+            <input class="btn" type="submit" name="save" value="Save">
+            <input class="btnR" type="reset" value="Reset">
+        </center>
+        </form>
+    </section>
 </div>
-<br><br>
-<center>
-    <input class="formElement" type="submit" name="save" value="Save">
-    <input class="formElement" type="reset" value="Reset">
-</center>
-</form>
+
 
 {% endblock %}

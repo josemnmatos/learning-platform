@@ -59,7 +59,7 @@
     .category{
         background-color: transparent;
         outline: 0;
-        color:white;
+        color:black;
         border:0px;
         font-size:15px;
     }
@@ -89,12 +89,6 @@
 
     }
 
-
-  
-
-    
-
-
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
@@ -107,13 +101,13 @@
                 {% csrf_token %}
                 
                 <h1>New Course</h1>
-                <input class="inputText" type="text" name="name" placeholder="Name"><br><br>
+                <input required class="inputText" type="text" name="name" placeholder="Name"><br><br>
                 
-                <input class="inputNumber" type="number" name="averageMasterTime" min="1" placeholder="Average Master Time"> min.<br><br>
+                <input required class="inputNumber" type="number" name="averageMasterTime" min="1" placeholder="Average Master Time"> min.<br><br>
             
-                <input class="inputNumber" type="number" name="price" step=".01" min="0" placeholder="Price"> €<br><br>
+                <input required class="inputNumber" type="number" name="price" step=".01" min="0" placeholder="Price"> €<br><br>
             
-                Category: <select  class="category" name="category" placeholder="Category">
+                Category: <select required class="category" name="category" placeholder="Category">
                     {% for category in categories %}
                         <option value="{{ category.id }}">{{ category.category }}</option>
                     {% endfor %}
