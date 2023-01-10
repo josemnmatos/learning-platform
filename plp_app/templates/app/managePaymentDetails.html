@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+
+<h2>Add a new Payment Detail</h2>
+<form method="POST" action="../saveNewPaymentDetail">
+    {% csrf_token %}
+    Card Number: <input required type="text" pattern="[0-9]{16}" name="cardNumber"><br>
+    Expiration Month: <input required type="number" min="1" max="12" name="expirationMonth"><br>
+    Expiration Year: <input required type="number"  min="1" max="99" name="expirationYear"><br>
+    CVV: <input required type="password" max-length="3" name="cvv"><br>
+
+    <input type="submit" name="submit" value="Add new Card">
+</form>
+
+<h2>Payment Details</h2>
+{% if not paymentDetails %}
+    <p>No Payment Details</p>
+{% else %}
+    {% for card in paymentDetails %}
+    <p>{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</p>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

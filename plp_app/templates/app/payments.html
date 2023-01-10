@@ -98,10 +98,11 @@
 </div>
 
 <div>
-<h2>Payment Methods</h2>
+<h2>Payment Details</h2>
 <div class="payment-methods">
+    <a href="../managePaymentDetails">Manage</a>
     {% if not paymentDetails %}
-        <p>No Payment Methods</p>
+        <p>No Payment Details</p>
     {% else %}
         {% for card in paymentDetails %}
         <p>{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</p>

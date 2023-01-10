@@ -1,0 +1,100 @@
+{% extends 'app/base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+
+    .formElement {
+        margin: 10px;
+    }
+
+    .imgDiv {
+        display: flex;
+        align-items: center;
+    }
+
+    .formDiv {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+    }
+
+    .innerDiv {
+        background-color: white;
+        margin: 3px;
+        padding: 15px;
+        width: 33%;
+    }
+
+    .paymentDetail {
+        border-bottom: 1px solid #0f8775;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .pretty{
+        font-weight: bolder;
+        color: rgb(13, 64, 105);  
+    }
+
+    .avatars {
+        width: 15%;
+    }
+
+</style>
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+
+<form class="formElement" method="POST" action="../saveProfileChanges">
+    {% csrf_token %}
+
+<div class="formDiv">
+    <!-- Public Section-->
+    <div class="innerDiv">
+        <!-- Avatar -->
+        <h2>Avatar</h2>
+        <div class="imgDiv">
+            {% if public.avatar == 1 %}
+            <input class="formElement" type="radio" checked name="avatar" value="1"> <img class="avatars" src="{% static 'images/1.png' %}">
+            <input class="formElement" type="radio" name="avatar" value="2"> <img class="avatars" src="{% static 'images/2.png' %}">
+            {% else %}
+            <input class="formElement" type="radio" checked name="avatar" value="1"> <img class="avatars" src="{% static 'images/1.png' %}">
+            <input class="formElement" type="radio" checked name="avatar" value="2"> <img class="avatars" src="{% static 'images/2.png' %}">
+            {% endif %}
+        </div>
+        <!-- Name and surname -->
+        <h2>Name and Surname</h2>
+        Name:<input required class="formElement" type="text" name="name" value="{{ public.name }}"><br>
+        Surname:<input required class="formElement" type="text" name="surname" value="{{ public.surname }}">
+    </div>
+
+    <!-- Private Section -->
+    <div class="innerDiv">
+        <!-- Email -->
+        <h2>Email</h2>
+        Email:<input required class="formElement" type="email" name="email" value="{{ private.email }}">
+        <!-- Categories Liked -->
+        <h2>Categories Liked</h2>
+        <div>
+            {% for category, categoryLiked in categoriesData %}
+            {% if categoryLiked %}
+            <input type="checkbox" checked name="categoriesLiked" value="{{ category.id }}">{{ category.category }}
+            {% else %}
+            <input type="checkbox" name="categoriesLiked" value="{{ category.id }}">{{ category.category }}
+            {% endif %}
+            <br>
+            {% endfor %}
+        </div>
+    </div>
+
+
+</div>
+<br><br>
+<center>
+    <input class="formElement" type="submit" name="save" value="Save">
+    <input class="formElement" type="reset" value="Reset">
+</center>
+</form>
+
+{% endblock %}

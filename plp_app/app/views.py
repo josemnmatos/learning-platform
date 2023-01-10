@@ -203,7 +203,6 @@ def viewProfile(request, id):
         for courseMade in coursesMade:
             ratings = ratings | models.Rating.objects.filter(
                 courseId__exact=courseMade.courseId)
-
         numRatings = 0
         totalRatings = 0
         for rating in ratings:
@@ -212,7 +211,15 @@ def viewProfile(request, id):
         avgRating = 0
         if numRatings > 0:
             avgRating = round(totalRatings/numRatings, 2)
-        return render(request, "app/viewProfile.html", {'public': public[0], 'coursesMade': coursesMade, 'thisUser': thisUser,
+        # Get the private info if thisUser
+        private = models.Private.objects.none()
+        categoriesLiked = models.CategoriesLiked.objects.none()
+        if thisUser:
+            private = models.Private.objects.filter(profileId__exact=profile[0].id)[0]
+            categoriesLiked = models.CategoriesLiked.objects.filter(privateId__exact=private.id)
+            
+            
+        return render(request, "app/viewProfile.html", {'public': public[0], 'private': private, 'coursesMade': coursesMade, 'thisUser': thisUser, 'categoriesLiked': categoriesLiked,
                                                         'students': students, 'numRatings': numRatings, 'avgRating': avgRating, 'showOptions': True})
 
 
@@ -465,4 +472,92 @@ def saveEnrollment(request):
         return redirect('coursePage', course.id)
     
     return redirect('home')
+
+def editProfile(request):
+    if request.user.is_authenticated:
+        profile = models.Profile.objects.filter(userId__exact=request.user.id)
+        public = models.Public.objects.filter(profileId__exact=profile[0].id)
+        private = models.Private.objects.filter(profileId__exact=profile[0].id)
+        
+        categories = models.Category.objects.all()
+        categoriesLiked = []
+        for category in categories:
+            categoriesLiked.append(models.CategoriesLiked.objects.filter(privateId__exact=private[0], categoryId__exact=category))
+        categoriesData = zip(categories, categoriesLiked)
+        
+        paymentDetails = models.PaymentDetails.objects.filter(privateId__exact=private[0].id)
+        
+        return render(request, "app/editProfile.html", {'profile': profile, 'public': public[0], 'private': private[0], 'categoriesData': categoriesData, 
+                                                        'paymentDetails':paymentDetails, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
     
+    
+    return redirect('home')
+
+
+def saveProfileChanges(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            # Get the data form the form
+            avatar = request.POST['avatar']
+            name = request.POST['name']
+            surname = request.POST['surname']
+            email = request.POST['email']
+            categoriesLiked = request.POST.getlist('categoriesLiked')
+            # Get all the data form the database
+            profile = models.Profile.objects.filter(userId__exact=request.user.id)
+            public = models.Public.objects.filter(profileId__exact=profile[0].id)[0]
+            private = models.Private.objects.filter(profileId__exact=profile[0].id)[0]
+            previousCategoriesLiked = models.CategoriesLiked.objects.filter(privateId__exact=private)
+            # Change the data
+            public.avatar = avatar
+            public.name = name
+            public.surname = surname
+            private.email = email
+            public.save()
+            private.save()
+            
+            previousCategoriesLiked.delete()
+            for category in categoriesLiked:
+                c = models.Category.objects.filter(id__exact=category)
+                categoryLiked = models.CategoriesLiked(privateId=private, categoryId=c[0])
+                categoryLiked.save()
+            
+            return redirect('viewProfile', request.user.id)
+    
+    
+    return redirect('home')
+    
+    
+def managePaymentDetails(request):
+    if request.user.is_authenticated:
+        profile = models.Profile.objects.filter(userId__exact=request.user.id)
+        private = models.Private.objects.filter(profileId__exact=profile[0].id)
+        paymentDetails = models.PaymentDetails.objects.filter(
+            privateId__exact=private[0].id)
+
+        return render(request, "app/managePaymentDetails.html", {'paymentDetails': paymentDetails, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
+    
+    return redirect('home')
+    
+    
+def saveNewPaymentDetail(request):
+    return redirect('home')
+    print("Hello")
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            print("Im here")
+            cardNumber = request.POST['cardNumber']
+            expirationMonth = request.POST['expirationMonth']
+            expirationYear = request.POST['expirationYear']
+            cvv = request.POST['cvv']
+            
+            profile = models.Profile.objects.filter(userId__exact=request.user.id)
+            private = models.Private.objects.filter(profileId__exact=profile[0].id)
+            newPaymentDetail = models.PaymentDetails(privateId=private[0], cardNumber=cardNumber, expirationMonth=expirationMonth, expirationYear=expirationYear, cvv=cvv)
+            
+            newPaymentDetail.save()
+            print(newPaymentDetail)
+            return redirect('managePaymentDetails')
+
+
+    return redirect('home')

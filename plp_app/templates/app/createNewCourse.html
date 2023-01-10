@@ -14,13 +14,13 @@
 <form method="POST" action="../saveNewCourse">
     {% csrf_token %}
     
-    Name:<input class="formElement" type="text" name="name"><br>
+    Name:<input required class="formElement" type="text" name="name"><br>
     
-    Average Master Time:<input class="formElement" type="number" name="averageMasterTime" min="1"><br>
+    Average Master Time:<input required class="formElement" type="number" name="averageMasterTime" min="1"><br>
 
-    Price:<input class="formElement" type="number" name="price" step=".01" min="0"><br>
+    Price:<input required class="formElement" type="number" name="price" step=".01" min="0"><br>
 
-    Category: <select class="formElement" name="category">
+    Category: <select required class="formElement" name="category">
         {% for category in categories %}
             <option class="formElement" value="{{ category.id }}">{{ category.category }}</option>
         {% endfor %}
