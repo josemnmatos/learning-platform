@@ -29,7 +29,7 @@ urlpatterns = [
     path('editProfile',views.editProfile,name="editProfile"),
     path('saveProfileChanges',views.saveProfileChanges,name="saveProfileChanges"),
     path('managePaymentDetails',views.managePaymentDetails,name="managePaymentDetails"),
-    path('saveNewPaymentDetail',views.managePaymentDetails,name="saveNewPaymentDetail"),
+    path('saveNewPaymentDetail',views.saveNewPaymentDetail,name="saveNewPaymentDetail"),
     path('addTeachingUnit/<id>',views.addTeachingUnit,name="add TU")
     
 ]

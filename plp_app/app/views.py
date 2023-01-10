@@ -556,21 +556,19 @@ def managePaymentDetails(request):
     
     
 def saveNewPaymentDetail(request):
-    print("Hello")
     if request.user.is_authenticated:
         if request.method == "POST":
-            print("Im here")
             cardNumber = request.POST['cardNumber']
             expirationMonth = request.POST['expirationMonth']
             expirationYear = request.POST['expirationYear']
             cvv = request.POST['cvv']
-            
+            # Add new payment detail
             profile = models.Profile.objects.filter(userId__exact=request.user.id)
             private = models.Private.objects.filter(profileId__exact=profile[0].id)
             newPaymentDetail = models.PaymentDetails(privateId=private[0], cardNumber=cardNumber, expirationMonth=expirationMonth, expirationYear=expirationYear, cvv=cvv)
-            
             newPaymentDetail.save()
-            print(newPaymentDetail)
+            s.info(request, "The new payment detail was added",
+                      button="OK", timer=2000)
             return redirect('managePaymentDetails')
 
 
