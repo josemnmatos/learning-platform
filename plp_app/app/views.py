@@ -426,9 +426,8 @@ def enrollCourse(request, id):
         return render(request, "app/enrollCourse.html", {"course": course[0], 'paymentMethods': paymentMethods})
     return redirect('home')
 
-  
 
-def addTeachingUnit(request,id):
+def addTeachingUnitWritten(request,id):
     
     if request.user.is_authenticated:
         
@@ -443,8 +442,11 @@ def addTeachingUnit(request,id):
             new=models.Written(materialId=newunit,title=title,content=content)
             new.save()
             return redirect('coursePage',id)
-    return render(request,'app/addTeachingUnit.html', {'course': id})  
+    return render(request,'app/addTeachingUnitWritten.html', {'course': id})  
     
+def addTeachingUnitVideo(request,id):
+    course = models.Course.objects.filter(id__exact=id)
+    return render(request,"app/addTeachingUnitVideo.html",{'course':course[0]})
             
 def saveEnrollment(request):
     if request.user.is_authenticated:

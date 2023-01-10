@@ -117,8 +117,8 @@ class Material(models.Model):
 
 class Written(models.Model):
     materialId = models.ForeignKey(Material, on_delete=models.CASCADE)
-    content = models.TextField()
-    title = models.TextField()
+    content = models.TextField(default="No title")
+    title = models.TextField(default="No text")
 
     def __str__(self):
         return self.content

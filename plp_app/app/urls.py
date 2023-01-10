@@ -22,10 +22,10 @@ urlpatterns = [
     path('saveCourseChanges',views.saveCourseChanges,name="saveCourseChanges"),
     path('enrollCourse/<id>',views.enrollCourse,name="enrollCourse"),
     path('saveEnrollment',views.saveEnrollment,name="saveEnrollment"),
-    path('addTeachingUnit/<id>',views.addTeachingUnit,name="addTeachingUnit"),
     path('rateCourse/<id>',views.rateCourse,name="rateCourse"),
     path('saveRating',views.saveRating,name="saveRating"),
     path('payments',views.payments,name="payments"),
-    path('addTeachingUnit/<id>',views.addTeachingUnit,name="add TU")
+    path('addTeachingUnitWritten/<id>',views.addTeachingUnitWritten,name="add TUW"),
+    path('addTeachingUnitVideo/<id>',views.addTeachingUnitVideo,name="add TUV")
     
 ]
