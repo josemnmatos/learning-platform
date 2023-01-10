@@ -521,6 +521,21 @@ def saveProfileChanges(request):
                 c = models.Category.objects.filter(id__exact=category)
                 categoryLiked = models.CategoriesLiked(privateId=private, categoryId=c[0])
                 categoryLiked.save()
+                
+            # Check for password change
+            password1 = request.POST['password1']
+            password2 = request.POST['password2']
+            if password1:
+                if password1 == password2:
+                    user = models.User.objects.get(id=request.user.id)
+                    user.set_password(password1)
+                    user.save()
+                    return redirect('loginpage')
+                else:
+                    s.error(request, "The passwords need to match",
+                      button="OK", timer=2000)
+                    return redirect('viewProfile', request.user.id)
+                    
             
             return redirect('viewProfile', request.user.id)
     
@@ -541,7 +556,6 @@ def managePaymentDetails(request):
     
     
 def saveNewPaymentDetail(request):
-    return redirect('home')
     print("Hello")
     if request.user.is_authenticated:
         if request.method == "POST":
