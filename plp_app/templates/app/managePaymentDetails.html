@@ -6,9 +6,7 @@
 <style>
         .container{
                     margin: 20px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+                    
                     
 
     }
@@ -35,6 +33,16 @@
         margin-left: 20px;
     }
 
+    .payments{
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+    }
+
+
+    input{
+        color:white;
+    }
     .inp{
         background-color: transparent;
         outline: 0;
@@ -43,6 +51,11 @@
         font-size: 20px;
         padding:5px;  
         border-radius: 10px;
+    
+    }
+
+    input::placeholder{
+        color:white
     }
     .date{
         background-color: transparent;
@@ -51,6 +64,7 @@
         font-size: 20px;
         padding:10px;  
         border-radius: 10px;
+        
         
         
     }
@@ -98,7 +112,21 @@
 </style>
 
 
-<h2>Add a new Payment Detail</h2>
+
+<div class="payment">
+
+
+<div class="details">
+    <h2>Payment Details</h2>
+    {% if not paymentDetails %}
+    <p>No Payment Details</p>
+    {% else %}
+    {% for card in paymentDetails %}
+    
+    <p><img class="card" src="{% static 'images/' %}card.png">{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }} - {{card.expirationMonth}} / {{card.expirationYear}}</p>
+    {% endfor %}
+    {% endif %}
+</div>
 
 <div class="container">
     <section class="formContainer">
@@ -112,27 +140,12 @@
             <input class="date" required type="number" min="1" max="12" name="expirationMonth" placeholder="MM">/
             <input class="date" required type="number"  min="1" max="99" name="expirationYear" placeholder="YY ">
             <input class="cvv" required type="password" maxlength="3" name="cvv" placeholder="CVV"><br>
-            
-            
-            
+               
         </form>
 
     </section>
 
 </div>
-
-<h2>Payment Details</h2>
-<div class="details">
-    
-{% if not paymentDetails %}
-    <p>No Payment Details</p>
-{% else %}
-    {% for card in paymentDetails %}
-    
-    <p><img class="card" src="{% static 'images/' %}card.png">{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }} - {{card.expirationMonth}} / {{card.expirationYear}}</p>
-    {% endfor %}
-{% endif %}
 </div>
-
 
 {% endblock %}
