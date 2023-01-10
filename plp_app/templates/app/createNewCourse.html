@@ -3,30 +3,131 @@
 
 <style>
 
-    .formElement {
-        margin: 10px;
+    .container{
+                margin:20px;
+                display: flex;
+                align-items: center;
+                justify-content: center; 
+
     }
+
+    .formContainer {
+                background-color:#129f8a;
+                max-width: 500px;
+                height: fit-content;
+                padding: 100px;
+                border-radius: 20px;
+
+    }
+
+    form h1{
+            text-align: center;
+            font-size: 30px;
+            color: white;
+          }
+
+    .formElement { 
+        color: white;
+        
+    }
+
+    .inputText{
+        border: 0;
+        border-bottom: 1px solid #07554aa3;
+        transition: all 0.2s;
+        outline: 0;
+        color:white;
+        padding: 10px;
+        text-align: center;
+        font-size: 15px;
+        background-color: transparent;
+    }
+
+    .inputNumber{
+
+        border: 0;
+        color:white;
+        border-bottom: 1px solid #07554aa3;
+        padding: 10px;
+        font-size: 15px;
+        outline: 0;
+        text-align: center;
+        background-color: transparent;
+
+    }
+
+    .category{
+        background-color: transparent;
+        outline: 0;
+        color:white;
+        border:0px;
+        font-size:15px;
+    }
+
+    .b{
+        text-align: center;
+    }
+
+    .button{
+          width: 70%;
+          border-radius: 10px;
+          background-color: white ;
+          font-size:20px;
+          text-align: center;
+          padding: 10px 40px;
+          border: 0;
+
+          color: #129f8a;
+          cursor: pointer;
+        }
+
+    .button:hover{
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0c7969 0 -3px 0 inset;
+            transform: translateY(-2px);
+            
+            color:#2fb39d
+
+    }
+
+
+  
+
+    
+
 
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
 
-<form method="POST" action="../saveNewCourse">
-    {% csrf_token %}
+<div class="container">
+
+    <section class="formContainer">
+        <div class="formElement">
+            <form method="POST" action="../saveNewCourse">
+                {% csrf_token %}
+                
+                <h1>New Course</h1>
+                <input class="inputText" type="text" name="name" placeholder="Name"><br><br>
+                
+                <input class="inputNumber" type="number" name="averageMasterTime" min="1" placeholder="Average Master Time"> min.<br><br>
+            
+                <input class="inputNumber" type="number" name="price" step=".01" min="0" placeholder="Price"> €<br><br>
+            
+                Category: <select  class="category" name="category" placeholder="Category">
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.category }}</option>
+                    {% endfor %}
+                </select><br><br>
+            <div class="b">
+                <input class="button" type="submit" name="submit" value="Submit">
+            </div>
+                
+            </form>
     
-    Name:<input class="formElement" type="text" name="name"><br>
+        </div>
+    </section>
     
-    Average Master Time:<input class="formElement" type="number" name="averageMasterTime" min="1"><br>
 
-    Price:<input class="formElement" type="number" name="price" step=".01" min="0"><br>
-
-    Category: <select class="formElement" name="category">
-        {% for category in categories %}
-            <option class="formElement" value="{{ category.id }}">{{ category.category }}</option>
-        {% endfor %}
-    </select><br>
-
-    <input class="formElement" type="submit" name="submit" value="Submit">
-</form>
+</div>
 
 {% endblock %}
