@@ -1,30 +1,69 @@
 {% extends 'app/base.html' %}
 {% block content %}
 
-{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
-
-<form method="POST" action="../saveEnrollment">
-    {% csrf_token %}
-
-    <input type="hidden" name="courseId" value="{{ course.id }}">
-
-    {% if course.price > 0 %}
-        {% if not paymentMethods %}
-            <a href="../payments">Add a payment method</a>
-        {% else %}
-        <h3>Price: {{ course.price }}€</h3>
-        <label for="paymentMethod">Choose card: </label>
-        <select name="paymentMethod">
-            {% for paymentMethod in paymentMethods %}
-                <option value="{{ paymentMethod.id }}">{{ paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</option>
-            {% endfor %}
-        </select><br>
-        {% endif %}
-    {% endif %}
-
-    <input type="submit" name="enroll" value="Enroll Course">
+<style>
+    .container{
+        margin:20px; 
+        color: white;
     
-</form>
+        background-color:#129f8a;
+        height: fit-content;
+        padding: 30px;
+        border-radius: 20px;
+    }
 
+    select {
+        margin: 20px;
+        background-color: transparent;
+        outline: 0;
+        color:white;
+        border:0px;
+        font-size:15px;
+    }
+
+    .btn{
+        width: 30%;
+        border-radius: 10px;
+        background-color: white ;
+        font-size:20px;
+        text-align: center;
+        padding: 10px;
+        border: 0;
+
+        color: #129f8a;
+        cursor: pointer;
+      }
+
+    .btn:hover{
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0c7969 0 -3px 0 inset;
+        transform: translateY(-2px);
+        color:#2fb39d
+    }
+
+</style>
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+<center class="container">
+    <h2>You are about to enroll the course "{{ course.name }}"</h2>
+    <form method="POST" action="../saveEnrollment">
+        {% csrf_token %}
+        <input type="hidden" name="courseId" value="{{ course.id }}">
+        {% if course.price > 0 %}
+            {% if not paymentMethods %}
+                <a href="../payments">Add a payment method</a>
+            {% else %}
+            <h3>Price: {{ course.price }}€</h3>
+            <label for="paymentMethod">Please choose a payment method</label><br>
+            <select name="paymentMethod">
+                {% for paymentMethod in paymentMethods %}
+                    <option value="{{ paymentMethod.id }}">{{ paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</option>
+                {% endfor %}
+            </select><br>
+            {% endif %}
+        {% endif %}
+
+        <input class="btn" type="submit" name="enroll" value="Enroll Course">
+    </form>
+</center>
 
 {% endblock %}

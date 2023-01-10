@@ -570,6 +570,21 @@ def saveNewPaymentDetail(request):
             s.info(request, "The new payment detail was added",
                       button="OK", timer=2000)
             return redirect('managePaymentDetails')
-
-
     return redirect('home')
+
+def deletePaymentDetail(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            paymentDetailId = request.POST['paymentDetailId']
+            paymentDetail = models.PaymentDetails.objects.get(id=paymentDetailId)
+            paymentDetail.privateId = None
+            paymentDetail.save()
+            
+            s.info(request, "The payment detail was deleted",
+                      button="OK", timer=2000)
+            
+            return redirect('managePaymentDetails')
+            
+            
+    return redirect('home')
+    
