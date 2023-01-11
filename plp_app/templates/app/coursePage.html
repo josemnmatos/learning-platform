@@ -235,7 +235,11 @@
     {% else %}
     <ol>
       {% for unit in teachingUnits %}
+      {% if enrolled %}
         <a class="teachingUnit" href="../teachingUnit/{{ unit.id }}"><li>{{ unit.description }}</li></a>
+        {% else %}
+        <li>{{ unit.description }}</li>
+        {% endif %}
       <br />
       {% endfor %}
     </ol>
