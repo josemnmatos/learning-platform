@@ -26,12 +26,9 @@
             
         }
         .name{
-            position:absolute; 
-            top:200px; 
             font-size:xx-large;
             font-weight: bold;
             font-family:Verdana, Geneva, Tahoma, sans-serif;
-            left: 360px;
         }
 
         .username{
@@ -93,6 +90,7 @@
             background-color: transparent;
             border:0;
             border-radius: 100%;
+            margin: 10px;
         }
 
         .btn:hover{
@@ -106,7 +104,11 @@
 
         .editProfile{
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-start;
+            align-items: center;
+            position:absolute; 
+            top:200px; 
+            left: 360px;
         }
 
     </style>
@@ -115,6 +117,7 @@
 
 
             <p style="text-align:left; display: table-cell;"><img class="avatar" src="{% static 'images/' %}{{ public.avatar }}.png"></p>
+
             <div class="editProfile">
                 <p class = "name"> {{ public.name }} {{ public.surname }}</p>
                 {% if thisUser %}

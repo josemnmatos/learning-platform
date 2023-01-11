@@ -44,7 +44,6 @@
         background-color: #96dae7;
         color:white;
         min-width: 20vw;
-    
     }
 
     p {
@@ -68,8 +67,7 @@
 
     .edit{
         width:27px;
-        position: absolute;
-        right: 60px;
+        float: right;
     }
 
 </style>
@@ -79,53 +77,52 @@
 
 <div class="container">
     <div>
-    <h2>History of Payments</h2>
-    {% if not enrolledCourses %}
-        <p>You need to apply in a course to have an history of payments!</p>
-    {% else %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Course Name</th>
-                <th>Course Price</th>
-                <th>Card Used</th>
-            </tr>
-        </thead>
-        {% for enrolledCourse in enrolledCourses %}
-        <tbody>
-            <tr>
-                <td><a class="pretty" href="../course/{{ enrolledCourse.courseId.id }}">{{ enrolledCourse.courseId.name }}</a></td>
-                <td>{{ enrolledCourse.courseId.price }}€</td>
-                <td>{{ enrolledCourse.paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1'}}</td>
-            </tr>
-        </tbody>
-        {% endfor %}
-        <tfoot>
-            <tr>
-                <td >Total</td>
-                <td>{{ total }}</td>
-            </tr>
-        </tfoot>
-    </table>
-    {% endif %}
-</div>
+        <h2>History of Payments</h2>
+        {% if not enrolledCourses %}
+            <p>You need to apply in a course to have an history of payments!</p>
+        {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Course Price</th>
+                    <th>Card Used</th>
+                </tr>
+            </thead>
+            {% for enrolledCourse in enrolledCourses %}
+            <tbody>
+                <tr>
+                    <td><a class="pretty" href="../course/{{ enrolledCourse.courseId.id }}">{{ enrolledCourse.courseId.name }}</a></td>
+                    <td>{{ enrolledCourse.courseId.price }}€</td>
+                    <td>{{ enrolledCourse.paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1'}}</td>
+                </tr>
+            </tbody>
+            {% endfor %}
+            <tfoot>
+                <tr>
+                    <td >Total</td>
+                    <td>{{ total }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        {% endif %}
+    </div>
 
-<div>
-<h2>Payment Details</h2>
-<div class="payment-methods">
-    <a href="../managePaymentDetails"><img class="edit" src="{% static 'images/' %}edit.png"></a>
-    {% if not paymentDetails %}
-        <p>No Payment Details</p>
-    {% else %}
-        {% for card in paymentDetails %}
-        <div>
-            
-            <p><img class="card" src="{% static 'images/' %}card.png"> {{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</p>
+    <div>
+        <h2>Payment Details</h2>
+        <div class="payment-methods">
+            <a href="../managePaymentDetails"><img class="edit" src="{% static 'images/' %}edit.png"></a>
+            {% if not paymentDetails %}
+                <p>No Payment Details</p>
+            {% else %}
+                {% for card in paymentDetails %}
+                <div>
+                    <p><img class="card" src="{% static 'images/' %}card.png"> {{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</p>
+                </div>
+                
+                {% endfor %}
+            {% endif %}
         </div>
-        
-        {% endfor %}
-    {% endif %}
-</div>
-</div>
+    </div>
 </div>
 {% endblock %}
