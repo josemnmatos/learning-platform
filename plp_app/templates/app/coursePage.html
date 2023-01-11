@@ -166,7 +166,9 @@
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=creator.profileId.userId.id showOptions=showOptions %}
-
+<head>
+  <link rel="stylesheet" href="..\static\addtu.css">
+</head>
 
 <div class="course-header">
 
@@ -234,9 +236,11 @@
     <h2>Teaching Units</h2>
     {% if thisUser %}
     
-      <div>
-        <a class="button" href="../addTeachingUnit/{{course.id}}" align="right">Add teaching Unit</a>
-      </div>
+  <a href="../addTeachingUnit/{{course.id}}">
+    <button class="dropbtn">Add teaching unit</button>
+  </a>
+    
+      
     
     {% endif %}
     

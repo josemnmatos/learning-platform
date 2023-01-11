@@ -87,6 +87,18 @@
         float: right;
     }
 
+    .btnG{
+        border: 2px solid rgb(205, 2, 2);
+        background-color: transparent;
+        border-radius: 50px; 
+        
+    }
+
+    .btnG:hover{
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,  rgb(140, 1, 1) 0 -3px 0 inset;
+            transform: translateY(-2px);
+    }
+
     .btn{
         background-color: #96dae7;
         border-radius: 10px; 
@@ -97,7 +109,6 @@
         box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(13, 64, 105) 0 -3px 0 inset;
             transform: translateY(-2px);
     }
-
     .plus{
         width: 15px;
         margin: 3px;
@@ -107,6 +118,12 @@
         color: white;
     }
 
+    .paymentTitle{
+        color:#089e88;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size:xx-large;
+    }
+
 </style>
 
 
@@ -114,21 +131,21 @@
 <div class="paymentDetails">
     <!-- Payment Details -->
     <div class="details">
-        <h2>Payment Details</h2>
+        <h2 class="paymentTitle">Cards</h2>
         {% if not paymentDetails %}
-        <p>No Payment Details</p>
+        <p style="color:rgba(0, 0, 0, 0.623)"><b>No Payment Details</b></p>
         {% else %}
         {% for card in paymentDetails %}
         <div class="payment">
             <p>
                 <img class="card" src="{% static 'images/' %}card.png">
-                {{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }} - {{card.expirationMonth}} / {{card.expirationYear}}
+                <b>{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</b> - {{card.expirationMonth}} / {{card.expirationYear}}
             </p>
             <!-- Delete -->
             <form style="margin-left: 20px;" method="POST" action="../deletePaymentDetail">
                 {% csrf_token %}
                 <input type="hidden" name="paymentDetailId" value={{ card.id }}>
-                <input class="btn" type="submit" name="Delete" value="Delete">
+                <button class="btnG" type="submit" value="Delete"><img style="width:15px; padding:3px; margin-top: 1px;" src="{% static 'images/' %}garbage.png"></button>
             </form>
         </div>
         {% endfor %}
