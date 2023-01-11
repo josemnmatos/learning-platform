@@ -4,22 +4,15 @@
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
 <style>
-        .container{
-                    margin: 20px;
-                    
-                    
-
-    }
 
     .formContainer {
-                background-color:rgb(13, 64, 105);
-                width: 350px;
-                max-width: 700px;
-                height: 170px;
-                padding: 40px;
-                border-radius: 20px;
-                 
-                
+        background-color:rgb(13, 64, 105);
+        width: fit-content;
+        height: fit-content;
+        padding: 10px;
+        border-radius: 20px;
+        margin: 20px;
+        
 
     }
 
@@ -33,16 +26,23 @@
         margin-left: 20px;
     }
 
-    .payments{
+    .paymentDetails{
         display: flex;
-        justify-content: flex-start;
-        flex-wrap: nowrap;
+        justify-content: space-between;
+        margin: 10px;
     }
 
+    .payment{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px;
+    }
 
     input{
         color:white;
     }
+    
     .inp{
         background-color: transparent;
         outline: 0;
@@ -51,12 +51,12 @@
         font-size: 20px;
         padding:5px;  
         border-radius: 10px;
-    
     }
 
     input::placeholder{
         color:white
     }
+
     .date{
         background-color: transparent;
         outline: 0;
@@ -80,23 +80,18 @@
         border-radius: 10px;
         text-align: center;
         width: 40px;
+        margin: 10px;
         margin-left: 90px;
-    
     }
 
     .edit{
         width: 50px;
-        margin-left: 320px;
     }
 
     .btn{
         background-color: #96dae7;
-
-        border-radius: 10px;
-        position: relative;
-        left: 340px;
-        top: -20px;
-        
+        border-radius: 10px; 
+        border:0;
     }
 
     .btn:hover{
@@ -109,32 +104,46 @@
         margin: 3px;
     }
 
+    section {
+        color: white;
+    }
 
 </style>
 
 
 
-<div class="payment">
-
-
-<div class="details">
-    <h2>Payment Details</h2>
-    {% if not paymentDetails %}
-    <p>No Payment Details</p>
-    {% else %}
-    {% for card in paymentDetails %}
-    
-    <p><img class="card" src="{% static 'images/' %}card.png">{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }} - {{card.expirationMonth}} / {{card.expirationYear}}</p>
-    {% endfor %}
-    {% endif %}
-</div>
+<div class="paymentDetails">
+    <!-- Payment Details -->
+    <div class="details">
+        <h2>Payment Details</h2>
+        {% if not paymentDetails %}
+        <p>No Payment Details</p>
+        {% else %}
+        {% for card in paymentDetails %}
+        <div class="payment">
+            <p>
+                <img class="card" src="{% static 'images/' %}card.png">
+                {{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }} - {{card.expirationMonth}} / {{card.expirationYear}}
+            </p>
+            <!-- Delete -->
+            <form style="margin-left: 20px;" method="POST" action="../deletePaymentDetail">
+                {% csrf_token %}
+                <input type="hidden" name="paymentDetailId" value={{ card.id }}>
+                <input class="btn" type="submit" name="Delete" value="Delete">
+            </form>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <!-- Add Payment Detail -->
 
 <div class="container">
     <section class="formContainer">
+        
         <form method="POST" action="../saveNewPaymentDetail">
             {% csrf_token %}
             <button class="btn" type="submit" ><img class="plus" src="{% static 'images/' %}Whiteplus.png"></button>
-            <input class="inp" required type="text" maxlength="16" pattern="[0-9]{16}" name="cardNumber" placeholder="Card Number">
+            <input class="inp" required type="text" maxlength="16" pattern="[0-9]{16}" name="cardNumber" placeholder="Card Number"><br><br>
             <img class="edit" src="{% static 'images/' %}chipCard.png">
             <br><br>
             <input class="date" required type="number" min="1" max="12" name="expirationMonth" placeholder="MM">/
@@ -143,9 +152,8 @@
                
         </form>
 
-    </section>
+        </section>
 
-</div>
 </div>
 
 {% endblock %}

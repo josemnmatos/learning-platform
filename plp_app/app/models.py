@@ -37,7 +37,7 @@ class Private(models.Model):
 
 
 class PaymentDetails(models.Model):
-    privateId = models.ForeignKey(Private, on_delete=models.CASCADE)
+    privateId = models.ForeignKey(Private, on_delete=models.CASCADE, null=True, blank=True)
     cardNumber = models.CharField(max_length=16)
     expirationMonth = models.SmallIntegerField()
     expirationYear = models.SmallIntegerField()
@@ -146,8 +146,6 @@ class Video(models.Model):
     materialId = models.ForeignKey(Material, on_delete=models.CASCADE)
     content = models.CharField(max_length=10000)
     time = models.IntegerField()
-
-    
 
 
 class LiveChat(models.Model):

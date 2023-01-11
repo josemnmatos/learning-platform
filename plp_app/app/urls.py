@@ -30,6 +30,7 @@ urlpatterns = [
     path('saveProfileChanges',views.saveProfileChanges,name="saveProfileChanges"),
     path('managePaymentDetails',views.managePaymentDetails,name="managePaymentDetails"),
     path('saveNewPaymentDetail',views.saveNewPaymentDetail,name="saveNewPaymentDetail"),
+    path('deletePaymentDetail',views.deletePaymentDetail,name="deletePaymentDetail"),
     path('addTeachingUnit/<id>',views.addTeachingUnit,name="add TU")
     
 ]
