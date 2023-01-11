@@ -147,8 +147,6 @@ class Video(models.Model):
     content = models.CharField(max_length=10000)
     time = models.IntegerField()
 
-    
-
 
 class LiveChat(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)

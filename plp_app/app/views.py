@@ -453,6 +453,19 @@ def addTeachingUnitWritten(request,id):
     
 def addTeachingUnitVideo(request,id):
     course = models.Course.objects.filter(id__exact=id)
+    if request.method == 'POST':
+        content = request.POST['video_link']
+        time = request.POST['duration']
+        name = request.POST['video_name']
+        unit = models.Course.objects.filter(id__exact=id)
+        unit1 = models.TeachingUnit(courseId=unit[0],description="Teaching Unit")
+        unit1.save()
+        newunit=models.Material(unitId=unit1, materialName=name)
+        newunit.save()
+        new=models.Video(materialId=newunit,time = time,content=content)
+        new.save()
+        return redirect('coursePage',id)
+        
     return render(request,"app/addTeachingUnitVideo.html",{'course':course[0]})
             
 def saveEnrollment(request):

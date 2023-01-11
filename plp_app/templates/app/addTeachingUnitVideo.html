@@ -5,15 +5,16 @@
 
 {%load static%}
 
+<form action="" method="POST">
+    {% csrf_token %} 
 
-<body>
-    <form action="" method="POST">
-        {% csrf_token %} 
-        Title: <input type="text" name="title"/><br/>
-        Content: <br/>
-        <textarea cols="35" rows="8" name="content">
-        </textarea><br/>
-        <input type="submit" value="Post" href="course/{{ course.id }}"/>
-    </form>
-</body>
+    Video Name: <input type="text" name="video_name"/><br/>
+    <br/>
+    Video link: <input type="text" name="video_link"/><br/>
+    <br/>
+    Duration: <input type="number" name="duration"/><br/>
+    <br/>
+    <input type="submit" value="Post" href="course/{{ course.id }}"/>
+</form>
+
 {% endblock %}
