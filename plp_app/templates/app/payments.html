@@ -94,7 +94,11 @@
                 <tr>
                     <td><a class="pretty" href="../course/{{ enrolledCourse.courseId.id }}">{{ enrolledCourse.courseId.name }}</a></td>
                     <td>{{ enrolledCourse.courseId.price }}€</td>
+                    {% if enrolledCourse.paymentMethod.cardNumber %}
                     <td>{{ enrolledCourse.paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1'}}</td>
+                    {% else %}
+                    <td>None</td>
+                    {% endif %}
                 </tr>
             </tbody>
             {% endfor %}
