@@ -12,11 +12,11 @@
     }
 
     .formContainer {
-                background-color:#129f8a;
-                max-width: 500px;
-                height: fit-content;
-                padding: 100px;
-                border-radius: 20px;
+        background-color:#129f8a;
+        max-width: 500px;
+        height: fit-content;
+        padding: 100px;
+        border-radius: 20px;
 
     }
 
@@ -28,10 +28,10 @@
 
     .formElement { 
         color: white;
-        
     }
 
     .inputText{
+        width: 87%;
         border: 0;
         border-bottom: 1px solid #07554aa3;
         transition: all 0.2s;
@@ -44,7 +44,7 @@
     }
 
     .inputNumber{
-
+        width: 75%;
         border: 0;
         color:white;
         border-bottom: 1px solid #07554aa3;
@@ -93,6 +93,11 @@
         color: black;
     }
 
+    .description{
+        background-color: rgba(255, 255, 255, 0.6);
+        font-size: 15px;
+    }
+
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
@@ -100,7 +105,7 @@
 <div class="container">
 
     <section class="formContainer">
-        <div class="formElement">
+        <center class="formElement">
             <form method="POST" action="../saveNewCourse">
                 {% csrf_token %}
                 
@@ -111,6 +116,9 @@
             
                 <input required class="inputNumber" type="number" name="price" step=".01" min="0" placeholder="Price"> €<br><br>
             
+                <textarea rows="6" cols="30" class="description" name="description" placeholder="Description" value="{{ course.description }}"></textarea><br><br>
+
+
                 Category: <select required class="category" name="category" placeholder="Category">
                     {% for category in categories %}
                         <option value="{{ category.id }}">{{ category.category }}</option>
@@ -122,7 +130,7 @@
                 
             </form>
     
-        </div>
+        </center>
     </section>
     
 

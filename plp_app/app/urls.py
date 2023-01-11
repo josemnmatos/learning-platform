@@ -31,6 +31,7 @@ urlpatterns = [
     path('managePaymentDetails',views.managePaymentDetails,name="managePaymentDetails"),
     path('saveNewPaymentDetail',views.saveNewPaymentDetail,name="saveNewPaymentDetail"),
     path('deletePaymentDetail',views.deletePaymentDetail,name="deletePaymentDetail"),
+    path('deleteCourse',views.deleteCourse,name="deleteCourse"),
     path('addTeachingUnit/<id>',views.addTeachingUnit,name="add TU")
     
 ]

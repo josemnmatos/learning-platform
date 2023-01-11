@@ -62,7 +62,9 @@
             {% endif %}
         {% endif %}
 
+        {% if paymentMethods and course.price > 0 %}
         <input class="btn" type="submit" name="enroll" value="Enroll Course">
+        {% endif %}
     </form>
 </center>
 

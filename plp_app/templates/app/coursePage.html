@@ -153,6 +153,16 @@
 
     }
 
+    .course-description {
+      background-color: #089e88;
+      padding: 10px;
+      color:white;
+    }
+
+    .course-description p{
+      margin-left: 15px;
+    }
+
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=creator.profileId.userId.id showOptions=showOptions %}
@@ -208,6 +218,14 @@
     {% endif %}
   </div>
 </div>
+
+<!-- Course Description -->
+{% if course.description %}
+<div class="course-description">
+  <h3>Description</h3>
+  <p>{{ course.description }}</p>
+</div>
+{% endif %}
 
 <div class="course-body">
   <!-- Teaching Units -->
