@@ -175,12 +175,18 @@
                 
         <br><br>
         <center>
-            <input class="btn" type="submit" name="save" value="Save">
+            <input id="submitButton" class="btn" type="submit" name="save" value="Save">
             <input class="btnR" type="reset" value="Reset">
         </center>
         </form>
     </section>
 </div>
 
+<script>
+    let submitButton = document.getElementById('submitButton');
+    submitButton.onclick = function() {
+       return confirm("Are you sure you want to apply this changes?");
+    }
+</script>
 
 {% endblock %}

@@ -142,7 +142,7 @@
 {% if thisUser %}
 <div class="container">
     <section class="formContainer">
-        <form method="POST" action="../saveCourseChanges">
+        <form id="editForm" method="POST" action="../saveCourseChanges">
             {% csrf_token %}
             <h1>Edit Course</h1>
             <input class="formElement" type="hidden" name="courseId" value="{{ course.id }}">
@@ -165,7 +165,7 @@
             </select><br><br>
 
             <center>
-                <input class="btn" type="submit" name="submit" value="Submit">
+                <input id="submitButton" class="btn" type="submit" name="submit" value="Submit">
                 <input class="btnR" type="reset" value="Reset">
                 
             </center>
@@ -173,10 +173,10 @@
         <!-- DELETE -->
         <center>
             <br>
-            <form method="POST" action="../deleteCourse">
+            <form id="deleteForm" method="POST" action="../deleteCourse">
                 {% csrf_token %}
                 <input class="formElement" type="hidden" name="courseId" value="{{ course.id }}">
-                <input class="btnD" type="submit" value="Delete">
+                <input id="deleteButton" class="btnD" type="submit" value="Delete">
             </form>
     </center>
     </section>
@@ -187,5 +187,17 @@
 <h2>You don't have permission to edit this course!</h2>
 
 {% endif %}
+
+<script>
+    let submitButton = document.getElementById('submitButton');
+    submitButton.onclick = function() {
+       return confirm("Are you sure you want to apply this changes?");
+    }
+
+    let deleteButton = document.getElementById('deleteButton');
+    deleteButton.onclick = function() {
+        return confirm("Are you sure you want to delete this course?");
+    }
+</script>
 
 {% endblock %}

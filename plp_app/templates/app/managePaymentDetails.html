@@ -145,7 +145,7 @@
             <form style="margin-left: 20px;" method="POST" action="../deletePaymentDetail">
                 {% csrf_token %}
                 <input type="hidden" name="paymentDetailId" value={{ card.id }}>
-                <button class="btnG" type="submit" value="Delete"><img style="width:15px; padding:3px; margin-top: 1px;" src="{% static 'images/' %}garbage.png"></button>
+                <button id="deleteButton" class="btnG" type="submit" value="Delete"><img style="width:15px; padding:3px; margin-top: 1px;" src="{% static 'images/' %}garbage.png"></button>
             </form>
         </div>
         {% endfor %}
@@ -158,7 +158,7 @@
             {% csrf_token %}
             <div class="payment">
                 <h2>Add Card</h2>
-                <button class="btn" type="submit" ><img class="plus" src="{% static 'images/' %}Whiteplus.png"></button>
+                <button id="submitButton" class="btn" type="submit" ><img class="plus" src="{% static 'images/' %}Whiteplus.png"></button>
             </div>
             <div class="payment">
                 <input class="inp" required type="text" maxlength="16" pattern="[0-9]{16}" name="cardNumber" placeholder="Card Number"><br><br>
@@ -170,6 +170,19 @@
             <input class="cvv" required type="password" maxlength="3" name="cvv" placeholder="CVV"><br>
             
         </form>
+    </section>
+</div>
+
+<script>
+    let submitButton = document.getElementById('submitButton');
+    submitButton.onclick = function() {
+        return confirm("Are you sure you want to add this card?");
+    }
+    let deleteButton = document.getElementById('deleteButton');
+    deleteButton.onclick = function() {
+        return confirm("Are you sure you want to delete this card?");
+    }
+</script>
 
 
 {% endblock %}
