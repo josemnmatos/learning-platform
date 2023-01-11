@@ -35,7 +35,7 @@
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
 
 {% if not coursesEnrolled %}
-    <h2>You are not enrolled in any course!</h2>
+    <h2 style="color:rgba(0, 0, 0, 0.623); margin-left: 10px;" >You are not enrolled in any course! Try to search some!</h2>
 {% else %}
 
     <table class="table">
