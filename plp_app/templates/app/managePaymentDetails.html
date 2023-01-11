@@ -53,7 +53,7 @@
         border-radius: 10px;
     }
 
-    input::placeholder{
+    .formContainer input::placeholder{
         color:white
     }
 
@@ -64,6 +64,7 @@
         font-size: 20px;
         padding:10px;  
         border-radius: 10px;
+        position: relative;
         margin: 10px;
     }
 
@@ -83,6 +84,7 @@
 
     .edit{
         width: 50px;
+        float: right;
     }
 
     .btn{
@@ -134,26 +136,23 @@
     </div>
     <!-- Add Payment Detail -->
 
-        <section class="formContainer">
-            <form method="POST" action="../saveNewPaymentDetail">
-                {% csrf_token %}
-                <div class="payment">
-                    <h2>Add Card</h2>
-                    <button class="btn" type="submit" ><img class="plus" src="{% static 'images/' %}Whiteplus.png"></button>
-                </div>
-                <div class="payment">
-                    <input class="inp" required type="text" maxlength="16" pattern="[0-9]{16}" name="cardNumber" placeholder="Card Number"><br><br>
-                    <img class="edit" src="{% static 'images/' %}chipCard.png">
-                </div>
-                <br>
-                <input class="date" required type="number" min="1" max="12" name="expirationMonth" placeholder="MM">/
-                <input class="date" required type="number"  min="1" max="99" name="expirationYear" placeholder="YY ">
-                <input class="cvv" required type="password" maxlength="3" name="cvv" placeholder="CVV"><br>
-                
-            </form>
+    <section class="formContainer">
+        <form method="POST" action="../saveNewPaymentDetail">
+            {% csrf_token %}
+            <div class="payment">
+                <h2>Add Card</h2>
+                <button class="btn" type="submit" ><img class="plus" src="{% static 'images/' %}Whiteplus.png"></button>
+            </div>
+            <div class="payment">
+                <input class="inp" required type="text" maxlength="16" pattern="[0-9]{16}" name="cardNumber" placeholder="Card Number"><br><br>
+                <img class="edit" src="{% static 'images/' %}chipCard.png">
+            </div>
+            <br>
+            <input class="date" required type="number" min="1" max="12" name="expirationMonth" placeholder="MM"> /
+            <input class="date" required type="number"  min="1" max="99" name="expirationYear" placeholder="YY ">
+            <input class="cvv" required type="password" maxlength="3" name="cvv" placeholder="CVV"><br>
+            
+        </form>
 
-        </section>
-
-</div>
 
 {% endblock %}
