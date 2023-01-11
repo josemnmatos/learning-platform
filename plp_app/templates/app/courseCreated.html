@@ -57,14 +57,14 @@
     <a href="../createNewCourse" class="button"><img class="plusImg" src="{% static 'images/' %}plus.png"></a>
     <br><br>
     {% if not coursesMade %}
-        <h3>To create a new Course click the plus sign!</h3>
+        <h3 style="color:rgba(0, 0, 0, 0.623)"><b>To create a new Course click the plus sign!</b></h3>
     {% endif %}
 {% endif %}
-
-<!-- No Courses Made -->
-{% if not coursesMade %}
+{%if not thisUser and not coursesMade %}
     <h3>0 courses created</h3>
-{% else %}
+{% endif %}
+<!-- No Courses Made -->
+{% if coursesMade  %}
 <!-- Table with courses made -->
     <table class="table">
         <thead>

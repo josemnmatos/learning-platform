@@ -29,7 +29,7 @@
         text-align: center;
         padding: 10px;
         border: 0;
-
+        text-decoration: none;
         color: #129f8a;
         cursor: pointer;
       }
@@ -50,7 +50,7 @@
         <input type="hidden" name="courseId" value="{{ course.id }}">
         {% if course.price > 0 %}
             {% if not paymentMethods %}
-                <a href="../payments">Add a payment method</a>
+                <a class="btn" href="../managePaymentDetails">Add a payment method</a><br><br>
             {% else %}
             <h3>Price: {{ course.price }}€</h3>
             <label for="paymentMethod">Please choose a payment method</label><br>
@@ -62,7 +62,9 @@
             {% endif %}
         {% endif %}
 
+        {% if paymentMethods and course.price > 0 %}
         <input class="btn" type="submit" name="enroll" value="Enroll Course">
+        {% endif %}
     </form>
 </center>
 

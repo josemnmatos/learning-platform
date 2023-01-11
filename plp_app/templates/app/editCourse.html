@@ -27,6 +27,11 @@
             color: white;
           }
 
+    .description{
+        background-color: rgba(255, 255, 255, 0.6);
+        font-size: 15px;
+    }
+
     .inputText{
         border: 0;
         border-bottom: 1px solid #07554aa3;
@@ -37,10 +42,11 @@
         text-align: center;
         font-size: 15px;
         background-color: transparent;
+        width: 87%;
     }
 
     .inputNumber{
-
+        width: 87%;
         border: 0;
         color:white;
         border-bottom: 1px solid #07554aa3;
@@ -86,7 +92,7 @@
 
     }
 
-    .btnR{
+    .btnD{
           width: 30%;
           border-radius: 10px;
           background-color: white ;
@@ -99,12 +105,29 @@
           cursor: pointer;
         }
 
-    .btnR:hover{
-            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(132, 4, 4) 0 -3px 0 inset;
-            transform: translateY(-2px);
-            
-            color:rgb(221, 9, 9)
+    .btnD:hover{
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(132, 4, 4) 0 -3px 0 inset;
+        transform: translateY(-2px);
+        color:rgb(221, 9, 9);
+    }
 
+    .btnR{
+          width: 30%;
+          border-radius: 10px;
+          background-color: white ;
+          font-size:20px;
+          text-align: center;
+          padding: 10px;
+          border: 0;
+          justify-content: center;
+          color: rgb(13, 64, 105);
+          cursor: pointer;
+        }
+
+    .btnR:hover{
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(13, 64, 105) 0 -3px 0 inset;
+        transform: translateY(-2px);
+        color: #96dae7;
     }
 
     option {
@@ -123,12 +146,17 @@
             {% csrf_token %}
             <h1>Edit Course</h1>
             <input class="formElement" type="hidden" name="courseId" value="{{ course.id }}">
-            Name:<input required class="inputText" type="text" name="name" value="{{ course.name }}"><br><br>
+            Name<br>
+            <input required class="inputText" type="text" name="name" value="{{ course.name }}"><br><br>
             
-            Average Master Time:<input required class="inputNumber" type="number" name="averageMasterTime" value="{{ course.averageMasterTime }}" min="1"> min<br><br>
+            Average Master Time<br>
+            <input required class="inputNumber" type="number" name="averageMasterTime" value="{{ course.averageMasterTime }}" min="1"> min<br><br>
 
-            Price:<input required class="inputNumber" type="number" name="price" value="{{ course.price }}" step=".01" min="0"> €<br><br>
+            Price<br>
+            <input required class="inputNumber" type="number" name="price" value="{{ course.price }}" step=".01" min="0"> €<br><br>
 
+            Description<br><textarea rows="4" cols="45" class="description" name="description">{{ course.description }}</textarea><br><br>
+            
             Category: <select required class="category" name="category"><br>
                 <option class="formElement" value="{{ course.categoryId.id }}">{{ course.categoryId.category }}</option>
                 {% for category in categories %}
@@ -139,9 +167,18 @@
             <center>
                 <input class="btn" type="submit" name="submit" value="Submit">
                 <input class="btnR" type="reset" value="Reset">
+                
             </center>
-
         </form>
+        <!-- DELETE -->
+        <center>
+            <br>
+            <form method="POST" action="../deleteCourse">
+                {% csrf_token %}
+                <input class="formElement" type="hidden" name="courseId" value="{{ course.id }}">
+                <input class="btnD" type="submit" value="Delete">
+            </form>
+    </center>
     </section>
 </div>
 

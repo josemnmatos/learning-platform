@@ -1,5 +1,4 @@
-{%extends 'app/base.html'%}
-
+{% extends 'app/base.html' %}
 {% block content %}
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
@@ -9,7 +8,11 @@
 <form action="" method="POST">
     {% csrf_token %} 
 
-    Teaching Unit Name: <input type="text" name="description"/><br/>
+    Video Name: <input type="text" name="video_name"/><br/>
+    <br/>
+    Video link: <input type="text" name="video_link"/><br/>
+    <br/>
+    Duration: <input type="number" name="duration"/><br/>
     <br/>
     <input type="submit" value="Post" href="course/{{ course.id }}"/>
 </form>

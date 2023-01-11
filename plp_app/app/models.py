@@ -67,6 +67,7 @@ class Course(models.Model):
     name = models.CharField(max_length=100)
     averageMasterTime = models.SmallIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    description = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
         return self.name
@@ -102,6 +103,7 @@ class Rating(models.Model):
 class TeachingUnit(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
     description = models.CharField(max_length=500)
+    
 
     def __str__(self):
         return self.courseId.name + ' - ' + self.description
@@ -117,8 +119,8 @@ class Material(models.Model):
 
 class Written(models.Model):
     materialId = models.ForeignKey(Material, on_delete=models.CASCADE)
-    content = models.TextField()
-    title = models.TextField()
+    content = models.TextField(default="No title")
+    title = models.TextField(default="No text")
 
     def __str__(self):
         return self.content

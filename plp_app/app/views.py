@@ -160,13 +160,24 @@ def searchResults(request):
         names = models.Public.objects.filter(name__icontains=name)
         # Get all the public objects that contain the name in surname
         surnames = models.Public.objects.filter(surname__icontains=name)
+        # Get all the user objects that contain the name in username
+        users = models.User.objects.filter(username__icontains=name)
+        usersPublics = models.Public.objects.none()
+        for user in users:
+            userProfile = models.Profile.objects.filter(userId__exact=user.id)
+            # If it has a profile add them to the list
+            if userProfile:
+                usersPublics= usersPublics | models.Public.objects.filter(profileId__exact=userProfile[0].id)
         # Join them and sort by name
-        publics = sorted(names.union(surnames),
+        publics = sorted(names.union(surnames.union(usersPublics)),
                          key=lambda profile: profile.name)
 
         # Get all the course objects that contain the name in name
         courses = models.Course.objects.filter(
-            name__icontains=name).order_by('name')
+            name__icontains=name)
+        # Get all the course objects that contain the name in category
+        coursesCategory = models.Course.objects.filter(categoryId__category__icontains=name)
+        courses = sorted(courses.union(coursesCategory), key=lambda course: course.name)
         # Get the number of courses made
         coursesMade = []
         for public in publics:
@@ -332,12 +343,19 @@ def saveNewCourse(request):
             name = request.POST['name']
             averageMasterTime = request.POST['averageMasterTime']
             price = request.POST['price']
+            description = request.POST['description']
             category = request.POST['category']
             # Get the category
             categoryId = models.Category.objects.filter(id__exact=category)
+            # Check if the course name isn't already used
+            checkCourse = models.Course.objects.filter(name__iexact=name)
+            if checkCourse:
+                s.error(request, "There's already a course with that name",
+                      button="OK", timer=2000)
+                return redirect('createNewCourse')
             # Create the new Course
             newCourse = models.Course(
-                name=name, averageMasterTime=averageMasterTime, price=price, categoryId=categoryId[0])
+                name=name, averageMasterTime=averageMasterTime, price=price, description=description, categoryId=categoryId[0])
             newCourse.save()
             # Add it to the courses made
             profileId = models.Profile.objects.filter(
@@ -395,19 +413,39 @@ def saveCourseChanges(request):
         name = request.POST['name']
         averageMasterTime = request.POST['averageMasterTime']
         price = request.POST['price']
+        description = request.POST['description']
         category = request.POST['category']
         courseId = request.POST['courseId']
         # Get the category
         categoryId = models.Category.objects.filter(id__exact=category)
+         # Check if the course name isn't already used
+        checkCourse = models.Course.objects.filter(name__iexact=name).exclude(id=courseId)
+        if checkCourse:
+            s.error(request, "There's already a course with that name",
+                    button="OK", timer=2000)
+            return redirect('editCourse', courseId)
         # Get the course
         course = models.Course.objects.get(id=courseId)
         course.name = name
         course.averageMasterTime = averageMasterTime
         course.price = price
+        course.description = description
         course.categoryId = categoryId[0]
         course.save()
         return redirect('coursePage', courseId)
 
+    return redirect('home')
+
+def deleteCourse(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            courseId = request.POST['courseId']
+            
+            course = models.Course.objects.filter(id__exact=courseId)
+            course.delete()
+            s.info(request, "The course was deleted",
+                      button="OK", timer=2000)
+            return redirect('courseCreated', request.user.id)
     return redirect('home')
 
 
@@ -437,9 +475,8 @@ def enrollCourse(request, id):
         return render(request, "app/enrollCourse.html", {"course": course[0], 'paymentMethods': paymentMethods})
     return redirect('home')
 
-  
 
-def addTeachingUnit(request,id):
+def addTeachingUnitWritten(request,id):
     
     if request.user.is_authenticated:
         
@@ -454,8 +491,24 @@ def addTeachingUnit(request,id):
             new=models.Written(materialId=newunit,title=title,content=content)
             new.save()
             return redirect('coursePage',id)
-    return render(request,'app/addTeachingUnit.html', {'course': id})  
+    return render(request,'app/addTeachingUnitWritten.html', {'course': id})  
     
+def addTeachingUnitVideo(request,id):
+    course = models.Course.objects.filter(id__exact=id)
+    if request.method == 'POST':
+        content = request.POST['video_link']
+        time = request.POST['duration']
+        name = request.POST['video_name']
+        unit = models.Course.objects.filter(id__exact=id)
+        unit1 = models.TeachingUnit(courseId=unit[0],description="Teaching Unit")
+        unit1.save()
+        newunit=models.Material(unitId=unit1, materialName=name)
+        newunit.save()
+        new=models.Video(materialId=newunit,time = time,content=content)
+        new.save()
+        return redirect('coursePage',id)
+        
+    return render(request,"app/addTeachingUnitVideo.html",{'course':course[0]})
             
 def saveEnrollment(request):
     if request.user.is_authenticated:
@@ -542,10 +595,7 @@ def saveProfileChanges(request):
                     
             
             return redirect('viewProfile', request.user.id)
-    
-    
     return redirect('home')
-    
     
 def managePaymentDetails(request):
     if request.user.is_authenticated:

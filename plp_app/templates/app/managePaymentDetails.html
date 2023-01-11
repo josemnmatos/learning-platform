@@ -53,7 +53,7 @@
         border-radius: 10px;
     }
 
-    input::placeholder{
+    .formContainer input::placeholder{
         color:white
     }
 
@@ -64,6 +64,7 @@
         font-size: 20px;
         padding:10px;  
         border-radius: 10px;
+        position: relative;
         margin: 10px;
     }
 
@@ -83,6 +84,19 @@
 
     .edit{
         width: 50px;
+        float: right;
+    }
+
+    .btnG{
+        border: 2px solid rgb(205, 2, 2);
+        background-color: transparent;
+        border-radius: 50px; 
+        
+    }
+
+    .btnG:hover{
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,  rgb(140, 1, 1) 0 -3px 0 inset;
+            transform: translateY(-2px);
     }
 
     .btn{
@@ -95,7 +109,6 @@
         box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(13, 64, 105) 0 -3px 0 inset;
             transform: translateY(-2px);
     }
-
     .plus{
         width: 15px;
         margin: 3px;
@@ -105,6 +118,12 @@
         color: white;
     }
 
+    .paymentTitle{
+        color:#089e88;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size:xx-large;
+    }
+
 </style>
 
 
@@ -112,21 +131,21 @@
 <div class="paymentDetails">
     <!-- Payment Details -->
     <div class="details">
-        <h2>Payment Details</h2>
+        <h2 class="paymentTitle">Cards</h2>
         {% if not paymentDetails %}
-        <p>No Payment Details</p>
+        <p style="color:rgba(0, 0, 0, 0.623)"><b>No Payment Details</b></p>
         {% else %}
         {% for card in paymentDetails %}
         <div class="payment">
             <p>
                 <img class="card" src="{% static 'images/' %}card.png">
-                {{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }} - {{card.expirationMonth}} / {{card.expirationYear}}
+                <b>{{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</b> - {{card.expirationMonth}} / {{card.expirationYear}}
             </p>
             <!-- Delete -->
             <form style="margin-left: 20px;" method="POST" action="../deletePaymentDetail">
                 {% csrf_token %}
                 <input type="hidden" name="paymentDetailId" value={{ card.id }}>
-                <input class="btn" type="submit" name="Delete" value="Delete">
+                <button class="btnG" type="submit" value="Delete"><img style="width:15px; padding:3px; margin-top: 1px;" src="{% static 'images/' %}garbage.png"></button>
             </form>
         </div>
         {% endfor %}
@@ -134,26 +153,23 @@
     </div>
     <!-- Add Payment Detail -->
 
-        <section class="formContainer">
-            <form method="POST" action="../saveNewPaymentDetail">
-                {% csrf_token %}
-                <div class="payment">
-                    <h2>Add Card</h2>
-                    <button class="btn" type="submit" ><img class="plus" src="{% static 'images/' %}Whiteplus.png"></button>
-                </div>
-                <div class="payment">
-                    <input class="inp" required type="text" maxlength="16" pattern="[0-9]{16}" name="cardNumber" placeholder="Card Number"><br><br>
-                    <img class="edit" src="{% static 'images/' %}chipCard.png">
-                </div>
-                <br>
-                <input class="date" required type="number" min="1" max="12" name="expirationMonth" placeholder="MM">/
-                <input class="date" required type="number"  min="1" max="99" name="expirationYear" placeholder="YY ">
-                <input class="cvv" required type="password" maxlength="3" name="cvv" placeholder="CVV"><br>
-                
-            </form>
+    <section class="formContainer">
+        <form method="POST" action="../saveNewPaymentDetail">
+            {% csrf_token %}
+            <div class="payment">
+                <h2>Add Card</h2>
+                <button class="btn" type="submit" ><img class="plus" src="{% static 'images/' %}Whiteplus.png"></button>
+            </div>
+            <div class="payment">
+                <input class="inp" required type="text" maxlength="16" pattern="[0-9]{16}" name="cardNumber" placeholder="Card Number"><br><br>
+                <img class="edit" src="{% static 'images/' %}chipCard.png">
+            </div>
+            <br>
+            <input class="date" required type="number" min="1" max="12" name="expirationMonth" placeholder="MM"> /
+            <input class="date" required type="number"  min="1" max="99" name="expirationYear" placeholder="YY ">
+            <input class="cvv" required type="password" maxlength="3" name="cvv" placeholder="CVV"><br>
+            
+        </form>
 
-        </section>
-
-</div>
 
 {% endblock %}

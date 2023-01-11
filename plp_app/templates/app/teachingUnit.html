@@ -1,9 +1,23 @@
 {% extends 'app/base.html' %} {% block content %}
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+<head>
+  <link rel="stylesheet" href="..\static\addtu.css">
+</head>
 
 <!--Display teaching unit name and description, general information -->
 <div class="heading">
   <h3>{{ course.name }}</h3>
   <h4>{{ unit.description}}</h4>
+</div>
+
+<div class="dropdown", style="float:right;">
+  <button class="dropbtn">Add teaching unit</button>
+  <div class="dropdown-content">
+  <a href="../addTeachingUnitWritten/{{ unit.id }}">Add written material</a>
+  <a href="../addTeachingUnitVideo/{{ unit.id }}">Add video material</a>
+  <a href="../addTeachingUnitWritten/{{ unit.id }}">Add audio material</a>
+  <a href="../addTeachingUnitWritten/{{ unit.id }}">Add image material</a>
+  </div>
 </div>
 
 <!--Display all the materials related to the current teaching unit -->
