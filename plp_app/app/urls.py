@@ -22,15 +22,20 @@ urlpatterns = [
     path('saveCourseChanges',views.saveCourseChanges,name="saveCourseChanges"),
     path('enrollCourse/<id>',views.enrollCourse,name="enrollCourse"),
     path('saveEnrollment',views.saveEnrollment,name="saveEnrollment"),
-    path('addTeachingUnit/<id>',views.addTeachingUnit,name="addTeachingUnit"),
     path('rateCourse/<id>',views.rateCourse,name="rateCourse"),
     path('saveRating',views.saveRating,name="saveRating"),
     path('payments',views.payments,name="payments"),
+    path('addTeachingUnitWritten/<id>',views.addTeachingUnitWritten,name="addTUW"),
+    path('addTeachingUnitVideo/<id>',views.addTeachingUnitVideo,name="addTUV"),
     path('editProfile',views.editProfile,name="editProfile"),
     path('saveProfileChanges',views.saveProfileChanges,name="saveProfileChanges"),
     path('managePaymentDetails',views.managePaymentDetails,name="managePaymentDetails"),
     path('saveNewPaymentDetail',views.saveNewPaymentDetail,name="saveNewPaymentDetail"),
     path('deletePaymentDetail',views.deletePaymentDetail,name="deletePaymentDetail"),
-    path('addTeachingUnit/<id>',views.addTeachingUnit,name="add TU")
+    #path('addTeachingUnit/<id>',views.addTeachingUnit,name="addTU"),
+    path('adminDashboard', admin_views.adminDashboard, name="adminDashboard"),
+    path('addUser',admin_views.addUser,name="addUser"),
+    path('deleteUser',admin_views.deleteUser, name="deleteUser")
     
+
 ]
