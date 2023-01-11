@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, admin_views
 
 urlpatterns = [
     path('', views.home, name="home"),
@@ -32,6 +32,10 @@ urlpatterns = [
     path('managePaymentDetails',views.managePaymentDetails,name="managePaymentDetails"),
     path('saveNewPaymentDetail',views.saveNewPaymentDetail,name="saveNewPaymentDetail"),
     path('deletePaymentDetail',views.deletePaymentDetail,name="deletePaymentDetail"),
-    path('deleteCourse',views.deleteCourse,name="deleteCourse"),
+    #path('addTeachingUnit/<id>',views.addTeachingUnit,name="addTU"),
+    path('adminDashboard', admin_views.adminDashboard, name="adminDashboard"),
+    path('addUser',admin_views.addUser,name="addUser"),
+    path('deleteUser',admin_views.deleteUser, name="deleteUser")
     
+
 ]

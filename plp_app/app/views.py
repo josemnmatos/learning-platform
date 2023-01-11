@@ -24,9 +24,13 @@ def register(request):
 
         if password1 == password2:
 
-            myuser = User.objects.create_user(
-                first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
-            myuser.save()
+            try:
+               myuser = User.objects.create_user(
+                  first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
+               myuser.save() 
+            except:
+               s.error(request, "Could not create the account.")
+               return redirect('landing.html')    
             # create public and private profile views for the user
             newprofile = models.Profile(userId=myuser)
             newprofile.save()
@@ -37,13 +41,13 @@ def register(request):
             newpublic.save()
             newprivate.save()
 
-            messages.success(
+            s.success(
                 request, "Your account has been sucessfully created!")
 
             return redirect('loginpage')
 
         else:
-            messages.error(request, "Passwords do not match.")
+            s.error(request, "Passwords do not match.")
 
     return render(request, "app/register.html")
 
@@ -638,3 +642,6 @@ def deletePaymentDetail(request):
             
     return redirect('home')
     
+
+
+
