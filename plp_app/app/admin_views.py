@@ -31,7 +31,8 @@ def addUser(request):
                     first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
                 myuser.save()
             except:
-                s.error(request, "Could not create the account.")
+                s.error(request, "Could not create the user.",
+                        button="OK", timer=2000)
                 return redirect('adminDashboard')
 
             if request.POST['isStaff'] == 'on':
@@ -48,18 +49,64 @@ def addUser(request):
             newpublic.save()
             newprivate.save()
 
-            s.success(
-                request, "User created.")
+            s.success(request, "User created.",
+                      button="OK", timer=2000)
 
             return redirect('adminDashboard')
 
         else:
-            s.error(request, "Passwords do not match.")
+            s.error(request, "Passwords do not match.",
+                    button="OK", timer=2000)
 
     return render(request, 'app/addUser.html')
 
 
 def deleteUser(request):
-    if request.user.is_staff == False:
+
+    current_user = request.user
+
+    if current_user.is_staff == False:
         return HttpResponseNotFound()
+
+    # check if user is trying to delete itself
+    if request.method == "POST":
+        username = request.POST['username']
+        if current_user.get_username() == username:
+            s.error(request, "You cannot delete your own account.",
+                    button="OK", timer=2000)
+            return redirect('adminDashboard')
+        else:
+            # delete user, rest will follow as model is cascade
+            try:
+                # delete all courses created by that user
+                user = models.User.objects.get(username=username)
+                print(user)
+
+                # courses are associated with public profile
+                user_profile = models.Profile.objects.filter(userId=user.id)[0]
+                print(user_profile)
+
+                public_profile = models.Public.objects.filter(
+                    profileId=user_profile.id)[0]
+                print(public_profile)
+
+                courses_created = models.CoursesMade.objects.filter(
+                    publicId=public_profile.id)
+
+                print(courses_created)
+
+                courses_created.delete()
+
+                user.delete()
+
+            except:
+
+                s.error(request, "User could not be deleted.",
+                        button="OK", timer=2000)
+                return redirect('adminDashboard')
+
+            s.success(request, "User deleted.",
+                      button="OK", timer=2000)
+            return redirect('adminDashboard')
+
     return render(request, "app/deleteUser.html")
