@@ -90,9 +90,6 @@
 
         .btn{
             font-size: 30px;
-            position:absolute; 
-            top:230px; 
-            left: 550px;
             background-color: transparent;
             border:0;
             border-radius: 100%;
@@ -107,17 +104,24 @@
             width: 27px;
         }
 
+        .editProfile{
+            display: flex;
+            justify-content: flex-end;
+        }
 
     </style>
     
         {% include 'app/navBar.html' with thisUser=thisUser userId=public.profileId.userId.id showOptions=showOptions %}
 
-            {% if thisUser %}
-            <button class="btn"><a class="editP" href="../editProfile"><img class="edit" src="{% static 'images/' %}edit.png"></a></button>
-            {% endif %}
 
             <p style="text-align:left; display: table-cell;"><img class="avatar" src="{% static 'images/' %}{{ public.avatar }}.png"></p>
-            <p class = "name"> {{ public.name }} {{ public.surname }}</p>
+            <div class="editProfile">
+                <p class = "name"> {{ public.name }} {{ public.surname }}</p>
+                {% if thisUser %}
+                <button class="btn"><a class="editP" href="../editProfile"><img class="edit" src="{% static 'images/' %}edit.png"></a></button>
+                {% endif %}
+            </div>
+            
             <p class="username">@{{ public.profileId.userId.username }}</p>
             <p class="nStudents">Number of students: {{ students }}</p>
             <p><img class="star" src="{% static 'images/' %}star.png"></p>
