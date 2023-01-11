@@ -25,13 +25,14 @@ urlpatterns = [
     path('rateCourse/<id>',views.rateCourse,name="rateCourse"),
     path('saveRating',views.saveRating,name="saveRating"),
     path('payments',views.payments,name="payments"),
-    path('addTeachingUnitWritten/<id>',views.addTeachingUnitWritten,name="add TUW"),
-    path('addTeachingUnitVideo/<id>',views.addTeachingUnitVideo,name="add TUV"),
+    path('addTeachingUnitWritten/<id>',views.addTeachingUnitWritten,name="addTUW"),
+    path('addTeachingUnitVideo/<id>',views.addTeachingUnitVideo,name="addTUV"),
     path('editProfile',views.editProfile,name="editProfile"),
     path('saveProfileChanges',views.saveProfileChanges,name="saveProfileChanges"),
     path('managePaymentDetails',views.managePaymentDetails,name="managePaymentDetails"),
     path('saveNewPaymentDetail',views.saveNewPaymentDetail,name="saveNewPaymentDetail"),
     path('deletePaymentDetail',views.deletePaymentDetail,name="deletePaymentDetail"),
+    path('addTeachingUnit/<id>',views.addTeachingUnit,name="addTU")
     
     
 ]

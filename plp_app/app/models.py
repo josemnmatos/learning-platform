@@ -102,6 +102,7 @@ class Rating(models.Model):
 class TeachingUnit(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
     description = models.CharField(max_length=500)
+    
 
     def __str__(self):
         return self.courseId.name + ' - ' + self.description

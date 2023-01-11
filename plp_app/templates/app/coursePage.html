@@ -218,15 +218,11 @@
     <h2>Teaching Units</h2>
     {% if thisUser %}
     
-    <div class="dropdown", style="float:right;">
-      <button class="dropbtn">Add teaching unit</button>
-      <div class="dropdown-content">
-      <a href="../addTeachingUnitWritten/{{ course.id }}">Add written teaching unit</a>
-      <a href="../addTeachingUnitVideo/{{ course.id }}">Add video teaching unit</a>
-      <a href="../addTeachingUnitWritten/{{ course.id }}">Add audio teaching unit</a>
-      <a href="../addTeachingUnitWritten/{{ course.id }}">Add image teaching unit</a>
-      </div>
-    </div>
+  <a href="../addTeachingUnit/{{course.id}}">
+    <button class="dropbtn">Add teaching unit</button>
+  </a>
+    
+      
     
     {% endif %}
     
