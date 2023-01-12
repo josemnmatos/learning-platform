@@ -105,6 +105,14 @@ def coursePage(request, id):
         # If it doesn't exist yet
         if not liveChat:
             liveChat = [None]
+            chat_enable = None
+            
+        elif liveChat[0].chat_enable==0:
+            chat_enable = 0
+         
+        elif liveChat[0].chat_enable==1:
+            chat_enable = 1
+            
         # Check if it's enrolled
         enrolled = thisUser
         if not thisUser and request.user.is_authenticated:
@@ -116,6 +124,8 @@ def coursePage(request, id):
                 privateId__exact=private[0].id, courseId__exact=id)
             if courseEnrolled:
                 enrolled = True
+            else:
+                enrolled = False 
         elif not request.user.is_authenticated:
             enrolled = True
         # Find the ratings
@@ -124,6 +134,7 @@ def coursePage(request, id):
                                                        'creator': courseMade[0].publicId,
                                                        'teachingUnits': teachingUnits,
                                                        'liveChat': liveChat[0],
+                                                       'chat_able': chat_enable, 
                                                        'ratings': ratings,
                                                        'thisUser': thisUser,
                                                        'showOptions': False,
@@ -251,8 +262,55 @@ def course_def(request):
     return render(request, "app/course_def.html")
 
 
-def def_chat(request):
-    return render(request, "app/live_chat_def.html")
+def def_chat(request,id):
+    if request.user.is_authenticated:
+        course = models.Course.objects.filter(id__exact=id) 
+        if not course:
+            messages.error(request,"Course doesn't exist")
+            return redirect('home')
+        profile = models.Profile.objects.filter(userId__exact=request.user.id)
+        public = models.Public.objects.filter(profileId__exact=profile[0].id)
+        courseMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id, courseId__exact=id)   
+        
+        if not courseMade:
+            messages.error(request, "You can't edit the chat of this course")
+            return redirect('home')
+         
+        return render(request,"app/live_chat_def.html",{'course':course[0],'thisUser': True, 'userId': request.user.id,'showOptions': True})
+    
+    return redirect('home')
+
+def saveChatDef(request):
+    
+    if request.method =="POST":
+        max_part = request.POST['Max_participants']
+        check_box = request.POST['able']
+        course_Id = request.POST['course_Id']
+        on_chat = models.LiveChat.objects.filter(courseId_id__exact=course_Id)
+        
+        
+        
+        
+        if request.POST.get("save"):
+            
+            #if is the first time the chat is edited
+            if not on_chat:
+                chat_data = models.LiveChat(maxParticipants= max_part,chat_enable = check_box,courseId_id=course_Id)
+                chat_data.save()
+            
+            else:
+                chat = models.LiveChat.objects.get(courseId_id = course_Id)
+                chat.maxParticipants = max_part
+                chat.chat_enable = check_box
+                chat.save()
+            return redirect('coursePage',course_Id)
+            
+        elif  request.POST.get("discard"):
+            print("Changes discarded")
+            return redirect('coursePage',course_Id)
+               
+    return redirect('home')
+
 
 
 def courseCreated(request, id):
