@@ -494,10 +494,10 @@ def addTeachingUnitWritten(request, id):
             unit1 = models.TeachingUnit(
                 courseId=unit[0], description="Teaching Unit")
             unit1.save()
-            newunit = models.Material(unitId=unit1, materialName=title)
+            newunit = models.Material(unitId=unit1, materialName=title, content=content)
             newunit.save()
             new = models.Written(materialId=newunit,
-                                 title=title, content=content)
+                                 title=title)
             new.save()
             return redirect('coursePage', id)
     return render(request, 'app/addTeachingUnitWritten.html', {'course': id})
@@ -513,9 +513,9 @@ def addTeachingUnitVideo(request, id):
         unit1 = models.TeachingUnit(
             courseId=unit[0], description="Teaching Unit")
         unit1.save()
-        newunit = models.Material(unitId=unit1, materialName=name)
+        newunit = models.Material(unitId=unit1, materialName=name, content=content)
         newunit.save()
-        new = models.Video(materialId=newunit, time=time, content=content)
+        new = models.Video(materialId=newunit, time=time)
         new.save()
         return redirect('coursePage', id)
 
