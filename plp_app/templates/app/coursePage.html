@@ -187,6 +187,7 @@
 {% if thisUser %}
   <div>
     <a class="btn" href="../editCourse/{{ course.id }}">Edit</a>
+    <br><br><br><a class="btn" href="/live_chat_def/{{ course.id }}">Edit Chat</a>
   </div>
   {% endif %}
 
@@ -212,12 +213,29 @@
   <!-- Live Chat -->
   <div class="live-chat">
     <h2>Live Chat</h2>
-    {% if liveChat is not None %}
+  {% if not thisUser %}
+    {% if liveChat is not None and enrolled %}
+      {%if chat_able == 1%}
       <!-- TODO: Adicionar o link para o live chat -->
-      <button class="button" onclick="document.location='/chat'"><img src="{% static 'images/' %}chat.png"></button>
+        <button class="button" onclick="document.location='/chat'"><img src="{% static 'images/' %}chat.png"></button>
+      {% endif %}
+      {% if chat_able == 0 %}
+        <p>No Live Chat yet. Stay Tuned!</p>
+      {% endif %}
     {% else %}
-      <p>No Live Chat yet. Stay Tuned!</p>
+      {% if enrolled %}
+        <p>No Live Chat yet. Stay Tuned!</p>
+      {% else %}
+        <p>Enroll to have access!</p>
+      {% endif %}
     {% endif %}
+  {% else %}
+    {% if chat_able == 0 or liveChat is None%}
+      <p>Live chat is deactivated</p>
+    {% else %}
+      <p>Live chat is activated</p>
+    {% endif %}
+  {% endif %}   
   </div>
 </div>
 
