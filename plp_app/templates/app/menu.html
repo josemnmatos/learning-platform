@@ -25,7 +25,7 @@
 
         .unList{
             right: 80px;
-            bottom: 200px;
+            bottom: 100px;
             position: absolute;
             justify-content: center;
             
@@ -57,20 +57,20 @@
 {% csrf_token %}
 {% if user.is_authenticated %}
 <div style="z-index: 99;">
-<input type= "checkbox" id="check" >
-<label class="label" for="check">
-    <img src = "{% static 'images/menu2.png' %}" style="width: 60px; position:fixed; right:15px"  >
-</label>
+    <input type= "checkbox" id="check" >
+    <label class="label" for="check">
+        <img src = "{% static 'images/menu2.png' %}" style="width: 60px; position:fixed; right:15px"  >
+    </label>
 
-<nav class="nave">
-    <ul class="unList">
-        {% if user.is_staff %}
-        <li style="font-weight: bold;"> <a class="aMenu" href="../adminDashboard">Admin Dashboard</a></li>
-        {% endif %}
-        <li style="font-weight: bold;"> <a class="aMenu" href="../viewProfile/{{ user.id }}">Profile</a></li>
-        <li><a class="aMenu" href="../coursesEnrolled">Courses Enrolled</a></li>
-        <li> <a class="aMenu" href="/signout" style="font-weight: bold;color: rgb(166, 7, 7)" >Log Out</a></li>
-    </ul>
-</nav>
+    <nav class="nave">
+        <ul class="unList">
+            {% if user.is_staff %}
+            <li style="font-weight: bold;"> <a class="aMenu" href="../adminDashboard">Admin Dashboard</a></li>
+            {% endif %}
+            <li style="font-weight: bold;"> <a class="aMenu" href="../viewProfile/{{ user.id }}">Profile</a></li>
+            <li><a class="aMenu" href="../coursesEnrolled">Courses Enrolled</a></li>
+            <li> <a class="aMenu" href="/signout" style="font-weight: bold;color: rgb(166, 7, 7)" >Log Out</a></li>
+        </ul>
+    </nav>
 </div>
 {% endif %}
