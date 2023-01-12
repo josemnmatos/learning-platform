@@ -20,7 +20,7 @@ def register(request):
         username = request.POST['username']
         email = request.POST['email']
         password1 = request.POST['password1']
-        password2 = request.POST['password1']
+        password2 = request.POST['password2']
 
         if password1 == password2:
 
@@ -29,8 +29,8 @@ def register(request):
                     first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
                 myuser.save()
             except:
-                s.error(request, "Could not create the account.")
-                return redirect('landing.html')
+                s.error(request, "Username already taken. Please use another one!")
+                return redirect('register')
             # create public and private profile views for the user
             newprofile = models.Profile(userId=myuser)
             newprofile.save()
@@ -47,7 +47,7 @@ def register(request):
             return redirect('loginpage')
 
         else:
-            s.error(request, "Passwords do not match.")
+            s.error(request, "Passwords do not match")
 
     return render(request, "app/register.html")
 
@@ -70,7 +70,7 @@ def loginpage(request):
         else:
             s.error(request, 'Wrong credentials.',
                     button="OK", timer=2000)
-            return redirect('home')
+            return redirect('loginpage')
 
     return render(request, "app/loginpage.html")
 
