@@ -83,11 +83,6 @@ class TestSearchResults(TestCase):
             models.Course.objects.create(categoryId=self.category, name="Test Course "+str(i),
                                          averageMasterTime=i+5, price=i, description="Test Description"+str(i))
         
-    def test_if_the_courses_were_created(self):
-        # Get the count of all the courses
-        count = models.Course.objects.all().count()
-        self.assertEqual(count, 5)
-            
     def test_successful_results(self):
         # Get the response to a GET request on the results page
         response = self.client.get(self.results_url, {'name': 'test'})
@@ -105,6 +100,7 @@ class TestSearchResults(TestCase):
         
 
 class TestProfile(TestCase):
+    
     def setUp(self):
         # Get the client object and the url
         self.client = Client()
@@ -123,7 +119,7 @@ class TestProfile(TestCase):
         # Because it is a render to page viewProfile.html it has code 200
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'app/viewProfile.html')
-        # Check if it has the info of the user we created
+        # Check if it has the info of the user created
         self.assertEqual(response.context['public'].name, self.public.name)
         self.assertEqual(response.context['public'].surname, self.public.surname)
         self.assertEqual(response.context['public'].avatar, self.public.avatar)
@@ -134,3 +130,88 @@ class TestProfile(TestCase):
         response = self.client.get(profile_url)
         # Because it is a redirect it has code 302
         self.assertEqual(response.status_code, 302)
+        
+
+class TestEnrollCourse(TestCase):
+    
+    def setUp(self):
+        # Get the client object and the url
+        self.client = Client()
+        self.payments_url = reverse('payments')
+        # Create user test data
+        self.creatorData = {'username': 'courseCreator',
+                            'password': 'courseCreator'}
+        self.userData = {'username': 'courseEnroller',
+                        'email': 'courseEnroller@test.com',
+                        'password': 'courseEnroller'}
+        # Create the users
+        self.creator = models.User.objects.create_user(username=self.creatorData['username'], password=self.creatorData['password'])
+        self.user = models.User.objects.create_user(username=self.userData['username'], password=self.userData['password'])
+        # Create the users profile and private
+        self.userProfile = models.Profile.objects.create(userId=self.user)
+        self.userPrivate = models.Private.objects.create(profileId=self.userProfile, email=self.userData['email'])
+        # Create a category
+        self.category = models.Category.objects.create(category='General')
+        
+    def test_enroll_free_course(self):
+        # Create a free course
+        course = models.Course.objects.create(categoryId=self.category, name="Test Course",
+                                                averageMasterTime=5, price=0, description="Test Description")
+        # Make it so that the user is enrolled in the course
+        models.CoursesEnrolled.objects.create(privateId=self.userPrivate, courseId=course)
+        # Login the user 
+        self.client.login(username=self.userData['username'], password=self.userData['password'])
+        # Go to the payments page and check if there was an enrolled course without a payment method
+        response = self.client.get(self.payments_url)
+        self.assertEqual(response.context['enrolledCourses'][0].paymentMethod, None)
+        
+    def test_enroll_paid_course(self):
+        # Create a paid course
+        course = models.Course.objects.create(categoryId=self.category, name="Test Course",
+                                                averageMasterTime=5, price=5, description="Test Description")
+        # Create a payment detail
+        paymentDetail = models.PaymentDetails.objects.create(privateId=self.userPrivate, cardNumber='1234123412341234',
+                                                             expirationMonth=1, expirationYear=24, cvv=123)
+        # Make it so that the user is enrolled in the course
+        models.CoursesEnrolled.objects.create(privateId=self.userPrivate, courseId=course, paymentMethod=paymentDetail)
+        # Login the user 
+        self.client.login(username=self.userData['username'], password=self.userData['password'])
+        # Go to the payments page and check if there was an enrolled course with a payment method
+        response = self.client.get(self.payments_url)
+        self.assertEqual(response.context['enrolledCourses'][0].paymentMethod, paymentDetail)
+
+
+class TestManagePaymentDetails(TestCase):
+    
+    def setUp(self):
+        # Get the client object and the url
+        self.client = Client()
+        self.manage_payments_url = reverse('managePaymentDetails')
+        # Create user test data
+        self.userData = {'username': 'testUser',
+                        'email': 'testUser@test.com',
+                        'password': 'testUser'}
+        self.cardData = {'cardNumber': '1234123412341234', 
+                         'expirationMonth': 12,
+                         'expirationYear': 24,
+                         'cvv': 123 }
+        # Create the user
+        self.user = models.User.objects.create_user(username=self.userData['username'], password=self.userData['password'])
+        # Create the users profile and private
+        self.userProfile = models.Profile.objects.create(userId=self.user)
+        self.userPrivate = models.Private.objects.create(profileId=self.userProfile, email=self.userData['email'])
+     
+    def test_add_card(self):
+        # Create a payment detail
+        paymentDetail = models.PaymentDetails.objects.create(privateId=self.userPrivate, cardNumber=self.cardData['cardNumber'], expirationMonth=self.cardData['expirationMonth'],
+                                                             expirationYear=self.cardData['expirationYear'], cvv=self.cardData['cvv'],)
+        # Login the user 
+        self.client.login(username=self.userData['username'], password=self.userData['password'])
+        # Do a GET request in the managePaymentsDetails
+        response = self.client.get(self.manage_payments_url)
+        # Because it is a render to page managePaymentDetails.html it has code 200
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'app/managePaymentDetails.html')
+        # Check if the payment detail is displayed
+        self.assertEquals(response.context['paymentDetails'][0], paymentDetail)
+        
