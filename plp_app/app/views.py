@@ -490,6 +490,8 @@ def addTeachingUnit(request,id):
             return redirect('coursePage',id)
     return render(request, "app/addTeachingUnit.html", {'course': unit})
 
+
+
 def addTeachingUnitWritten(request, id):
 
     if request.user.is_authenticated:
@@ -522,21 +524,34 @@ def addTeachingUnitVideo(request, id):
     
     return render(request,"app/addTeachingUnitVideo.html",{'course':id})
 
-def addTeachingUnitImage(request, id):
+def addTeachingUnitAudio(request, id):
     val = models.TeachingUnit.objects.filter(id__exact=id)
     if request.method == 'POST':
-        content = request.POST['image_link']
-        widht = request.POST['widht']
-        height = request.POST['height']
-        name = request.POST['label']
-        newunit=models.Material(unitId=val[0], materialName=name,content=content,type='image')
+        content = request.POST['audio_link']
+        time = request.POST['duration']
+        name = request.POST['audio_name']
+        newunit=models.Material(unitId=val[0], materialName=name,content=content,type='audio')
         newunit.save()
-        new=models.Video(materialId=newunit,widht=widht,height=height,label=name)
+        new=models.Audio(materialId=newunit,time = time)
         new.save()
         
         return redirect('teachingUnitPage',id)
     
-    return render(request,"app/addTeachingUnitVideo.html",{'course':id})
+    return render(request,"app/addTeachingUnitAudio.html",{'course':id})
+
+def addTeachingUnitImage(request, id):
+    val = models.TeachingUnit.objects.filter(id__exact=id)
+    if request.method == 'POST':
+        content = request.POST['image_link']
+        name = request.POST['label']
+        newunit=models.Material(unitId=val[0], materialName=name,content=content,type='image')
+        newunit.save()
+        new=models.Photo(materialId=newunit,label=name)
+        new.save()
+        
+        return redirect('teachingUnitPage',id)
+    
+    return render(request,"app/addTeachingUnitImage.html",{'course':id})
 
 
 def saveEnrollment(request):

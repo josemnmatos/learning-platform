@@ -35,7 +35,9 @@ urlpatterns = [
     path('addTeachingUnit/<id>',views.addTeachingUnit,name="addTU"),
     path('adminDashboard', admin_views.adminDashboard, name="adminDashboard"),
     path('addUser',admin_views.addUser,name="addUser"),
-    path('deleteUser',admin_views.deleteUser, name="deleteUser")
+    path('deleteUser',admin_views.deleteUser, name="deleteUser"),
+    path('addTeachingUnitImage/<id>',views.addTeachingUnitImage,name="addTUI"),
+    path('addTeachingUnitAudio/<id>',views.addTeachingUnitAudio,name="addTUA"),
     
 
 ]

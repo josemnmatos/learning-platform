@@ -1,0 +1,20 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+
+{%load static%}
+
+<form action="" method="POST">
+    {% csrf_token %} 
+
+    Audio Name: <input type="text" name="audio_name"/><br/>
+    <br/>
+    Audio link: <input type="text" name="audio_link"/><br/>
+    <br/>
+    Duration: <input type="number" name="duration"/><br/>
+    <br/>
+    <input type="submit" value="Post" href="course/{{ course.id }}"/>
+</form>
+
+{% endblock %}
