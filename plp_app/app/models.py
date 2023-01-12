@@ -129,12 +129,8 @@ class Written(models.Model):
 
 class Photo(models.Model):
     materialId = models.ForeignKey(Material, on_delete=models.CASCADE)
-    width = models.IntegerField()
-    height = models.IntegerField()
     label = models.CharField(max_length=50)
 
-    def __str__(self):
-        return self.width + 'x' + self.height + ' - ' + self.label
 
 
 class Audio(models.Model):

@@ -1,0 +1,19 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+
+{%load static%}
+
+<form action="" method="POST">
+    {% csrf_token %} 
+
+    image Label: <input type="text" name="label"/><br/>
+    <br/>
+    image link: <input type="text" name="image_link"/><br/>
+    <br/>
+    
+    <input type="submit" value="Post" href="course/{{ course.id }}"/>
+</form>
+
+{% endblock %}

@@ -15,8 +15,8 @@
   <div class="dropdown-content">
   <a href="../addTeachingUnitWritten/{{ unit.id }}">Add written material</a>
   <a href="../addTeachingUnitVideo/{{ unit.id }}">Add video material</a>
-  <a href="../addTeachingUnitWritten/{{ unit.id }}">Add audio material</a>
-  <a href="../addTeachingUnitWritten/{{ unit.id }}">Add image material</a>
+  <a href="../addTeachingUnitAudio/{{ unit.id }}">Add audio material</a>
+  <a href="../addTeachingUnitImage/{{ unit.id }}">Add image material</a>
   </div>
 </div>
 
@@ -29,12 +29,22 @@
     <li>
       <!--INSERT HREF FOR MATERIALS OF DIFFERENT KINDS? -->
       {% if material.type == 'video' %}
-      <a href="{{ material.content }}">{{ material.materialName }}</a>
+      <a href="{{ material.content }}"><h1>{{ material.materialName }}</h1></a>
       {% endif %}
+      
       {% if material.type == 'written' %}
       <h1> {{material.materialName}} </h4>
       <p> {{material.content}} </p> 
       {% endif %}
+    
+      {% if material.type == 'image' %}
+      <img src={{material.content}} alt={{material.materialName}} style="width:400px;height:400px;"/>
+      {% endif %}
+
+      <!--{% if material.type == 'audio' %}-->
+      <a href="{{ material.content }}"><h1>{{ material.materialName }}</h1></a>
+      <!--{% endif %}-->
+
     </li>
     <br />
     {% endfor %}
