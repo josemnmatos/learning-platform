@@ -482,6 +482,16 @@ def enrollCourse(request, id):
         return render(request, "app/enrollCourse.html", {"course": course[0], 'paymentMethods': paymentMethods})
     return redirect('home')
 
+def addTeachingUnit(request,id):
+    if request.user.is_authenticated:
+        unit = models.Course.objects.filter(id__exact=id)
+        if request.method == 'POST':
+            description = request.POST['description']
+            
+            unit1 = models.TeachingUnit(courseId=unit[0],description=description)
+            unit1.save()
+            return redirect('coursePage',id)
+    return render(request, "app/addTeachingUnit.html", {'course': unit})
 
 def addTeachingUnitWritten(request, id):
 
