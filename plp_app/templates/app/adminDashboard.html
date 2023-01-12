@@ -1,74 +1,98 @@
-{% extends 'app/base.html' %} {%load static%}
+{% extends 'app/base.html' %}
+{% block content %}
+ {%load static%}
 
 <style>
-  .background {
-    width: 100%;
-    min-height: 73vh;
-    padding: 5‰;
-    background-image: url("{% static 'images/background_2.png' %}");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-  }
 
-  .button-1 {
-    width: 3%;
-    border-radius: 10px;
-    background-color: rgb(13, 64, 105);
+    body{
+      background-color: rgba(13, 64, 105, 0.569) ;
+    }
 
-    text-align: center;
-    padding: 10px 40px;
-    border: 0;
+    .divAdmin{
+      margin:150px;
+      display: flex;
+      align-items: center;
+      justify-content: center; 
 
-    color: white;
-    cursor: pointer;
-    font-size: 15px;
-    position: center;
-    left: 80%;
-    top: -160px;
-    text-decoration: none;
-  }
+    }
 
-  .button-1:hover {
-    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
-      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(13, 64, 105) 0 -3px 0 inset;
-    transform: translateY(-2px);
-  }
+    
+    .sectionAdmin {
+        background-color:rgb(13, 64, 105) ;
+        width: 700px;
+        height: fit-content;
+        padding: 100px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
 
-  .button-1:active {
-    box-shadow: rgb(13, 64, 105) 0 3px 7px inset;
-    transform: translateY(2px);
-  }
+    h1{
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: xx-large;
+      color:white;
+    }
 
-  .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    vertical-align: center;
-    height: 500px;
-  }
+    .option{
+      text-decoration: none;
+      color: rgb(13, 64, 105);
+    }
+
+    .btn{
+          width: 100%;
+          border-radius: 10px;
+          background-color: white ;
+          font-size:20px;
+          padding: 10px 40px;
+          border: 0;
+          text-align: center;
+          
+          cursor: pointer;
+        }
+
+    .btn:hover{
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #636564 0 -3px 0 inset;
+            transform: translateY(-2px);
+            transition: all 0.3s;
+            
+
+    }
+
+    .lock{
+      width: 35px;
+    }
+
+    .private{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
 </style>
 
-{% block content %}
 
-<div class="container">
-  <h1>Admin Dashboard</h1>
+{% csrf_token %}
 
-  {% csrf_token %}
+{%if user.is_authenticated%} 
+  {% include 'app/navBar.html'%} 
+{%endif%}
 
-  <div class="container">
-    {%if user.is_authenticated%} {% include 'app/menu.html' %} {%endif%}
+<div class="divAdmin">
+  <section class="sectionAdmin">
+    <div class="private">
+      <img class="lock" src="{% static 'images/' %}lock.png">
+      <h1 >Admin Dashboard</h1>
+    </div>
+    
+    <div class="buttons">
 
-    <a href="addUser" type="button" , id="addUser">Create new user</a>
-    <br />
-    <br />
-    <br />
-    <a href="deleteUser" type="button" , id="deleteUser">Delete user</a>
-    <br />
-    <br />
-    <br />
-    <a href="../admin" type="button" , id="admin">Django Admin Panel</a>
+    
+    <button class="btn"><a class="option" style="color:#159b85;" href="addUser" type="button" , id="addUser">Create new user</a></button><br /><br /><br />
+    <button class="btn"><a class="option" style="color:rgb(185, 6, 6)" href="deleteUser" type="button" , id="deleteUser">Delete user</a></button><br /><br /><br />
+    <button class="btn"><a class="option" href="../admin" type="button" , id="admin">Django Admin Panel</a></button>
   </div>
+  </section>
 </div>
 
 {% endblock %}
