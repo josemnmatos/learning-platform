@@ -113,6 +113,7 @@ class Material(models.Model):
     unitId = models.ForeignKey(TeachingUnit, on_delete=models.CASCADE)
     materialName = models.CharField(max_length=100)
     content = models.TextField(null=True)
+    type=models.TextField(null=True,blank=True)
     def __str__(self):
         return self.unitId.courseId.name + ' - ' + self.unitId.description
 
