@@ -149,6 +149,7 @@ class Video(models.Model):
 class LiveChat(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
     maxParticipants = models.SmallIntegerField()
+    chat_enable = models.BooleanField()
 
     def __str__(self):
         return self.courseId.name + ' - ' + str(self.maxParticipants)
