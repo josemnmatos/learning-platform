@@ -141,13 +141,10 @@ def teachingUnitPage(request, id):
     else:
         # Find the materials
         materials = models.Material.objects.filter(unitId__exact=unit[0])
-        written = models.Written.objects.filter(materialId__exact=materials[0])
-        video = models.Video.objects.filter(materialId__exact=materials[0])
+        
         # return page
         return render(request, "app/teachingUnit.html", {'unit': unit[0],
-                                                         'materials': materials,
-                                                         'written': written,
-                                                         'video': video})
+                                                         'materials': materials})
 
 
 def searchResults(request):
@@ -497,39 +494,49 @@ def addTeachingUnitWritten(request, id):
 
     if request.user.is_authenticated:
 
+       if request.user.is_authenticated:
+        val = models.TeachingUnit.objects.filter(id__exact=id)
         if request.method == 'POST':
             title = request.POST['title']
             content = request.POST['content']
-            unit = models.Course.objects.filter(id__exact=id)
-            unit1 = models.TeachingUnit(
-                courseId=unit[0], description="Teaching Unit")
-            unit1.save()
-            newunit = models.Material(unitId=unit1, materialName=title, content=content)
+            newunit=models.Material(unitId=val[0], materialName=title,content=content,type='written')
             newunit.save()
-            new = models.Written(materialId=newunit,
-                                 title=title)
+            new=models.Written(materialId=newunit,title=title)
             new.save()
-            return redirect('coursePage', id)
-    return render(request, 'app/addTeachingUnitWritten.html', {'course': id})
+            return redirect('teachingUnitPage',id)
+    return render(request,'app/addTeachingUnitWritten.html', {'course': id}) 
 
 
 def addTeachingUnitVideo(request, id):
-    course = models.Course.objects.filter(id__exact=id)
+    val = models.TeachingUnit.objects.filter(id__exact=id)
     if request.method == 'POST':
         content = request.POST['video_link']
         time = request.POST['duration']
         name = request.POST['video_name']
-        unit = models.Course.objects.filter(id__exact=id)
-        unit1 = models.TeachingUnit(
-            courseId=unit[0], description="Teaching Unit")
-        unit1.save()
-        newunit = models.Material(unitId=unit1, materialName=name, content=content)
+        newunit=models.Material(unitId=val[0], materialName=name,content=content,type='video')
         newunit.save()
-        new = models.Video(materialId=newunit, time=time)
+        new=models.Video(materialId=newunit,time = time)
         new.save()
-        return redirect('coursePage', id)
+        
+        return redirect('teachingUnitPage',id)
+    
+    return render(request,"app/addTeachingUnitVideo.html",{'course':id})
 
-    return render(request, "app/addTeachingUnitVideo.html", {'course': course[0]})
+def addTeachingUnitImage(request, id):
+    val = models.TeachingUnit.objects.filter(id__exact=id)
+    if request.method == 'POST':
+        content = request.POST['image_link']
+        widht = request.POST['widht']
+        height = request.POST['height']
+        name = request.POST['label']
+        newunit=models.Material(unitId=val[0], materialName=name,content=content,type='image')
+        newunit.save()
+        new=models.Video(materialId=newunit,widht=widht,height=height,label=name)
+        new.save()
+        
+        return redirect('teachingUnitPage',id)
+    
+    return render(request,"app/addTeachingUnitVideo.html",{'course':id})
 
 
 def saveEnrollment(request):
