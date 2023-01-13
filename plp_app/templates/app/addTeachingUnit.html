@@ -89,7 +89,7 @@ body {
         <form class="formUnit"action="" method="POST">
             {% csrf_token %} 
             <div class="input_singleUnit">
-                <input class="inputUnit" type="text" name="name" id="unit_name"/>
+                <input required class="inputUnit" type="text" name="name" id="unit_name"/>
                 <label class="labelUnit" for="unit_name">Teaching Unit Name</label>
             </div>
             <center>

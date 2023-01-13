@@ -819,3 +819,18 @@ def removeMaterial(request, id):
             return redirect('teachingUnitPage', id)
 
         return render(request, "app/deleteMaterial.html", {"materials": materials})
+
+def deleteTeachingUnit(request):
+    if request.method == "POST":
+        teachingUnitId = request.POST['teachingUnitId']
+        teachingUnit = models.TeachingUnit.objects.get(id=teachingUnitId)
+        if teachingUnit:
+            course = teachingUnit.courseId
+            teachingUnit.delete()
+            s.info(request, "The teaching unit was deleted",
+                   button="OK", timer=2000)
+            return redirect('coursePage', course.id)
+    s.error(request, "Couldn't delete the teaching unit",
+                            button="OK", timer=2000)
+    return redirect('home')
+    
