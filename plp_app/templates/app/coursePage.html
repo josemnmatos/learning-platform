@@ -216,26 +216,46 @@
   {% if not thisUser %}
     {% if liveChat is not None and enrolled %}
       {%if chat_able == 1%}
-      <!-- TODO: Adicionar o link para o live chat -->
-        <button class="button" onclick="document.location='/chat'"><img src="{% static 'images/' %}chat.png"></button>
+        <p>Chat available! Just click in the green icon</p>
+        <!--Start of Tawk.to Script-->
+        <script type="text/javascript">
+          var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+          (function(){
+          var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+          s1.async=true;
+          s1.src='https://embed.tawk.to/639f42a9daff0e1306dd3cf4/1gkj1oq7r';
+          s1.charset='UTF-8';
+          s1.setAttribute('crossorigin','*');
+          s0.parentNode.insertBefore(s1,s0);
+          })();
+          </script>
+          <!--End of Tawk.to Script-->
       {% endif %}
       {% if chat_able == 0 %}
         <p>No Live Chat yet. Stay Tuned!</p>
+        <a href="{{course.link}}">
+          <input type="button" value="Visit Professor's Calendar" />
+        </a>
       {% endif %}
     {% else %}
       {% if enrolled %}
         <p>No Live Chat yet. Stay Tuned!</p>
+        <a href="{{course.link}}">
+          <input type="button" value="Visit Professor's Calendar" />
+        </a>
       {% else %}
         <p>Enroll to have access!</p>
       {% endif %}
     {% endif %}
   {% else %}
-    {% if chat_able == 0 or liveChat is None%}
+    {% if chat_able == 0 %}
       <p>Live chat is deactivated</p>
     {% else %}
       <p>Live chat is activated</p>
     {% endif %}
-  {% endif %}   
+  {% endif %}
+    
+    
   </div>
 </div>
 
