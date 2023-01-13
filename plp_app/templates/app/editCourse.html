@@ -134,6 +134,9 @@
         color: black;
     }
 
+    .buttons input {
+        width: fit-content;
+    }
 
 </style>
 
@@ -198,14 +201,13 @@
                 {% endfor %}
             </select><br><br>
 
-            <center>
+            <center class="buttons">
                 <input id="submitButton" class="btn" type="submit" name="submit" value="Submit">
                 <input class="btnR" type="reset" value="Reset">
-                
             </center>
         </form>
         <!-- DELETE -->
-        <center>
+        <center class="buttons">
             <br>
             <form id="deleteForm" method="POST" action="../deleteCourse">
                 {% csrf_token %}
