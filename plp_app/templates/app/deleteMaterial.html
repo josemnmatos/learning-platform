@@ -1,0 +1,21 @@
+{%extends 'app/base.html'%}
+
+{% block content %}
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+
+{%load static%}
+
+{%for material in materials%}
+<p> {{material.id}} -> {{material.materialName}} </p>
+{%endfor%}
+
+<form action="" method="POST">
+    {% csrf_token %} 
+
+    Which material you want to delete(select id munber): <input type="text" name="remove_id"/><br/>
+    <br/>
+    <input type="submit" value="Post" href="course/{{ course.id }}"/>
+</form>
+
+{% endblock %}

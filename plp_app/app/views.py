@@ -771,3 +771,18 @@ def deletePaymentDetail(request):
             return redirect('managePaymentDetails')
 
     return redirect('home')
+
+def removeMaterial(request,id):
+    
+    if request.user.is_authenticated:
+        val = models.TeachingUnit.objects.filter(id__exact=id)
+        materials = models.Material.objects.filter(unitId__exact = val[0])
+        if request.method == "POST":
+            remove = request.POST['remove_id']
+            remove_material = models.Material.objects.filter(id__exact = remove)
+            remove_material.delete()
+            return redirect('teachingUnitPage',id)  
+         
+        return render(request, "app/deleteMaterial.html", {"materials":materials})
+    
+    

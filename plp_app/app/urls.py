@@ -40,6 +40,7 @@ urlpatterns = [
     path('deleteUser',admin_views.deleteUser, name="deleteUser"),
     path('addTeachingUnitImage/<id>',views.addTeachingUnitImage,name="addTUI"),
     path('addTeachingUnitAudio/<id>',views.addTeachingUnitAudio,name="addTUA"),
+    path('removeMaterial/<id>',views.removeMaterial,name="remM")
     
 
 ]
