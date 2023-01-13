@@ -41,6 +41,7 @@ urlpatterns = [
     path('adminSaveCourseChanges',admin_views.adminSaveCourseChanges, name="adminSaveCourseChanges"),
     path('addTeachingUnitImage/<id>',views.addTeachingUnitImage,name="addTUI"),
     path('addTeachingUnitAudio/<id>',views.addTeachingUnitAudio,name="addTUA"),
+    path('deleteTeachingUnit',views.deleteTeachingUnit,name="deleteTeachingUnit"),
     path('removeMaterial/<id>',views.removeMaterial,name="remM")
     
 
