@@ -26,16 +26,16 @@ def addUser(request):
         password2 = request.POST['password1']
 
         if password1 == password2:
+            myuser = User.objects.create_user(
+                first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
             try:
-                myuser = User.objects.create_user(
-                    first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
                 myuser.save()
             except:
                 s.error(request, "Could not create the user.",
                         button="OK", timer=2000)
                 return redirect('adminDashboard')
 
-            if request.POST['isStaff'] == 'on':
+            if request.POST.get('isStaff',True):
                 myuser.is_staff = True
                 myuser.is_superuser = True
 
@@ -94,7 +94,7 @@ def deleteUser(request):
                 # delete all enrollments by that user
                 for enrollment in courses_enrolled:
                     print(enrollment)
-                    enrollment.delete()    
+                    enrollment.delete()
                 user.delete()
 
             except:
