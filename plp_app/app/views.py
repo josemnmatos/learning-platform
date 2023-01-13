@@ -389,9 +389,14 @@ def saveRating(request):
         user = models.User.objects.filter(id__exact=userId)
         course = models.Course.objects.filter(id__exact=courseId)
 
-        newRating = models.Rating(
-            userId=user[0], courseId=course[0], comment=comment, rating=rating)
-        newRating.save()
+
+        try:
+            newRating = models.Rating(
+                userId=user[0], courseId=course[0], comment=comment, rating=rating)
+            newRating.save()
+        except:
+            s.error(request, "Please specify a number for your rating.")
+            return redirect('coursePage', courseId)            
 
     return redirect('coursePage', courseId)
 
