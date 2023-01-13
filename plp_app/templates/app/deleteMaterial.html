@@ -2,19 +2,101 @@
 
 {% block content %}
 
-{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
-
 {%load static%}
 
-<form action="" method="POST">
-    {% csrf_token %} 
-    Material: <select required name="remove_id"><br>
-        {% for material in materials %}
-        <option value="{{ material.id }}">{{ material.materialName  }}</option>
-        {% endfor %}
-    </select>
-    <br/>
-    <input type="submit" value="Delete" href="course/{{ course.id }}"/>
-</form>
+
+<style>
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+
+  }
+
+  body {
+    background-position: center;
+    background-size: cover ;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(146, 2, 2, 0.839);
+
+  }
+ .containerMaterial {
+   display: flex;
+   align-items: center;
+   justify-content: center; 
+   margin:90px;
+ }
+
+ .form_containerMaterial{
+      background-color: rgba(255, 255, 255, 0.729);
+      width: 600px;
+      height: fit-content;
+      padding: 90px;
+      border-radius: 20px;
+      
+ }
+
+ .formMaterial h1{
+   text-align: center;
+   font-size: 30px;
+   color: rgb(146, 2, 2);
+ }
+
+
+  
+  .btn{
+      width: 40%;
+      border-radius: 10px;
+      background-color: rgb(146, 2, 2) ;
+      text-align: center;
+      padding: 10px 40px;
+      border: 0;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+  }
+
+  .btn:hover{
+          box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(164, 88, 88) 0 -7px 0 inset;
+          transform: translateY(-2px);
+          transition: all 0.3s;
+          
+
+  }
+
+  .list{
+    background-color: white;
+    font-size: 15px;
+    border: 2px solid rgb(146, 2, 2);
+    border-radius: 5px;
+    outline:0;
+  }
+
+  </style>
+
+<section class="containerMaterial">
+    <div class="form_containerMaterial">
+        <form class="formMaterial" action="" method="POST">
+            {% csrf_token %} 
+            <h1>Remove Material</h1><br>
+            <center>
+            Material: <select class="list" required name="remove_id"><br>
+                {% for material in materials %}
+                <option value="{{ material.id }}">{{ material.materialName  }}</option>
+                {% endfor %}
+            </select>
+            <br><br>
+            <button class="btn" type="submit">Delete</button>
+        </center>
+        </form>
+
+    </div>
+</section>
 
 {% endblock %}
