@@ -81,9 +81,28 @@ WSGI_APPLICATION = 'plp_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
-}
+DOCKER=False
+
+if not DOCKER:
+
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
+    }
+
+else:
+#####TO USE LOCALLY
+# django_project/settings.py
+
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "postgres",
+            "USER": "postgres",
+            "PASSWORD": "postgres",
+            "HOST": "db",  # set in docker-compose.yml
+            "PORT": 5432,  # default postgres port
+        }
+    }
 
 
 # Password validation
