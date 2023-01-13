@@ -81,10 +81,11 @@
                 <th><a class="pretty" href="../course/{{ courseMade.courseId.id }}">{{courseMade.courseId.name}}</a></th>
                 <th><b>{{ courseMade.courseId.categoryId.category }}</b></th>
                 <th>{{ numStudents }}</th>
-                {% if not liveChat %}
+                {% if not liveChat or liveChat == 0%}
                 <th>No</th>
-                {% else %}
-                <th><a class="pretty" href="../chat">Yes</a></th>
+                {%endif%}
+                {% if liveChat == 1  %}
+                <th><a class="pretty">Yes</a></th>
                 {% endif %}
 
                 {% if thisUser %}
