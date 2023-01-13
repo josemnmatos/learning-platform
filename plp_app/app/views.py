@@ -816,8 +816,10 @@ def removeMaterial(request, id):
             remove = request.POST['remove_id']
             remove_material = models.Material.objects.filter(id__exact=remove)
             remove_material.delete()
+            s.info(request, "The material was deleted",
+                   button="OK", timer=2000)
             return redirect('teachingUnitPage', id)
-
+        
         return render(request, "app/deleteMaterial.html", {"materials": materials})
 
 def deleteTeachingUnit(request):
