@@ -26,18 +26,21 @@ def addUser(request):
         password2 = request.POST['password1']
 
         if password1 == password2:
-            myuser = User.objects.create_user(
-                first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
             try:
+                myuser = User.objects.create_user(
+                    first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
+
+                perms = request.POST.getlist('isStaff')
+
+                if perms[0] == "on":
+                    myuser.is_staff = True
+                    myuser.is_superuser = True
+
                 myuser.save()
             except:
                 s.error(request, "Could not create the user.",
                         button="OK", timer=2000)
                 return redirect('adminDashboard')
-
-            if request.POST.get('isStaff',True):
-                myuser.is_staff = True
-                myuser.is_superuser = True
 
             # create public and private profile views for the user
             newprofile = models.Profile(userId=myuser)
