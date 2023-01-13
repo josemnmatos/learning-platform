@@ -38,6 +38,7 @@ urlpatterns = [
     path('adminDashboard', admin_views.adminDashboard, name="adminDashboard"),
     path('addUser',admin_views.addUser,name="addUser"),
     path('deleteUser',admin_views.deleteUser, name="deleteUser"),
+    path('adminSaveCourseChanges',admin_views.adminSaveCourseChanges, name="adminSaveCourseChanges"),
     path('addTeachingUnitImage/<id>',views.addTeachingUnitImage,name="addTUI"),
     path('addTeachingUnitAudio/<id>',views.addTeachingUnitAudio,name="addTUA"),
     path('removeMaterial/<id>',views.removeMaterial,name="remM")

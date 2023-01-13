@@ -182,6 +182,40 @@
     </section>
 </div>
 
+{%elif isAdmin %}
+
+<div class="container">
+    <section class="formContainer">
+        <form id="editForm" method="POST" action="../adminSaveCourseChanges">
+            {% csrf_token %}
+            <h1>Edit Course</h1>
+            <input class="formElement" type="hidden" name="courseId" value="{{ course.id }}">
+            
+            Category: <select required class="category" name="category"><br>
+                <option class="formElement" value="{{ course.categoryId.id }}">{{ course.categoryId.category }}</option>
+                {% for category in categories %}
+                    <option class="formElement" value="{{ category.id }}">{{ category.category }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <center>
+                <input id="submitButton" class="btn" type="submit" name="submit" value="Submit">
+                <input class="btnR" type="reset" value="Reset">
+                
+            </center>
+        </form>
+        <!-- DELETE -->
+        <center>
+            <br>
+            <form id="deleteForm" method="POST" action="../deleteCourse">
+                {% csrf_token %}
+                <input class="formElement" type="hidden" name="courseId" value="{{ course.id }}">
+                <input id="deleteButton" class="btnD" type="submit" value="Delete">
+            </form>
+    </center>
+    </section>
+</div>
+
 {% else %}
 
 <h2>You don't have permission to edit this course!</h2>

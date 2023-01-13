@@ -18,7 +18,7 @@ class TestRegister(TestCase):
                         'password1': 'testUser',
                         'password2': 'testUser'}
         
-    def test_create_new_user(self):
+    def test_register_new_user(self):
         # Get the response to a POST request on the register page
         response = self.client.post(self.register_url, self.userData)
         # Because it is a redirect it has code 302
@@ -132,7 +132,7 @@ class TestProfile(TestCase):
         self.assertEqual(response.status_code, 302)
         
 
-class TestEnrollCourse(TestCase):
+class TestEnrolledCourse(TestCase):
     
     def setUp(self):
         # Get the client object and the url
