@@ -184,9 +184,9 @@
   </div>
 
   <!-- Edit Course -->
-{% if thisUser %}
+{% if thisUser or isAdmin %}
   <div>
-    <a class="btn" href="../editCourse/{{ course.id }}">Edit</a>
+    <a class="btn" href="../editCourse/{{ course.id }}">Edit Properties</a>
     <br><br><br><a class="btn" href="/live_chat_def/{{ course.id }}">Edit Chat</a>
   </div>
   {% endif %}

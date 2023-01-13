@@ -106,13 +106,13 @@ def coursePage(request, id):
         if not liveChat:
             liveChat = [None]
             chat_enable = None
-            
-        elif liveChat[0].chat_enable==0:
+
+        elif liveChat[0].chat_enable == 0:
             chat_enable = 0
-         
-        elif liveChat[0].chat_enable==1:
+
+        elif liveChat[0].chat_enable == 1:
             chat_enable = 1
-            
+
         # Check if it's enrolled
         enrolled = thisUser
         if not thisUser and request.user.is_authenticated:
@@ -125,18 +125,25 @@ def coursePage(request, id):
             if courseEnrolled:
                 enrolled = True
             else:
-                enrolled = False 
+                enrolled = False
         elif not request.user.is_authenticated:
             enrolled = True
         # Find the ratings
         ratings = models.Rating.objects.filter(courseId__exact=course[0])
+
+        isAdmin = False
+        # check if user is admin
+        if request.user.is_staff:
+            isAdmin = True
+
         return render(request, "app/coursePage.html", {'course': course[0],
                                                        'creator': courseMade[0].publicId,
                                                        'teachingUnits': teachingUnits,
                                                        'liveChat': liveChat[0],
-                                                       'chat_able': chat_enable, 
+                                                       'chat_able': chat_enable,
                                                        'ratings': ratings,
                                                        'thisUser': thisUser,
+                                                       'isAdmin': isAdmin,
                                                        'showOptions': False,
                                                        'enrolled': enrolled})
 
@@ -152,7 +159,7 @@ def teachingUnitPage(request, id):
     else:
         # Find the materials
         materials = models.Material.objects.filter(unitId__exact=unit[0])
-        
+
         # return page
         return render(request, "app/teachingUnit.html", {'unit': unit[0],
                                                          'materials': materials})
@@ -262,65 +269,64 @@ def course_def(request):
     return render(request, "app/course_def.html")
 
 
-def def_chat(request,id):
+def def_chat(request, id):
     if request.user.is_authenticated:
-        course = models.Course.objects.filter(id__exact=id) 
+        course = models.Course.objects.filter(id__exact=id)
         if not course:
-            messages.error(request,"Course doesn't exist")
+            messages.error(request, "Course doesn't exist")
             return redirect('home')
         profile = models.Profile.objects.filter(userId__exact=request.user.id)
         public = models.Public.objects.filter(profileId__exact=profile[0].id)
-        courseMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id, courseId__exact=id)
+        courseMade = models.CoursesMade.objects.filter(
+            publicId__exact=public[0].id, courseId__exact=id)
         private = models.Private.objects.get(profileId_id=profile[0].id)
         mail = private.email
-        mail2 = mail.replace('@',"%40")   
-        
+        mail2 = mail.replace('@', "%40")
+
         if not courseMade:
             messages.error(request, "You can't edit the chat of this course")
             return redirect('home')
-         
-        return render(request,"app/live_chat_def.html",{'mail2':mail2,'course':course[0],'thisUser': True, 'userId': request.user.id,'showOptions': True})
-    
+
+        return render(request, "app/live_chat_def.html", {'mail2': mail2, 'course': course[0], 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
+
     return redirect('home')
 
+
 def saveChatDef(request):
-    
-    if request.method =="POST":
+
+    if request.method == "POST":
         max_part = request.POST['Max_participants']
         check_box = request.POST['able']
         course_Id = request.POST['course_Id']
         link = request.POST['link_calendar']
         on_chat = models.LiveChat.objects.filter(courseId_id__exact=course_Id)
-        
-        
-        
-        
+
         if request.POST.get("save"):
-            
-            #if is the first time the chat is edited
+
+            # if is the first time the chat is edited
             if not on_chat:
-                chat_data = models.LiveChat(maxParticipants= max_part,chat_enable = check_box,courseId_id=course_Id)
+                chat_data = models.LiveChat(
+                    maxParticipants=max_part, chat_enable=check_box, courseId_id=course_Id)
                 chat_data.save()
-            
+
             else:
-                chat = models.LiveChat.objects.get(courseId_id = course_Id)
+                chat = models.LiveChat.objects.get(courseId_id=course_Id)
                 chat.maxParticipants = max_part
                 chat.chat_enable = check_box
                 chat.save()
 
                 if link != None:
-                    course = models.Course.objects.get(id = course_Id)
+                    course = models.Course.objects.get(id=course_Id)
                     course.link = link
                     course.save()
 
-            return redirect('coursePage',course_Id)
-            
-        elif  request.POST.get("discard"):
-            print("Changes discarded")
-            return redirect('coursePage',course_Id)
-               
-    return redirect('home')
+            return redirect('coursePage', course_Id)
 
+        elif request.POST.get("discard"):
+            print("Changes discarded")
+            return redirect('coursePage', course_Id)
+
+    return redirect('home')
 
 
 def courseCreated(request, id):
@@ -346,25 +352,24 @@ def courseCreated(request, id):
         # Live chats
         liveChat = models.LiveChat.objects.filter(
             courseId__exact=courseMade.courseId)
-        
+
         if not liveChat:
             liveChat = [None]
             chat_enable = None
-            
-        elif liveChat[0].chat_enable==0:
+
+        elif liveChat[0].chat_enable == 0:
             chat_enable = 0
-         
-        elif liveChat[0].chat_enable==1:
+
+        elif liveChat[0].chat_enable == 1:
             chat_enable = 1
-        
+
         liveChats.append(chat_enable)
-        
+
         # Money Earned
         moneyEarned.append(numStudents * courseMade.courseId.price)
 
     data = zip(coursesMade, students, liveChats, moneyEarned)
     return render(request, "app/courseCreated.html", {'coursesMade': coursesMade, 'data': data, 'thisUser': thisUser, 'userId': id, 'showOptions': True})
-
 
 
 def payments(request):
@@ -405,14 +410,13 @@ def saveRating(request):
         user = models.User.objects.filter(id__exact=userId)
         course = models.Course.objects.filter(id__exact=courseId)
 
-
         try:
             newRating = models.Rating(
                 userId=user[0], courseId=course[0], comment=comment, rating=rating)
             newRating.save()
         except:
             s.error(request, "Please specify a number for your rating.")
-            return redirect('coursePage', courseId)            
+            return redirect('coursePage', courseId)
 
     return redirect('coursePage', courseId)
 
@@ -443,7 +447,7 @@ def saveNewCourse(request):
                 return redirect('createNewCourse')
             # Create the new Course
             newCourse = models.Course(
-                name=name, averageMasterTime=averageMasterTime, price=price, description=description, categoryId=categoryId[0],link=link)
+                name=name, averageMasterTime=averageMasterTime, price=price, description=description, categoryId=categoryId[0], link=link)
             newCourse.save()
             # Add it to the courses made
             profileId = models.Profile.objects.filter(
@@ -482,16 +486,23 @@ def editCourse(request, id):
         public = models.Public.objects.filter(profileId__exact=profile[0].id)
         courseMade = models.CoursesMade.objects.filter(
             publicId__exact=public[0].id, courseId__exact=id)
-        # If it's not theirs
-        if not courseMade:
-            s.error(request, "You don't have permission to edit this course.",
-                    button="OK", timer=2000)
-            return redirect('home')
+        # If it's not theirs or admin
+        if request.user.is_staff:
+            isAdmin = True
+        else:
+            isAdmin = False
+
+        if not isAdmin:
+            if not courseMade:
+                s.error(request, "You don't have permission to edit this course.",
+                        button="OK", timer=2000)
+                return redirect('home')
         # Get all the categories except the one the course has
         categories = models.Category.objects.all().exclude(
             id=course[0].categoryId.id)
+
         # If all okay load the page to edit it
-        return render(request, "app/editCourse.html", {'course': course[0], 'categories': categories, 'thisUser': True, 'userId': request.user.id, 'showOptions': True})
+        return render(request, "app/editCourse.html", {'course': course[0], 'categories': categories, 'isAdmin': isAdmin, 'thisUser': courseMade, 'userId': request.user.id, 'showOptions': True})
 
     return redirect('home')
 
@@ -521,6 +532,7 @@ def saveCourseChanges(request):
         course.description = description
         course.categoryId = categoryId[0]
         course.save()
+        s.success(request,"Changes made.")
         return redirect('coursePage', courseId)
 
     return redirect('home')
@@ -566,34 +578,36 @@ def enrollCourse(request, id):
         return render(request, "app/enrollCourse.html", {"course": course[0], 'paymentMethods': paymentMethods})
     return redirect('home')
 
-def addTeachingUnit(request,id):
+
+def addTeachingUnit(request, id):
     if request.user.is_authenticated:
         unit = models.Course.objects.filter(id__exact=id)
         if request.method == 'POST':
             description = request.POST['description']
-            
-            unit1 = models.TeachingUnit(courseId=unit[0],description=description)
-            unit1.save()
-            return redirect('coursePage',id)
-    return render(request, "app/addTeachingUnit.html", {'course': unit})
 
+            unit1 = models.TeachingUnit(
+                courseId=unit[0], description=description)
+            unit1.save()
+            return redirect('coursePage', id)
+    return render(request, "app/addTeachingUnit.html", {'course': unit})
 
 
 def addTeachingUnitWritten(request, id):
 
     if request.user.is_authenticated:
 
-       if request.user.is_authenticated:
-        val = models.TeachingUnit.objects.filter(id__exact=id)
-        if request.method == 'POST':
-            title = request.POST['title']
-            content = request.POST['content']
-            newunit=models.Material(unitId=val[0], materialName=title,content=content,type='written')
-            newunit.save()
-            new=models.Written(materialId=newunit,title=title)
-            new.save()
-            return redirect('teachingUnitPage',id)
-    return render(request,'app/addTeachingUnitWritten.html', {'course': id}) 
+        if request.user.is_authenticated:
+            val = models.TeachingUnit.objects.filter(id__exact=id)
+            if request.method == 'POST':
+                title = request.POST['title']
+                content = request.POST['content']
+                newunit = models.Material(
+                    unitId=val[0], materialName=title, content=content, type='written')
+                newunit.save()
+                new = models.Written(materialId=newunit, title=title)
+                new.save()
+                return redirect('teachingUnitPage', id)
+    return render(request, 'app/addTeachingUnitWritten.html', {'course': id})
 
 
 def addTeachingUnitVideo(request, id):
@@ -602,14 +616,16 @@ def addTeachingUnitVideo(request, id):
         content = request.POST['video_link']
         time = request.POST['duration']
         name = request.POST['video_name']
-        newunit=models.Material(unitId=val[0], materialName=name,content=content,type='video')
+        newunit = models.Material(
+            unitId=val[0], materialName=name, content=content, type='video')
         newunit.save()
-        new=models.Video(materialId=newunit,time = time)
+        new = models.Video(materialId=newunit, time=time)
         new.save()
-        
-        return redirect('teachingUnitPage',id)
-    
-    return render(request,"app/addTeachingUnitVideo.html",{'course':id})
+
+        return redirect('teachingUnitPage', id)
+
+    return render(request, "app/addTeachingUnitVideo.html", {'course': id})
+
 
 def addTeachingUnitAudio(request, id):
     val = models.TeachingUnit.objects.filter(id__exact=id)
@@ -617,28 +633,31 @@ def addTeachingUnitAudio(request, id):
         content = request.POST['audio_link']
         time = request.POST['duration']
         name = request.POST['audio_name']
-        newunit=models.Material(unitId=val[0], materialName=name,content=content,type='audio')
+        newunit = models.Material(
+            unitId=val[0], materialName=name, content=content, type='audio')
         newunit.save()
-        new=models.Audio(materialId=newunit,time = time)
+        new = models.Audio(materialId=newunit, time=time)
         new.save()
-        
-        return redirect('teachingUnitPage',id)
-    
-    return render(request,"app/addTeachingUnitAudio.html",{'course':id})
+
+        return redirect('teachingUnitPage', id)
+
+    return render(request, "app/addTeachingUnitAudio.html", {'course': id})
+
 
 def addTeachingUnitImage(request, id):
     val = models.TeachingUnit.objects.filter(id__exact=id)
     if request.method == 'POST':
         content = request.POST['image_link']
         name = request.POST['label']
-        newunit=models.Material(unitId=val[0], materialName=name,content=content,type='image')
+        newunit = models.Material(
+            unitId=val[0], materialName=name, content=content, type='image')
         newunit.save()
-        new=models.Photo(materialId=newunit,label=name)
+        new = models.Photo(materialId=newunit, label=name)
         new.save()
-        
-        return redirect('teachingUnitPage',id)
-    
-    return render(request,"app/addTeachingUnitImage.html",{'course':id})
+
+        return redirect('teachingUnitPage', id)
+
+    return render(request, "app/addTeachingUnitImage.html", {'course': id})
 
 
 def saveEnrollment(request):
@@ -788,17 +807,16 @@ def deletePaymentDetail(request):
 
     return redirect('home')
 
-def removeMaterial(request,id):
-    
+
+def removeMaterial(request, id):
+
     if request.user.is_authenticated:
         val = models.TeachingUnit.objects.filter(id__exact=id)
-        materials = models.Material.objects.filter(unitId__exact = val[0])
+        materials = models.Material.objects.filter(unitId__exact=val[0])
         if request.method == "POST":
             remove = request.POST['remove_id']
-            remove_material = models.Material.objects.filter(id__exact = remove)
+            remove_material = models.Material.objects.filter(id__exact=remove)
             remove_material.delete()
-            return redirect('teachingUnitPage',id)  
-         
-        return render(request, "app/deleteMaterial.html", {"materials":materials})
-    
-    
+            return redirect('teachingUnitPage', id)
+
+        return render(request, "app/deleteMaterial.html", {"materials": materials})

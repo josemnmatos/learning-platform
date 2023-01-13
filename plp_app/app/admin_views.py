@@ -81,11 +81,20 @@ def deleteUser(request):
                 # delete all courses created by that user
                 user = models.User.objects.get(username=username)
                 profile = models.Profile.objects.get(userId=user.id)
-                public= models.Public.objects.get(profileId=profile.id)
-                courses_created=models.CoursesMade.objects.filter(publicId=public.id)
+                public = models.Public.objects.get(profileId=profile.id)
+                private = models.Private.objects.get(profileId=profile.id)
+                courses_created = models.CoursesMade.objects.filter(
+                    publicId=public.id)
+                courses_enrolled = models.CoursesEnrolled.objects.filter(
+                    privateId=private.id)
                 for course_created in courses_created:
-                    course=models.Course.objects.get(pk=course_created.courseId.id)
+                    course = models.Course.objects.get(
+                        pk=course_created.courseId.id)
                     course.delete()
+                # delete all enrollments by that user
+                for enrollment in courses_enrolled:
+                    print(enrollment)
+                    enrollment.delete()    
                 user.delete()
 
             except:
@@ -99,3 +108,19 @@ def deleteUser(request):
             return redirect('adminDashboard')
 
     return render(request, "app/deleteUser.html")
+
+
+def adminSaveCourseChanges(request):
+    if request.method == "POST":
+        category = request.POST['category']
+        courseId = request.POST['courseId']
+        # Get the category
+        categoryId = models.Category.objects.filter(id__exact=category)
+        # Get the course
+        course = models.Course.objects.get(id=courseId)
+        course.categoryId = categoryId[0]
+        course.save()
+        s.success(request, "Changes made.")
+        return redirect('coursePage', courseId)
+
+    return redirect('home')
