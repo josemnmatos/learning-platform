@@ -286,6 +286,7 @@ def saveChatDef(request):
         max_part = request.POST['Max_participants']
         check_box = request.POST['able']
         course_Id = request.POST['course_Id']
+        link = request.POST['link_calendar']
         on_chat = models.LiveChat.objects.filter(courseId_id__exact=course_Id)
         
         
@@ -303,6 +304,12 @@ def saveChatDef(request):
                 chat.maxParticipants = max_part
                 chat.chat_enable = check_box
                 chat.save()
+
+                if link != None:
+                    course = models.Course.objects.get(id = course_Id)
+                    course.link = link
+                    course.save()
+
             return redirect('coursePage',course_Id)
             
         elif  request.POST.get("discard"):
@@ -404,6 +411,7 @@ def saveNewCourse(request):
             price = request.POST['price']
             description = request.POST['description']
             category = request.POST['category']
+            link = request.POST['calendar_link']
             # Get the category
             categoryId = models.Category.objects.filter(id__exact=category)
             # Check if the course name isn't already used
@@ -414,7 +422,7 @@ def saveNewCourse(request):
                 return redirect('createNewCourse')
             # Create the new Course
             newCourse = models.Course(
-                name=name, averageMasterTime=averageMasterTime, price=price, description=description, categoryId=categoryId[0])
+                name=name, averageMasterTime=averageMasterTime, price=price, description=description, categoryId=categoryId[0],link=link)
             newCourse.save()
             # Add it to the courses made
             profileId = models.Profile.objects.filter(
