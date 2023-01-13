@@ -157,7 +157,14 @@
 
     .editChat{
       display:flex;
+      justify-content: center;
+    }
+
+    .teachingUnitDiv {
+      display: flex;
       justify-content: space-between;
+      align-items: center;
+      padding: 20px;
     }
 
 </style>
@@ -215,8 +222,7 @@
       {% endif %}
   </div>
   {% if not thisUser %}
-    {% if liveChat is not None and enrolled %}
-      {%if chat_able == 1%}
+    {% if chat_able == 1 and enrolled %}
         <p>Chat available! Just click in the green icon</p>
         <!--Start of Tawk.to Script-->
         <script type="text/javascript">
@@ -231,19 +237,9 @@
           })();
           </script>
           <!--End of Tawk.to Script-->
-      {% endif %}
-      {% if chat_able == 0 %}
-        <p>No Live Chat yet. Stay Tuned!</p>
-        <a href="{{course.link}}">
-          <input type="button" value="Visit Professor's Calendar" />
-        </a>
-      {% endif %}
     {% else %}
       {% if enrolled %}
         <p>No Live Chat yet. Stay Tuned!</p>
-        <a href="{{course.link}}">
-          <input type="button" value="Visit Professor's Calendar" />
-        </a>
       {% else %}
         <p>Enroll to have access!</p>
       {% endif %}
@@ -282,22 +278,27 @@
     
     </div>
     
-    
-      
-    
-    
-    
     {% if not teachingUnits %}
       <p>No teaching units for now</p>
     {% else %}
     <ul>
       {% for unit in teachingUnits %}
-      {% if enrolled %}
-        <li><a class="teachingUnit" href="../teachingUnit/{{ unit.id }}">{{ unit.name }}</a></li>
+      {% if enrolled and user.is_authenticated %}
+      <li>
+          <div class="teachingUnitDiv">
+          <a class="teachingUnit" href="../teachingUnit/{{ unit.id }}">{{ unit.name }}</a>
+          {% if thisUser %}
+          <form method="POST" action="../deleteTeachingUnit">
+            {% csrf_token %}
+              <input type="hidden" name="teachingUnitId" value="{{ unit.id }}">
+              <button type="submit">Delete</button>
+          </form>
+          {% endif %}
+          </div>
+        </li>
         {% else %}
         <li>{{ unit.name }}</li>
         {% endif %}
-      <br />
       {% endfor %}
     </ul>
     {% endif %}
