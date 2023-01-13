@@ -68,7 +68,7 @@ class Course(models.Model):
     averageMasterTime = models.SmallIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.CharField(max_length=200, blank=True)
-    link = models.CharField(max_length=200)
+    link = models.CharField(max_length=200, default="")
     def __str__(self):
         return self.name
 
@@ -149,7 +149,7 @@ class Video(models.Model):
 class LiveChat(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
     maxParticipants = models.SmallIntegerField()
-    chat_enable = models.BooleanField()
+    chat_enable = models.BooleanField(default=False)
 
     def __str__(self):
         return self.courseId.name + ' - ' + str(self.maxParticipants)

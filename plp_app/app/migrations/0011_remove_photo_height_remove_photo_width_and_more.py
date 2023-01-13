@@ -6,37 +6,51 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("app", "0010_course_description"),
+        ('app', '0010_course_description'),
     ]
 
     operations = [
-        migrations.RemoveField(model_name="photo", name="height",),
-        migrations.RemoveField(model_name="photo", name="width",),
-        migrations.RemoveField(model_name="video", name="content",),
-        migrations.RemoveField(model_name="written", name="content",),
+        migrations.RemoveField(
+            model_name='photo',
+            name='height',
+        ),
+        migrations.RemoveField(
+            model_name='photo',
+            name='width',
+        ),
+        migrations.RemoveField(
+            model_name='video',
+            name='content',
+        ),
+        migrations.RemoveField(
+            model_name='written',
+            name='content',
+        ),
         migrations.AddField(
-            model_name="course",
-            name="link",
-            field=models.CharField(default=1, max_length=200),
+            model_name='course',
+            name='link',
+            field=models.CharField(default='', max_length=200),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name="livechat",
-            name="chat_enable",
-            field=models.BooleanField(default=1),
+            model_name='livechat',
+            name='chat_enable',
+            field=models.BooleanField(default=False),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name="material", name="content", field=models.TextField(null=True),
+            model_name='material',
+            name='content',
+            field=models.TextField(null=True),
         ),
         migrations.AddField(
-            model_name="material",
-            name="type",
+            model_name='material',
+            name='type',
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name="written",
-            name="title",
-            field=models.TextField(default="No text"),
+            model_name='written',
+            name='title',
+            field=models.TextField(default='No text'),
         ),
     ]
