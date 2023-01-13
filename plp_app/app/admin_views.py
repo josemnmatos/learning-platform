@@ -29,15 +29,18 @@ def addUser(request):
             try:
                 myuser = User.objects.create_user(
                     first_name=first_name, last_name=last_name, username=username, email=email, password=password1)
+
+                perms = request.POST.getlist('isStaff')
+
+                if perms[0] == "on":
+                    myuser.is_staff = True
+                    myuser.is_superuser = True
+
                 myuser.save()
             except:
                 s.error(request, "Could not create the user.",
                         button="OK", timer=2000)
                 return redirect('adminDashboard')
-
-            if request.POST['isStaff'] == 'on':
-                myuser.is_staff = True
-                myuser.is_superuser = True
 
             # create public and private profile views for the user
             newprofile = models.Profile(userId=myuser)
@@ -94,7 +97,7 @@ def deleteUser(request):
                 # delete all enrollments by that user
                 for enrollment in courses_enrolled:
                     print(enrollment)
-                    enrollment.delete()    
+                    enrollment.delete()
                 user.delete()
 
             except:
