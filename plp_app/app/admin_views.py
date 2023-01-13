@@ -32,7 +32,7 @@ def addUser(request):
 
                 perms = request.POST.getlist('isStaff')
 
-                if perms[0] == "on":
+                if perms:
                     myuser.is_staff = True
                     myuser.is_superuser = True
 
