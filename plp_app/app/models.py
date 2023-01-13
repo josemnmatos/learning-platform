@@ -68,7 +68,7 @@ class Course(models.Model):
     averageMasterTime = models.SmallIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.CharField(max_length=200, blank=True)
-
+    link = models.CharField(max_length=200)
     def __str__(self):
         return self.name
 
