@@ -80,23 +80,12 @@ def deleteUser(request):
             try:
                 # delete all courses created by that user
                 user = models.User.objects.get(username=username)
-                print(user)
-
-                # courses are associated with public profile
-                user_profile = models.Profile.objects.filter(userId=user.id)[0]
-                print(user_profile)
-
-                public_profile = models.Public.objects.filter(
-                    profileId=user_profile.id)[0]
-                print(public_profile)
-
-                courses_created = models.CoursesMade.objects.filter(
-                    publicId=public_profile.id)
-
-                print(courses_created)
-
-                courses_created.delete()
-
+                profile = models.Profile.objects.get(userId=user.id)
+                public= models.Public.objects.get(profileId=profile.id)
+                courses_created=models.CoursesMade.objects.filter(publicId=public.id)
+                for course_created in courses_created:
+                    course=models.Course.objects.get(pk=course_created.courseId.id)
+                    course.delete()
                 user.delete()
 
             except:
