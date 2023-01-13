@@ -157,12 +157,23 @@ def teachingUnitPage(request, id):
                 button="OK", timer=2000)
         return redirect('home')
     else:
+        # Get the course
+        course = models.Course.objects.get(id=unit[0].courseId.id)
+        # Find the creator
+        courseMade = models.CoursesMade.objects.filter(courseId__exact=course.id)
+        # Check if the current user is the user of the profile
+        thisUser = False
+        if request.user.is_authenticated:
+            if courseMade[0].publicId.profileId.userId.id == request.user.id:
+                thisUser = True
         # Find the materials
         materials = models.Material.objects.filter(unitId__exact=unit[0])
 
         # return page
         return render(request, "app/teachingUnit.html", {'unit': unit[0],
-                                                         'materials': materials})
+                                                         'materials': materials,
+                                                         'thisUser': thisUser,
+                                                         'showOptions': False})
 
 
 def searchResults(request):

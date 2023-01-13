@@ -62,6 +62,7 @@
     <div class="heading">
       <h1>{{unit.name}}</h1>
     </div>
+    {% if thisUser %}
     <div class="material_ADD_REM">
         <div class="dropdown", style="float:right;">
           <button class="btnMat"><img style="width:30px" src="{% static 'images/' %}plus.png"></button>
@@ -76,8 +77,8 @@
         {% if materials %}
           <a class="remove" href="../removeMaterial/{{ unit.id }}">Remove Material</a>
         {% endif %}
-          
     </div>
+    {% endif %}
 </div>
 
 
