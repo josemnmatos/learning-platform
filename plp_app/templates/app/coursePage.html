@@ -83,33 +83,7 @@
     align-items: center;
   }
 
-  .button {
-    width: fit-content;
-    border-radius: 10px;
-    background-color: #4ebcd2;
-    padding: 5px;
-
-    text-align: center;
-    border: 0;
-
-    color: white;
-    cursor: pointer;
-    font-size: 15px;
-    
-    text-decoration: none;
-  }
-
-    .button:hover {
-    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
-        rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #16788c 0 -3px 0 inset;
-    transform: translateY(-2px);
-    }
-
-    .button:active {
-    box-shadow: rgb(13, 64, 105)0 3px 7px inset;
-    transform: translateY(2px);
-    }
-
+  
     .container{
 
       background-color: #5eaa9f89;
@@ -163,6 +137,29 @@
       margin-left: 15px;
     }
 
+    .addUnit{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .plusBtn{
+        border:0;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    .plusImg{
+      margin: 0px;
+      width: 30px;
+
+    }
+
+    .editChat{
+      display:flex;
+      justify-content: space-between;
+    }
+
 </style>
 
 {% include 'app/navBar.html' with thisUser=thisUser userId=creator.profileId.userId.id showOptions=showOptions %}
@@ -187,7 +184,6 @@
 {% if thisUser %}
   <div>
     <a class="btn" href="../editCourse/{{ course.id }}">Edit</a>
-    <br><br><br><a class="btn" href="/live_chat_def/{{ course.id }}">Edit Chat</a>
   </div>
   {% endif %}
 
@@ -212,7 +208,12 @@
 
   <!-- Live Chat -->
   <div class="live-chat">
-    <h2>Live Chat</h2>
+    <div class="editChat">
+      <h2>Live Chat</h2>
+      {% if thisUser %}
+        <a href="/live_chat_def/{{ course.id }}"><img style="width:30px;" src="{% static 'images/' %}edit.png"></a>
+      {% endif %}
+  </div>
   {% if not thisUser %}
     {% if liveChat is not None and enrolled %}
       {%if chat_able == 1%}
@@ -249,9 +250,9 @@
     {% endif %}
   {% else %}
     {% if chat_able == 0 %}
-      <p>Live chat is deactivated</p>
+      <p>Live chat is deactivate</p>
     {% else %}
-      <p>Live chat is activated</p>
+      <button style="background-color: #96dae7; border:0; border-radius: 5px;"><a href="https://www.tawk.to/" ><img style="width: 30px; padding:5px" src="{% static 'images/' %}chat.png"></a></button>
     {% endif %}
   {% endif %}
     
@@ -271,30 +272,34 @@
   <!-- Teaching Units -->
   
   <div class="teaching-units">
-    <h2>Teaching Units</h2>
+    <div class="addUnit">
+      <h2>Teaching Units</h2>
     {% if thisUser %}
+      <button class="plusBtn">
+        <a href="../addTeachingUnit/{{course.id}}"><img class="plusImg" src="{% static 'images/' %}plus.png"></a>
+      </button>
+    {% endif %}
     
-  <a href="../addTeachingUnit/{{course.id}}">
-    <button class="dropbtn">Add teaching unit</button>
-  </a>
+    </div>
+    
     
       
     
-    {% endif %}
+    
     
     {% if not teachingUnits %}
       <p>No teaching units for now</p>
     {% else %}
-    <ol>
+    <ul>
       {% for unit in teachingUnits %}
       {% if enrolled %}
-        <a class="teachingUnit" href="../teachingUnit/{{ unit.id }}"><li>{{ unit.description }}</li></a>
+        <li><a class="teachingUnit" href="../teachingUnit/{{ unit.id }}">{{ unit.name }}</a></li>
         {% else %}
-        <li>{{ unit.description }}</li>
+        <li>{{ unit.name }}</li>
         {% endif %}
       <br />
       {% endfor %}
-    </ol>
+    </ul>
     {% endif %}
   </div>
 

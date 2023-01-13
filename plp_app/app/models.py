@@ -102,11 +102,11 @@ class Rating(models.Model):
  
 class TeachingUnit(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
-    description = models.CharField(max_length=500)
+    name = models.CharField(max_length=100)
     
 
     def __str__(self):
-        return self.courseId.name + ' - ' + self.description
+        return self.courseId.name + ' - ' + self.name
 
 
 class Material(models.Model):
@@ -115,7 +115,7 @@ class Material(models.Model):
     content = models.TextField(null=True)
     type=models.TextField(null=True,blank=True)
     def __str__(self):
-        return self.unitId.courseId.name + ' - ' + self.unitId.description
+        return self.unitId.courseId.name + ' - ' + self.unitId.name
 
 
 class Written(models.Model):

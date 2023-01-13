@@ -1,57 +1,117 @@
 {% extends 'app/base.html' %} {% block content %}
 {% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+{% load static %}
+
+<style>
+
+  .all{
+    display:flex;
+    margin-top: 20px;
+    justify-content: space-between; 
+  }
+
+  h1{
+    border: 4px solid #38786f;
+    color: rgb(255, 247, 247);
+    background-color: #4b9f92;
+    border-radius: 20px;
+    padding: 10px;
+    margin-left: 30px;
+  }
+  
+  h2{
+    color:#38786f;
+  }
+
+  .content{
+    border:2px solid #4b9f9397;
+    margin-left: 50px;
+    border-radius: 5px;
+    padding: 5px;
+  }
+
+  .material_ADD_REM{
+    display: flex;
+    justify-content: flex-end;  
+  }
+
+  .btnMat{
+    background-color: transparent;
+    border:0px;
+  }
+
+  .remove{
+    color:rgb(179, 2, 2);
+    font-weight: bold;
+    margin: 5px;
+  
+  }
+
+  .link{
+    color: #38786f;
+  }
+
+
+</style>
 <head>
   <link rel="stylesheet" href="..\static\addtu.css">
 </head>
 
 <!--Display teaching unit name and description, general information -->
-<div class="heading">
-  <h3>{{ course.name }}</h3>
-  <h4>{{ unit.description}}</h4>
+<div class="all">
+    <div class="heading">
+      <h1>{{unit.name}}</h1>
+    </div>
+    <div class="material_ADD_REM">
+        <div class="dropdown", style="float:right;">
+          <button class="btnMat"><img style="width:30px" src="{% static 'images/' %}plus.png"></button>
+          <div class="dropdown-content">
+          <a href="../addTeachingUnitWritten/{{ unit.id }}">Add written</a>
+          <a href="../addTeachingUnitVideo/{{ unit.id }}">Add video</a>
+          <a href="../addTeachingUnitAudio/{{ unit.id }}">Add audio</a>
+          <a href="../addTeachingUnitImage/{{ unit.id }}">Add image</a>
+          </div>
+        </div>
+
+        {% if materials %}
+          <a class="remove" href="../removeMaterial/{{ unit.id }}">Remove Material</a>
+        {% endif %}
+          
+    </div>
 </div>
 
-<div class="dropdown", style="float:right;">
-  <button class="dropbtn">Add Material</button>
-  <div class="dropdown-content">
-  <a href="../addTeachingUnitWritten/{{ unit.id }}">Add written</a>
-  <a href="../addTeachingUnitVideo/{{ unit.id }}">Add video</a>
-  <a href="../addTeachingUnitAudio/{{ unit.id }}">Add audio</a>
-  <a href="../addTeachingUnitImage/{{ unit.id }}">Add image</a>
-  </div>
-</div>
-
-<div class=remove, style = "float:right;">
-  
-  <a href="../removeMaterial/{{ unit.id }}">Remove Material<a/>
-
-  
-</div>
 
 
 <!--Display all the materials related to the current teaching unit -->
 <div>
-  <h4 class="heading">Materials:</h4>
   <br />
   <ul>
     {% for material in materials %}
-    <li>
+    <li style="border-bottom: 3px solid #3878709c; list-style-type: none;">
       <!--INSERT HREF FOR MATERIALS OF DIFFERENT KINDS? -->
       {% if material.type == 'video' %}
-      <a href="{{ material.content }}"><h1>{{ material.materialName }}</h1></a>
+      <img style="width:30px" src="{% static 'images/' %}video.png">
+      <a class="link" href="{{ material.content }}"><h2>{{ material.materialName }}</h2></a>
       {% endif %}
       
       {% if material.type == 'written' %}
-      <h1> {{material.materialName}} </h4>
-      <p> {{material.content}} </p> 
+      <img style="width:30px" src="{% static 'images/' %}text.png">
+      <h2> {{material.materialName}} </h2>
+      <p class="content">{{material.content}} </p> 
       {% endif %}
     
       {% if material.type == 'image' %}
-      <img src={{material.content}} alt={{material.materialName}} style="width:400px;height:400px;"/>
+      <div>
+        <img align="left" style="width:30px; margin-right: 10px;" src="{% static 'images/' %}image.png">
+        <p style="color:rgba(0, 0, 0, 0.567);">To do the download: Right-click the cursor over the image.</p><br>
+      </div>
+      <img src={{material.content}} alt={{material.materialName}} style="width:400px;height:400px;"/><br><br>
       {% endif %}
 
-      <!--{% if material.type == 'audio' %}-->
-      <a href="{{ material.content }}"><h1>{{ material.materialName }}</h1></a>
-      <!--{% endif %}-->
+      {% if material.type == 'audio' %}
+      <img style="width:30px" src="{% static 'images/' %}audio.png">
+      <a class="link" href="{{ material.content }}"><h2>{{ material.materialName }} - time</h2></a>
+      {% endif %}
 
     </li>
     <br />

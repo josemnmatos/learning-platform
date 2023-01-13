@@ -554,9 +554,9 @@ def addTeachingUnit(request,id):
     if request.user.is_authenticated:
         unit = models.Course.objects.filter(id__exact=id)
         if request.method == 'POST':
-            description = request.POST['description']
+            name = request.POST['name']
             
-            unit1 = models.TeachingUnit(courseId=unit[0],description=description)
+            unit1 = models.TeachingUnit(courseId=unit[0],name=name)
             unit1.save()
             return redirect('coursePage',id)
     return render(request, "app/addTeachingUnit.html", {'course': unit})

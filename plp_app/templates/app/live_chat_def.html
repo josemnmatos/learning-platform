@@ -1,46 +1,160 @@
-<!DOCTYPE html>
+{% extends 'app/base.html' %}
+{% block content %}
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Chat Def</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <meta name="referrer" content="no-referrer-when-downgrade">
+<style>
+          
+    *{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: sans-serif;
+}
 
-    </head>
-    <body>
-        
-        <h3>Live Chat definitions</h3><br><br>
+body {
+background-color: #559240bd;
+
+}
+.containerMaterial {
+display: flex;
+align-items: center;
+justify-content: center; 
+margin:90px;
+}
+
+.form_containerMaterial{
+ background-color: white;
+ width: 600px;
+ height: fit-content;
+ padding: 90px;
+ border-radius: 20px;
+ 
+}
+
+.formMaterial h1{
+text-align: center;
+font-size: 30px;
+color: #0f731e;
+}
+
+.input_singleMaterial{
+position: relative;
+margin: 20px 0;
+}
+
+.labelMaterial {
+position: absolute;
+left: 0;
+bottom: 5px;
+cursor: text;
+font-size: 12px;
+color: #0f731e;
+transform: translateY(-24px);
+}
+
+.inputMaterial {
+width: 100%;
+border: 0;
+border-bottom: 2px solid #ccc ;
+padding: 5px;
+font-size: 17px;
+outline: 0;
+
+}
+
+
+.btn{
+ width: 40%;
+ border-radius: 10px;
+ background-color: #0f731e ;
+ text-align: center;
+ padding: 10px 40px;
+ border: 0;
+ color: #fff;
+ font-size: 20px;
+ cursor: pointer;
+}
+
+.btn:hover{
+     box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #57ad64 0 -7px 0 inset;
+     transform: translateY(-2px);
+     transition: all 0.3s;
+     
+
+}
+
+.btnD{
+ width: 40%;
+ border-radius: 10px;
+ background-color: #a10000 ;
+ text-align: center;
+ padding: 10px 40px;
+ border: 0;
+ color: #fff;
+ font-size: 20px;
+ cursor: pointer;
+}
+
+.btnD:hover{
+     box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,  #610202 0 -7px 0 inset;
+     transform: translateY(-2px);
+     transition: all 0.3s;
+     
+
+}
+
+
+
+</style>
 
         {%if thisUser %}
+<section class="containerMaterial">
+    <div class="form_containerMaterial">
 
-        <form action="../saveChatDef" method="POST">
+
+        <form class="formMaterial" action="../saveChatDef" method="POST">
             {% csrf_token %}
 
+            <h1>Live Chat definitions</h1><br><br>
             <input type="hidden" name="course_Id" value="{{ course.id }}">
             <input type="hidden" name="able" value="False"> 
-            <label for="able">
-                <input type="checkbox" id="able" name="able" value="True">   
-                Enable Live Chat
-            </lable><br><br>
 
-            <p>Chat session schedule</p>
-            <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=UTC&src=cnVpcm9kcmlndWVzZ0BnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=cHQucG9ydHVndWVzZSNob2xpZGF5QGdyb3VwLnYuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%23039BE5&color=%2333B679&color=%230B8043" style="border:solid 1px #777" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+            <div class="input_singleMaterial">
+                <input  type="checkbox" id="able" name="able" value="True"> 
+                <label style="color:#0f731e" for="able"><b>Live Chat</b></lable><br><br>
+            </div>
+            <center>
+            <div class="calendar">
+                <p style="color:#323b3d; margin-right: 20px;">Chat session schedule</p><br>
+                <iframe  src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=UTC&src=cnVpcm9kcmlndWVzZ0BnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=cHQucG9ydHVndWVzZSNob2xpZGF5QGdyb3VwLnYuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%23039BE5&color=%2333B679&color=%230B8043" style="border:solid 1px #777" width="300" height="300" frameborder="0" scrolling="no"></iframe>
 
-            <br><br><br><label for = "link_calendar">Change the link of your calendar(optional):</label>
-            <input type="url" id="link_calendar" name="link_calendar"/>
+            </div>
+        </center>
+            
+            <br><br><br>
+            <div class="input_singleMaterial">
+                <input class="inputMaterial" type="url" id="link_calendar" name="link_calendar"/>
+                <label class="labelMaterial" for = "link_calendar">Change the link of your calendar (optional)</label>
+            
+            </div>
 
             
-            <br><br><br><label for = "Max_participants">Max. participants for the next session:</label>
-            <input type="number" id="Max_participants" name="Max_participants" required />
+            <br><br><br>
+            <div class="input_singleMaterial">
+                <input class="inputMaterial" type="number" name="Max_participants" id="Max_participants"/>
+                <label class="labelMaterial" for = "Max_participants">Max. participants</label>
+            </div>
             
-            
-            <br><br><br><button type="submit" name="save" value="Save">Save</button>
-                        <button type="submit" name="discard" value="Discard">Discard</button>
+            <br><br><br>
+            <center>
+            <div> 
+                <button class="btn" type="submit" name="save" value="Save">Save</button>
+                <button class="btnD" type="submit" name="discard" value="Discard">Discard</button>
+            </div>
+        </center>
         </form>
+
+    </div>
+</section>
         
         {%else%}
         <h2>You don't have permission to edit this Chat!</h2>
@@ -48,5 +162,4 @@
         {%endif%}
 
 
-    </body>
-</html>
+    {% endblock %}

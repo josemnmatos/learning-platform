@@ -1,20 +1,115 @@
 {% extends 'app/base.html' %}
 {% block content %}
 
-{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+
 
 {%load static%}
 
-<form action="" method="POST">
-    {% csrf_token %} 
+<style>
+          
+    *{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: sans-serif;
+}
 
-    Audio Name: <input type="text" name="audio_name"/><br/>
-    <br/>
-    Audio link: <input type="text" name="audio_link"/><br/>
-    <br/>
-    Duration: <input type="number" name="duration"/><br/>
-    <br/>
-    <input type="submit" value="Post" href="course/{{ course.id }}"/>
-</form>
+body {
+background-color: #9adf7f77;
+
+}
+.containerMaterial {
+display: flex;
+align-items: center;
+justify-content: center; 
+margin:90px;
+}
+
+.form_containerMaterial{
+    background-color: white;
+    width: 600px;
+    height: fit-content;
+    padding: 90px;
+    border-radius: 20px;
+ 
+}
+
+.formMaterial h1{
+text-align: center;
+font-size: 30px;
+color: #abf68d;
+}
+
+.input_singleMaterial{
+position: relative;
+margin: 20px 0;
+}
+
+.labelMaterial {
+position: absolute;
+left: 0;
+bottom: 5px;
+cursor: text;
+font-size: 12px;
+color: #40433e;
+transform: translateY(-24px);
+}
+
+.inputMaterial {
+width: 100%;
+border: 0;
+border-bottom: 2px solid #ccc ;
+padding: 5px;
+font-size: 17px;
+outline: 0;
+
+}
+
+
+.btn{
+ width: 40%;
+ border-radius: 10px;
+ background-color: #abf68d;
+ text-align: center;
+ padding: 10px 40px;
+ border: 0;
+ color: #40433e;
+ font-size: 20px;
+ cursor: pointer;
+}
+
+.btn:hover{
+     box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #40433ea5 0 -4px 0 inset;
+     transform: translateY(-2px);
+     transition: all 0.3s;
+     
+}
+</style>
+
+<section class="containerMaterial">
+    <div class="form_containerMaterial">
+        <form class="formMaterial" action="" method="POST">
+            {% csrf_token %} 
+            <h1>Add Audio Teaching Unit</h1><br>
+            <div class="input_singleMaterial">
+                <input class="inputMaterial"  type="text" name="audio_name" id="name"/>
+                <label class="labelMaterial" for="name">Audio Name</label>
+            </div>  
+            <div class="input_singleMaterial">
+                <input class="inputMaterial"  type="text" name="audio_link" id="link"/>
+                <label class="labelMaterial" for="link">Audio Link</label>
+            </div>  
+            
+            <div class="input_singleMaterial">
+                <input class="inputMaterial"  type="number" name="duration" id="time"/>
+                <label class="labelMaterial" for="time">Audio Duration (min.)</label>
+            </div>  
+
+            <center><button class="btn" type="submit">Save</button></center>
+            
+        </form>
+
+    </div>
+</section>
 
 {% endblock %}

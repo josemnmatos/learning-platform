@@ -6,16 +6,15 @@
 
 {%load static%}
 
-{%for material in materials%}
-<p> {{material.id}} -> {{material.materialName}} </p>
-{%endfor%}
-
 <form action="" method="POST">
     {% csrf_token %} 
-
-    Which material you want to delete(select id munber): <input type="text" name="remove_id"/><br/>
+    Material: <select required name="remove_id"><br>
+        {% for material in materials %}
+        <option value="{{ material.id }}">{{ material.materialName  }}</option>
+        {% endfor %}
+    </select>
     <br/>
-    <input type="submit" value="Post" href="course/{{ course.id }}"/>
+    <input type="submit" value="Delete" href="course/{{ course.id }}"/>
 </form>
 
 {% endblock %}
