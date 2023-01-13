@@ -270,13 +270,16 @@ def def_chat(request,id):
             return redirect('home')
         profile = models.Profile.objects.filter(userId__exact=request.user.id)
         public = models.Public.objects.filter(profileId__exact=profile[0].id)
-        courseMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id, courseId__exact=id)   
+        courseMade = models.CoursesMade.objects.filter(publicId__exact=public[0].id, courseId__exact=id)
+        private = models.Private.objects.get(profileId_id=profile[0].id)
+        mail = private.email
+        mail2 = mail.replace('@',"%40")   
         
         if not courseMade:
             messages.error(request, "You can't edit the chat of this course")
             return redirect('home')
          
-        return render(request,"app/live_chat_def.html",{'course':course[0],'thisUser': True, 'userId': request.user.id,'showOptions': True})
+        return render(request,"app/live_chat_def.html",{'mail2':mail2,'course':course[0],'thisUser': True, 'userId': request.user.id,'showOptions': True})
     
     return redirect('home')
 
@@ -343,12 +346,25 @@ def courseCreated(request, id):
         # Live chats
         liveChat = models.LiveChat.objects.filter(
             courseId__exact=courseMade.courseId)
-        liveChats.append(liveChat)
+        
+        if not liveChat:
+            liveChat = [None]
+            chat_enable = None
+            
+        elif liveChat[0].chat_enable==0:
+            chat_enable = 0
+         
+        elif liveChat[0].chat_enable==1:
+            chat_enable = 1
+        
+        liveChats.append(chat_enable)
+        
         # Money Earned
         moneyEarned.append(numStudents * courseMade.courseId.price)
 
     data = zip(coursesMade, students, liveChats, moneyEarned)
     return render(request, "app/courseCreated.html", {'coursesMade': coursesMade, 'data': data, 'thisUser': thisUser, 'userId': id, 'showOptions': True})
+
 
 
 def payments(request):
