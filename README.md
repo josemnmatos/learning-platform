@@ -1,6 +1,6 @@
 # Learning Together Platform
 
-#### This is a project being developed for the Software Engineering Course in FER Zagreb.
+#### This project was developed for the Software Engineering Course in FER Zagreb.
 
 Deployed on : https://plp3-test.onrender.com
 
